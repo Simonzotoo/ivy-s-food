@@ -1,0 +1,22 @@
+# Module 1 Acceptance Checklist
+
+- [x] Requirements document inspected.
+- [x] Official logo inspected and preserved.
+- [x] Laravel 13 initialized in project root.
+- [x] Git initialized without destructive commands.
+- [x] `.env.example` excludes real credentials.
+- [x] MySQL/MariaDB production configuration documented.
+- [x] Isolated SQLite testing configured.
+- [x] Login, logout and password reset implemented.
+- [x] Public registration omitted.
+- [x] Users, roles and permissions implemented.
+- [x] Privilege-escalation protections implemented.
+- [x] Company settings implemented and seeded.
+- [x] Audit logging implemented with sensitive-value redaction.
+- [x] Responsive Module 1 interface implemented.
+- [x] Automated Module 1 tests passing.
+- [x] Migration rollback and reapplication verified.
+- [x] Frontend production build passing.
+- [x] Browser visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.
