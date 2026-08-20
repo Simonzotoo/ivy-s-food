@@ -1,13 +1,8 @@
-<x-layouts.app title="Record Production">
-    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-xl font-bold text-ivy-navy">Record production</h2>
-        <p class="mt-1 text-sm text-slate-600">Choose an approved recipe, enter the planned quantity and complete the batch after production is finished.</p>
-    </section>
-
+<x-layouts.app title="Create Production Batch">
     <form method="POST" action="{{ route('production.batches.store') }}" class="space-y-5 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         @csrf
         <div>
-            <label class="form-label" for="recipe_id">Product recipe</label>
+            <label class="form-label" for="recipe_id">Approved recipe</label>
             <select class="form-input" id="recipe_id" name="recipe_id" required>
                 @foreach ($recipes as $recipe)
                     <option value="{{ $recipe->id }}">{{ $recipe->productVariant->name }} v{{ $recipe->version }}</option>
@@ -33,18 +28,15 @@
                 <input class="form-input" id="expiry_date" name="expiry_date" type="date">
             </div>
             <div>
-                <label class="form-label" for="planned_quantity">Planned quantity to produce</label>
+                <label class="form-label" for="planned_quantity">Planned output</label>
                 <input class="form-input" id="planned_quantity" name="planned_quantity" type="number" min="0.001" step="0.001" required>
             </div>
         </div>
-        <details class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <summary class="cursor-pointer text-sm font-bold text-ivy-navy">More details</summary>
-            <label class="form-label mt-4" for="notes">Notes</label>
-            <textarea class="form-input" id="notes" name="notes" rows="3"></textarea>
-        </details>
+        <label class="form-label" for="notes">Notes</label>
+        <textarea class="form-input" id="notes" name="notes" rows="3"></textarea>
         <div class="flex justify-end gap-3">
             <a href="{{ route('production.batches') }}" class="btn-secondary">Cancel</a>
-            <button class="btn-primary" type="submit">Start batch</button>
+            <button class="btn-primary" type="submit">Create batch</button>
         </div>
     </form>
 </x-layouts.app>

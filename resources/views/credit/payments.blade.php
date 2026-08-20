@@ -1,8 +1,4 @@
-<x-layouts.app title="Receive Payment">
-    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-xl font-bold text-ivy-navy">Receive credit payment</h2>
-        <p class="mt-1 text-sm text-slate-600">Record money received from a customer and apply it to their unpaid credit invoices.</p>
-    </section>
+<x-layouts.app title="Credit Payments">
     <form method="POST" action="{{ route('credit.payments.store') }}" class="mb-6 grid gap-4 rounded-md border border-slate-200 bg-white p-5 shadow-sm lg:grid-cols-[1fr_140px_140px_1fr_auto]">
         @csrf
         <select class="form-input mt-0" name="customer_id" required>

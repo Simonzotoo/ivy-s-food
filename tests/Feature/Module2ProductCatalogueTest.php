@@ -51,7 +51,7 @@ class Module2ProductCatalogueTest extends TestCase
         $this->actingAs($auditor)->get('/catalogue')->assertForbidden();
 
         $inventory = $this->userWithRole('Inventory Officer');
-        $this->actingAs($inventory)->get('/catalogue')->assertOk()->assertSee('Products and Sizes');
+        $this->actingAs($inventory)->get('/catalogue')->assertOk()->assertSee('Product Catalogue');
     }
 
     public function test_unauthorized_user_cannot_edit_variant(): void

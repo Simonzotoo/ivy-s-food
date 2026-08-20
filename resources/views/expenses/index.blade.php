@@ -1,9 +1,5 @@
 <x-layouts.app title="Expenses">
     <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h2 class="text-xl font-bold text-ivy-navy">Expenses</h2>
-            <p class="mt-1 text-sm text-slate-600">Record business spending and review expense approvals.</p>
-        </div>
         <form method="GET" class="grid gap-3 rounded-md border border-slate-200 bg-white p-3 shadow-sm sm:grid-cols-[150px_220px_auto]">
             <select class="form-input mt-0" name="status">
                 <option value="">All statuses</option>
@@ -17,7 +13,7 @@
                     <option value="{{ $category->id }}" @selected((string) request('category_id') === (string) $category->id)>{{ $category->name }}</option>
                 @endforeach
             </select>
-            <button class="btn-secondary" type="submit">Show</button>
+            <button class="btn-secondary" type="submit">Filter</button>
         </form>
         <div class="flex flex-wrap gap-2">
             @can('expenses.manage_categories')
@@ -76,12 +72,7 @@
                     <p class="mt-2 text-sm text-slate-600">{{ $expense->description }}</p>
                 </article>
             @empty
-                <div class="px-5 py-12 text-center">
-                    <p class="font-semibold text-ivy-navy">No expenses recorded.</p>
-                    @can('expenses.create')
-                        <a href="{{ route('expenses.create') }}" class="mt-4 btn-primary">Record first expense</a>
-                    @endcan
-                </div>
+                <div class="px-5 py-12 text-center text-slate-500">No expenses recorded.</div>
             @endforelse
         </div>
     </div>

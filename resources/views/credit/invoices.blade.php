@@ -1,16 +1,10 @@
-<x-layouts.app title="Customers Owing">
-    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h2 class="text-xl font-bold text-ivy-navy">Customers owing</h2>
-            <p class="mt-1 text-sm text-slate-600">See credit sales, due dates and unpaid balances.</p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-        <a href="{{ route('credit.payments') }}" class="btn-primary">Receive payment</a>
-        <a href="{{ route('credit.aging') }}" class="btn-secondary">Aging report</a>
+<x-layouts.app title="Credit Invoices">
+    <div class="mb-5 flex flex-wrap gap-3">
+        <a href="{{ route('credit.payments') }}" class="btn-secondary">Payments</a>
+        <a href="{{ route('credit.aging') }}" class="btn-secondary">Aging</a>
         @can('credit.reminders')
             <a href="{{ route('credit.reminders') }}" class="btn-secondary">Reminders</a>
         @endcan
-        </div>
     </div>
     <div class="rounded-md border border-slate-200 bg-white shadow-sm">
         <div class="divide-y divide-slate-100">
@@ -26,7 +20,7 @@
                     </div>
                 </article>
             @empty
-                <div class="px-5 py-12 text-center text-slate-500">No customers currently owe money.</div>
+                <div class="px-5 py-12 text-center text-slate-500">No credit invoices yet.</div>
             @endforelse
         </div>
     </div>

@@ -1,9 +1,4 @@
 <x-layouts.app title="Reports">
-    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-xl font-bold text-ivy-navy">Reports</h2>
-        <p class="mt-1 text-sm text-slate-600">Choose the question you want answered, set the dates and export only when needed.</p>
-    </section>
-
     <form method="GET" class="mb-6 grid gap-3 rounded-md border border-slate-200 bg-white p-4 shadow-sm lg:grid-cols-[1fr_160px_160px_auto]">
         <select class="form-input mt-0" name="type">
             @foreach ($reports as $key => $label)
@@ -12,12 +7,12 @@
         </select>
         <input class="form-input mt-0" name="from" type="date" value="{{ request('from', $from->toDateString()) }}">
         <input class="form-input mt-0" name="to" type="date" value="{{ request('to', $to->toDateString()) }}">
-        <button class="btn-secondary" type="submit">Show report</button>
+        <button class="btn-secondary" type="submit">Apply</button>
     </form>
 
     <div class="mb-5 flex flex-wrap justify-end gap-2">
         @can('reports.export')
-            <a class="btn-secondary" href="{{ route('reports.export.csv', request()->query()) }}">Download Excel CSV</a>
+            <a class="btn-secondary" href="{{ route('reports.export.csv', request()->query()) }}">Excel CSV</a>
             <a class="btn-primary" href="{{ route('reports.export.pdf', request()->query()) }}">PDF</a>
         @endcan
     </div>

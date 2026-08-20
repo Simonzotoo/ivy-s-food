@@ -1,8 +1,4 @@
-<x-layouts.app title="Customer Messages">
-    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-xl font-bold text-ivy-navy">Customer messages</h2>
-        <p class="mt-1 text-sm text-slate-600">Prepare SMS or WhatsApp messages for customers. Development mode only logs messages locally.</p>
-    </section>
+<x-layouts.app title="Broadcasts">
     <div class="mb-5 flex flex-wrap items-center justify-end gap-2">
         @can('broadcasts.manage_consent')
             <a href="{{ route('broadcasts.consent') }}" class="btn-secondary">Consent</a>
@@ -11,7 +7,7 @@
             <a href="{{ route('broadcasts.templates') }}" class="btn-secondary">Templates</a>
         @endcan
         @can('broadcasts.create')
-            <a href="{{ route('broadcasts.create') }}" class="btn-primary">Send customer message</a>
+            <a href="{{ route('broadcasts.create') }}" class="btn-primary">Create broadcast</a>
         @endcan
     </div>
     <section class="rounded-md border border-slate-200 bg-white shadow-sm">
@@ -29,7 +25,7 @@
                     </div>
                 </article>
             @empty
-                <div class="px-5 py-12 text-center text-slate-500">No customer messages have been prepared.</div>
+                <div class="px-5 py-12 text-center text-slate-500">No broadcasts have been prepared.</div>
             @endforelse
         </div>
     </section>

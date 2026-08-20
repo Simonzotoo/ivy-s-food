@@ -1,11 +1,8 @@
 <x-layouts.app title="Purchases">
     <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h2 class="text-xl font-bold text-ivy-navy">Purchases</h2>
-            <p class="mt-1 text-sm text-slate-600">Record materials bought from suppliers, then receive them into stock when they arrive.</p>
-        </div>
+        <p class="text-sm text-slate-600">Purchases remain editable only while draft. Receiving creates material batches and stock movements.</p>
         @can('purchases.create')
-            <a href="{{ route('purchases.create') }}" class="btn-primary">Add purchase</a>
+            <a href="{{ route('purchases.create') }}" class="btn-primary">Create purchase</a>
         @endcan
     </div>
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
@@ -17,7 +14,7 @@
                         <th class="px-4 py-3">Supplier</th>
                         <th class="px-4 py-3">Date</th>
                         <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3">Amount</th>
+                        <th class="px-4 py-3">Subtotal</th>
                         <th class="px-4 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
@@ -32,14 +29,7 @@
                             <td class="px-4 py-3 text-right"><a href="{{ route('purchases.show', $purchase) }}" class="btn-secondary">Open</a></td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" class="px-4 py-10 text-center">
-                                <p class="font-semibold text-ivy-navy">No purchases recorded yet.</p>
-                                @can('purchases.create')
-                                    <a href="{{ route('purchases.create') }}" class="mt-4 btn-primary">Add first purchase</a>
-                                @endcan
-                            </td>
-                        </tr>
+                        <tr><td colspan="6" class="px-4 py-10 text-center text-slate-500">No purchases recorded yet.</td></tr>
                     @endforelse
                 </tbody>
             </table>
