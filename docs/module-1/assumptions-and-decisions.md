@@ -26,3 +26,6 @@
 - Expense categories are configurable and are not pre-filled with invented business categories.
 - Expense receipt handling stores references only until the final file-upload security review defines production upload rules.
 - Expense reports are operational management views and are not presented as formal accounting statements.
+- Broadcasts use a provider-neutral local/test delivery adapter and never send real SMS or WhatsApp messages without approved credentials.
+- Broadcast recipient selection requires active customers with recorded consent and no opt-out timestamp.
+- Scheduled broadcasts are compatible with Laravel Scheduler and cron through `php artisan broadcasts:run-scheduled`.

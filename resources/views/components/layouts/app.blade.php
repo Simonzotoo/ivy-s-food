@@ -61,6 +61,9 @@
                     @can('expenses.view')
                         <a href="{{ route('expenses.index') }}" class="nav-link {{ request()->routeIs('expenses.*') ? 'nav-link-active' : '' }}">Expenses</a>
                     @endcan
+                    @can('broadcasts.view')
+                        <a href="{{ route('broadcasts.index') }}" class="nav-link {{ request()->routeIs('broadcasts.*') ? 'nav-link-active' : '' }}">Broadcasts</a>
+                    @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
                     @endcan

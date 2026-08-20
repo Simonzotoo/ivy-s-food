@@ -25,6 +25,8 @@ class Customer extends Model
         'credit_limit',
         'outstanding_balance',
         'communication_consent',
+        'communication_opted_out_at',
+        'communication_opt_out_reason',
         'notes',
     ];
 
@@ -34,6 +36,7 @@ class Customer extends Model
             'credit_limit' => 'decimal:2',
             'outstanding_balance' => 'decimal:2',
             'communication_consent' => 'boolean',
+            'communication_opted_out_at' => 'datetime',
         ];
     }
 

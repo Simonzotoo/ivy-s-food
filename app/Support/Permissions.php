@@ -62,5 +62,10 @@ final class Permissions
         'expenses.approve' => ['Approve or reject expenses', 'Expenses'],
         'expenses.manage_categories' => ['Manage expense categories', 'Expenses'],
         'expenses.reports' => ['View expense reports', 'Expenses'],
+        'broadcasts.view' => ['View broadcasts', 'Broadcasting'],
+        'broadcasts.create' => ['Create broadcasts', 'Broadcasting'],
+        'broadcasts.send' => ['Send or schedule broadcasts', 'Broadcasting'],
+        'broadcasts.manage_templates' => ['Manage broadcast templates', 'Broadcasting'],
+        'broadcasts.manage_consent' => ['Manage communication consent', 'Broadcasting'],
     ];
 }

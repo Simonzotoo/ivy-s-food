@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 9 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 10 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -174,6 +174,17 @@ php artisan migrate --seed --env=testing
 - Approval and rejection workflow with review trail.
 - Operational expense report by period and category.
 - Expense permissions and audit logging.
+
+## Module 10 Features
+
+- Broadcast templates for local, SMS and WhatsApp channels.
+- Customer segmentation by customer type, default sale type, location and purchase history.
+- Recipient preview before broadcast creation.
+- Immediate and scheduled broadcasts.
+- Consent and opt-out filtering.
+- Local/test provider adapter that records `external_send=false`.
+- Broadcast recipient delivery statuses and customer communication history.
+- Broadcast permissions and audit logging.
 
 ## Roadmap
 

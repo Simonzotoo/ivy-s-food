@@ -59,5 +59,10 @@
 | Approve or reject expenses | Yes | Yes | No | No | No | No | Yes | No | No |
 | Manage expense categories | Yes | Yes | No | No | No | No | Yes | No | No |
 | View expense reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
+| View broadcasts | Yes | Yes | No | No | No | No | No | Yes | Yes |
+| Create broadcasts | Yes | Yes | No | No | No | No | No | Yes | No |
+| Send or schedule broadcasts | Yes | Yes | No | No | No | No | No | Yes | No |
+| Manage broadcast templates | Yes | Yes | No | No | No | No | No | Yes | No |
+| Manage communication consent | Yes | Yes | No | No | No | No | No | Yes | No |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

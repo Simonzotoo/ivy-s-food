@@ -1,0 +1,29 @@
+# Module 10 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Customer segmentation implemented.
+- [x] Message templates implemented.
+- [x] Message preview implemented.
+- [x] Scheduled broadcasts implemented.
+- [x] Immediate broadcasts implemented.
+- [x] Consent and opt-out handling implemented.
+- [x] Delivery status implemented.
+- [x] Communication history implemented.
+- [x] Provider-neutral local/test adapters implemented.
+- [x] No real external message sent.
+- [x] Granular permissions added.
+- [x] Audit logging added.
+- [x] Focused Module 10 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.
