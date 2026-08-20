@@ -1,0 +1,29 @@
+# Module 11 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Actual-data operational dashboard implemented.
+- [x] Sales reports implemented.
+- [x] Credit reports implemented.
+- [x] Inventory reports implemented.
+- [x] Production reports implemented.
+- [x] Purchase and supplier reports implemented.
+- [x] Expense reports implemented.
+- [x] Gross-margin estimates implemented using documented cost.
+- [x] Date filters implemented.
+- [x] Excel-compatible export implemented.
+- [x] PDF export implemented.
+- [x] Granular permissions added.
+- [x] Focused Module 11 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication assessed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection assessed where applicable.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

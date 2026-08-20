@@ -64,5 +64,8 @@
 | Send or schedule broadcasts | Yes | Yes | No | No | No | No | No | Yes | No |
 | Manage broadcast templates | Yes | Yes | No | No | No | No | No | Yes | No |
 | Manage communication consent | Yes | Yes | No | No | No | No | No | Yes | No |
+| View operational dashboard | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| View operational reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
+| Export operational reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

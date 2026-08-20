@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupplierController;
@@ -34,7 +35,7 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware(['auth', 'active', 'password.changed'])->group(function (): void {
-    Route::get('/home', HomeController::class)->name('home');
+    Route::get('/home', HomeController::class)->name('home')->middleware('can:dashboard.view');
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout')->withoutMiddleware('password.changed');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->withoutMiddleware('password.changed');
@@ -156,4 +157,8 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::post('/broadcasts/customers/{customer}/opt-out', [BroadcastController::class, 'optOut'])->name('broadcasts.customers.opt-out')->middleware('can:broadcasts.manage_consent');
     Route::get('/broadcasts/{broadcast}', [BroadcastController::class, 'show'])->name('broadcasts.show')->middleware('can:broadcasts.view');
     Route::post('/broadcasts/{broadcast}/send', [BroadcastController::class, 'send'])->name('broadcasts.send')->middleware('can:broadcasts.send');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index')->middleware('can:reports.view');
+    Route::get('/reports/export.csv', [ReportController::class, 'exportCsv'])->name('reports.export.csv')->middleware('can:reports.export');
+    Route::get('/reports/export.pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf')->middleware('can:reports.export');
 });

@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 10 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 11 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -185,6 +185,15 @@ php artisan migrate --seed --env=testing
 - Local/test provider adapter that records `external_send=false`.
 - Broadcast recipient delivery statuses and customer communication history.
 - Broadcast permissions and audit logging.
+
+## Module 11 Features
+
+- Operational dashboard powered by actual sales, payments, credit, expense, inventory and production records.
+- Low-stock, near-expiry and expired-product alert sections.
+- Recent activity and best-selling product summaries.
+- Sales, credit, inventory, stock movement, expiry, production, purchase, supplier, expense and operational gross-margin estimate reports.
+- Date filters, Excel-compatible CSV export and PDF export.
+- Report permissions separated from dashboard access.
 
 ## Roadmap
 

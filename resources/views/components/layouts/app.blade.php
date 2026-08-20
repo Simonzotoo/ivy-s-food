@@ -21,7 +21,9 @@
                     </div>
                 </div>
                 <nav class="flex-1 space-y-1 px-3 py-4">
-                    <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Setup</a>
+                    @can('dashboard.view')
+                        <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Dashboard</a>
+                    @endcan
                     @can('users.view')
                         <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'nav-link-active' : '' }}">Users</a>
                     @endcan
@@ -63,6 +65,9 @@
                     @endcan
                     @can('broadcasts.view')
                         <a href="{{ route('broadcasts.index') }}" class="nav-link {{ request()->routeIs('broadcasts.*') ? 'nav-link-active' : '' }}">Broadcasts</a>
+                    @endcan
+                    @can('reports.view')
+                        <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'nav-link-active' : '' }}">Reports</a>
                     @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>

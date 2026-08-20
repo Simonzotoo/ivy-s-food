@@ -29,3 +29,6 @@
 - Broadcasts use a provider-neutral local/test delivery adapter and never send real SMS or WhatsApp messages without approved credentials.
 - Broadcast recipient selection requires active customers with recorded consent and no opt-out timestamp.
 - Scheduled broadcasts are compatible with Laravel Scheduler and cron through `php artisan broadcasts:run-scheduled`.
+- The dashboard uses actual system data and shows zero/empty states when no operational records exist.
+- Report Excel support is provided through Excel-compatible CSV to avoid heavy shared-hosting dependencies.
+- Operational gross-margin estimates use documented unit costs from stock allocation records and are not formal accounting statements.

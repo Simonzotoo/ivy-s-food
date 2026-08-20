@@ -67,5 +67,8 @@ final class Permissions
         'broadcasts.send' => ['Send or schedule broadcasts', 'Broadcasting'],
         'broadcasts.manage_templates' => ['Manage broadcast templates', 'Broadcasting'],
         'broadcasts.manage_consent' => ['Manage communication consent', 'Broadcasting'],
+        'dashboard.view' => ['View operational dashboard', 'Reports'],
+        'reports.view' => ['View operational reports', 'Reports'],
+        'reports.export' => ['Export operational reports', 'Reports'],
     ];
 }
