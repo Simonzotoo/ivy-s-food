@@ -40,6 +40,12 @@
                     @can('purchases.view')
                         <a href="{{ route('purchases.index') }}" class="nav-link {{ request()->routeIs('purchases.*') ? 'nav-link-active' : '' }}">Purchases</a>
                     @endcan
+                    @can('recipes.view')
+                        <a href="{{ route('recipes.index') }}" class="nav-link {{ request()->routeIs('recipes.*') ? 'nav-link-active' : '' }}">Recipes</a>
+                    @endcan
+                    @can('production.view')
+                        <a href="{{ route('production.batches') }}" class="nav-link {{ request()->routeIs('production.*') ? 'nav-link-active' : '' }}">Production</a>
+                    @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
                     @endcan

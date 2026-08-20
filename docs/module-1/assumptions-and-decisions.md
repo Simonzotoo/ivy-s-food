@@ -13,3 +13,5 @@
 - Users are soft deleted to protect future audit and business-record relationships.
 - Purchase attachments initially store safe document references only; binary upload handling will be reviewed under file-upload security.
 - Supplier balances and purchase settlement belong to later financial modules and are not invented in Module 3.
+- Module 4 records finished production output, but sellable finished-product stock remains deferred to the Module 5 inventory ledger.
+- Products cannot be completed in production without an approved recipe; unknown recipes stay configurable and unapproved.

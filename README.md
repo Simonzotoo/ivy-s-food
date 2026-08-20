@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1, 2 and 3 are `Tested`. Approval is reserved for the project owner.
+Modules 1, 2, 3 and 4 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -109,6 +109,18 @@ php artisan migrate --seed --env=testing
 - Purchase returns with available-quantity validation.
 - Material stock movements derived from receiving and returns.
 - Materials, suppliers, purchases and stock-movement permissions with audit logging.
+
+## Module 4 Features
+
+- Versioned draft and approved recipes/Bills of Materials.
+- Ingredient and packaging-material recipe lines.
+- Production plans and production batches.
+- Batch-number generation, production and expiry dates.
+- Approved-recipe enforcement before production completion.
+- Transactional material consumption from available material batches.
+- Finished output, rejected output, wastage, yield, variance and estimated costing records.
+- Production reversal controls that restore consumed material stock.
+- Recipe and production permissions with audit logging.
 
 ## Roadmap
 

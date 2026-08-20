@@ -8,8 +8,10 @@ use App\Http\Controllers\CompanySettingsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductCatalogueController;
+use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -72,4 +74,20 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show')->middleware('can:purchases.view');
     Route::post('/purchases/{purchase}/receive', [PurchaseController::class, 'receive'])->name('purchases.receive')->middleware('can:purchases.receive');
     Route::post('/material-batches/{batch}/return', [PurchaseController::class, 'returnBatch'])->name('material-batches.return')->middleware('can:purchases.return');
+
+    Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index')->middleware('can:recipes.view');
+    Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create')->middleware('can:recipes.manage');
+    Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store')->middleware('can:recipes.manage');
+    Route::get('/recipes/{recipe}', [RecipeController::class, 'show'])->name('recipes.show')->middleware('can:recipes.view');
+    Route::post('/recipes/{recipe}/approve', [RecipeController::class, 'approve'])->name('recipes.approve')->middleware('can:recipes.approve');
+
+    Route::get('/production/plans', [ProductionController::class, 'plans'])->name('production.plans')->middleware('can:production.view');
+    Route::get('/production/plans/create', [ProductionController::class, 'createPlan'])->name('production.plans.create')->middleware('can:production.plan');
+    Route::post('/production/plans', [ProductionController::class, 'storePlan'])->name('production.plans.store')->middleware('can:production.plan');
+    Route::get('/production/batches', [ProductionController::class, 'batches'])->name('production.batches')->middleware('can:production.view');
+    Route::get('/production/batches/create', [ProductionController::class, 'createBatch'])->name('production.batches.create')->middleware('can:production.start');
+    Route::post('/production/batches', [ProductionController::class, 'storeBatch'])->name('production.batches.store')->middleware('can:production.start');
+    Route::get('/production/batches/{batch}', [ProductionController::class, 'showBatch'])->name('production.batches.show')->middleware('can:production.view');
+    Route::post('/production/batches/{batch}/complete', [ProductionController::class, 'completeBatch'])->name('production.batches.complete')->middleware('can:production.complete');
+    Route::post('/production/batches/{batch}/reverse', [ProductionController::class, 'reverseBatch'])->name('production.batches.reverse')->middleware('can:production.reverse');
 });

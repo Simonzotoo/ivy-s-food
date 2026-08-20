@@ -1,0 +1,29 @@
+# Module 4 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Versioned recipes implemented.
+- [x] Recipe ingredients and packaging requirements implemented.
+- [x] Recipe approval controls implemented.
+- [x] Planned production implemented.
+- [x] Production batches implemented.
+- [x] Batch-number generation implemented.
+- [x] Production completion consumes material stock safely.
+- [x] Finished and rejected output recorded.
+- [x] Wastage, yield and estimated costing recorded.
+- [x] Reversal controls implemented.
+- [x] Granular permissions added.
+- [x] Audit logging added.
+- [x] Focused Module 4 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

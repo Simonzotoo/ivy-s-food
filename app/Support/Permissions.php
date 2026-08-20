@@ -30,5 +30,13 @@ final class Permissions
         'purchases.receive' => ['Receive purchases', 'Materials & Purchases'],
         'purchases.return' => ['Return purchases', 'Materials & Purchases'],
         'material_stock.view' => ['View material stock movements', 'Materials & Purchases'],
+        'recipes.view' => ['View recipes', 'Recipes & Production'],
+        'recipes.manage' => ['Manage recipes', 'Recipes & Production'],
+        'recipes.approve' => ['Approve recipes', 'Recipes & Production'],
+        'production.view' => ['View production', 'Recipes & Production'],
+        'production.plan' => ['Plan production', 'Recipes & Production'],
+        'production.start' => ['Create production batches', 'Recipes & Production'],
+        'production.complete' => ['Complete production', 'Recipes & Production'],
+        'production.reverse' => ['Reverse production', 'Recipes & Production'],
     ];
 }
