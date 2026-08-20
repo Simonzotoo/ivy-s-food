@@ -93,6 +93,11 @@ class UserAdministrationService
     private function authorizedRoleIds(array $roleIds, User $actor): array
     {
         $ids = array_values(array_unique(array_map('intval', $roleIds)));
+
+        if ($ids !== [] && ! $actor->hasPermissionTo('roles.assign')) {
+            throw ValidationException::withMessages(['role_ids' => 'You do not have permission to assign roles.']);
+        }
+
         $ownerRoleIds = Role::query()->where('is_owner', true)->pluck('id')->all();
 
         if (! $actor->isOwner() && count(array_intersect($ids, $ownerRoleIds)) > 0) {

@@ -12,6 +12,10 @@ Scope completed in this module:
 - Responsive administrative interface for Module 1 pages.
 - Automated tests and production asset build.
 
+Post-test correction:
+
+- Enforced `roles.assign` in the user administration service whenever role IDs are submitted during user creation or update.
+
 Not included:
 
 - Products, raw materials, production, purchases, sales, credit, expenses, broadcasts, dashboards or reports.

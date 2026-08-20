@@ -158,6 +158,24 @@ class Module1FoundationTest extends TestCase
         ])->assertForbidden();
     }
 
+    public function test_user_creation_requires_role_assignment_permission_when_roles_are_submitted(): void
+    {
+        $manager = $this->userWithRole('Manager');
+        $manager->roles()->first()->permissions()->sync(Permission::query()->whereIn('slug', ['users.create'])->pluck('id'));
+        $manager = $manager->fresh('roles.permissions');
+        $cashierRole = Role::query()->where('name', 'Cashier / Sales Officer')->firstOrFail();
+
+        $this->actingAs($manager)->post('/users', [
+            'name' => 'Kofi Cashier',
+            'email' => 'kofi@example.com',
+            'password' => 'Password!234',
+            'password_confirmation' => 'Password!234',
+            'role_ids' => [$cashierRole->id],
+        ])->assertSessionHasErrors('role_ids');
+
+        $this->assertDatabaseMissing('users', ['email' => 'kofi@example.com']);
+    }
+
     public function test_company_setting_updates_are_audited(): void
     {
         $owner = $this->ownerUser();
