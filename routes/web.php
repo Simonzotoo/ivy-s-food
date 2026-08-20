@@ -10,6 +10,7 @@ use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductCatalogueController;
@@ -161,4 +162,10 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index')->middleware('can:reports.view');
     Route::get('/reports/export.csv', [ReportController::class, 'exportCsv'])->name('reports.export.csv')->middleware('can:reports.export');
     Route::get('/reports/export.pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf')->middleware('can:reports.export');
+
+    Route::get('/imports', [ImportController::class, 'index'])->name('imports.index')->middleware('can:imports.view');
+    Route::get('/imports/templates/{type}', [ImportController::class, 'template'])->name('imports.template')->middleware('can:imports.view');
+    Route::post('/imports', [ImportController::class, 'store'])->name('imports.store')->middleware('can:imports.run');
+    Route::get('/imports/{batch}', [ImportController::class, 'show'])->name('imports.show')->middleware('can:imports.view');
+    Route::post('/imports/{batch}/rollback', [ImportController::class, 'rollback'])->name('imports.rollback')->middleware('can:imports.rollback');
 });

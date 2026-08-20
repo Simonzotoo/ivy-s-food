@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 11 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 12 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -194,6 +194,15 @@ php artisan migrate --seed --env=testing
 - Sales, credit, inventory, stock movement, expiry, production, purchase, supplier, expense and operational gross-margin estimate reports.
 - Date filters, Excel-compatible CSV export and PDF export.
 - Report permissions separated from dashboard access.
+
+## Module 12 Features
+
+- CSV import templates for product variants, barcodes, prices, raw materials, suppliers, customers, opening stock and open credit balances.
+- Dry-run validation with row-level errors.
+- Auditable import batches and reconciliation summaries.
+- Opening stock imports create batch records and `opening_balance` stock movements.
+- Open credit balance imports create auditable opening sales and credit invoices.
+- Supported rollback for opening stock imports.
 
 ## Roadmap
 

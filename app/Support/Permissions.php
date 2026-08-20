@@ -70,5 +70,8 @@ final class Permissions
         'dashboard.view' => ['View operational dashboard', 'Reports'],
         'reports.view' => ['View operational reports', 'Reports'],
         'reports.export' => ['Export operational reports', 'Reports'],
+        'imports.view' => ['View imports', 'Imports'],
+        'imports.run' => ['Run dry-run or apply imports', 'Imports'],
+        'imports.rollback' => ['Rollback supported imports', 'Imports'],
     ];
 }

@@ -32,3 +32,6 @@
 - The dashboard uses actual system data and shows zero/empty states when no operational records exist.
 - Report Excel support is provided through Excel-compatible CSV to avoid heavy shared-hosting dependencies.
 - Operational gross-margin estimates use documented unit costs from stock allocation records and are not formal accounting statements.
+- Module 12 imports accept pasted CSV content to avoid broad file-upload handling before the final security review.
+- Opening inventory imports create auditable `opening_balance` movements instead of direct balance edits.
+- Open credit imports create auditable opening sales and credit invoices; automatic rollback is intentionally not supported without a finance reconciliation decision.

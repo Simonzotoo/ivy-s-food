@@ -67,5 +67,8 @@
 | View operational dashboard | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | View operational reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
 | Export operational reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
+| View imports | Yes | Yes | No | Yes | No | No | Yes | No | Yes |
+| Run dry-run or apply imports | Yes | Yes | No | Yes | No | No | Yes | No | No |
+| Rollback supported imports | Yes | Yes | No | No | No | No | No | No | No |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.
