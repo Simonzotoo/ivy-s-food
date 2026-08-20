@@ -1,0 +1,33 @@
+# Module 7 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] POS sales implemented.
+- [x] Barcode/manual product lookup implemented.
+- [x] Customer selection implemented.
+- [x] Retail, Wholesale and Distributor pricing implemented.
+- [x] Quantity and stock validation implemented.
+- [x] Discount permission controls implemented.
+- [x] Cash, MoMo and Credit payment records implemented.
+- [x] Split/partial payments implemented.
+- [x] Finished stock deduction implemented.
+- [x] Sales history implemented.
+- [x] Receipt/invoice/delivery note screens implemented.
+- [x] PDF download implemented.
+- [x] Receipt reprint implemented.
+- [x] Returns and reversals implemented.
+- [x] Granular permissions added.
+- [x] Audit logging added.
+- [x] Focused Module 7 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

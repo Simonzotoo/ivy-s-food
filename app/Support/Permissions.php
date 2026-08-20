@@ -47,5 +47,11 @@ final class Permissions
         'customers.manage' => ['Manage customers', 'Customers'],
         'customers.manage_credit' => ['Manage customer credit limits', 'Customers'],
         'customers.communications' => ['Manage customer communication history', 'Customers'],
+        'sales.view' => ['View sales', 'Sales'],
+        'sales.create' => ['Create sales', 'Sales'],
+        'sales.discount' => ['Apply sale discounts', 'Sales'],
+        'sales.return' => ['Process sale returns', 'Sales'],
+        'sales.reverse' => ['Reverse sales', 'Sales'],
+        'sales.reprint' => ['Reprint receipts and invoices', 'Sales'],
     ];
 }

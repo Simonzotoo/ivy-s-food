@@ -44,5 +44,11 @@
 | Manage customers | Yes | Yes | Yes | No | No | No | No | No | No |
 | Manage customer credit limits | Yes | Yes | No | No | No | No | Yes | No | No |
 | Manage customer communication history | Yes | Yes | No | No | No | No | No | Yes | No |
+| View sales | Yes | Yes | Yes | No | No | No | Yes | No | Yes |
+| Create sales | Yes | No | Yes | No | No | No | No | No | No |
+| Apply sale discounts | Yes | Yes | No | No | No | No | No | No | No |
+| Process sale returns | Yes | Yes | No | No | No | No | No | No | No |
+| Reverse sales | Yes | Yes | No | No | No | No | No | No | No |
+| Reprint receipts and invoices | Yes | Yes | Yes | No | No | No | Yes | No | No |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

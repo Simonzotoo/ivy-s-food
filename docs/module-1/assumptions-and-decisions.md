@@ -19,3 +19,5 @@
 - Sales modules will consume Module 5's earliest-expiry-first reservation flow instead of choosing arbitrary finished-product batches.
 - Customer type and sale/pricing type are separate tables so business identity and pricing rules can evolve independently.
 - Customer outstanding balances are initialized to zero and will be maintained by financial transaction modules.
+- Receipt, invoice and delivery-note PDFs use `dompdf/dompdf`, a pure-PHP dependency suitable for Hostinger shared hosting.
+- Sales with returns are not eligible for full reversal to avoid double-restoring finished stock.

@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 6 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 7 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -143,6 +143,17 @@ php artisan migrate --seed --env=testing
 - Communication consent and local communication history.
 - Purchase-history placeholder that will use live sales records after Module 7.
 - Customer permissions and audit logging.
+
+## Module 7 Features
+
+- POS sales with barcode/manual product lookup.
+- Retail, Wholesale and Distributor price selection from active product variants.
+- Cash, MoMo and Credit payments, including split/partial payments.
+- Finished-stock deduction from eligible batches using earliest-expiry-first ordering.
+- Receipt, credit invoice and delivery note records.
+- Shared-hosting-compatible PDF downloads using Dompdf.
+- Sale returns and guarded sale reversal.
+- Sales permissions and audit logging.
 
 ## Roadmap
 

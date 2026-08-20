@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -111,4 +112,13 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit')->middleware('can:customers.manage');
     Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update')->middleware('can:customers.manage');
     Route::post('/customers/{customer}/communications', [CustomerController::class, 'logCommunication'])->name('customers.communications.store')->middleware('can:customers.communications');
+
+    Route::get('/sales', [SalesController::class, 'index'])->name('sales.index')->middleware('can:sales.view');
+    Route::get('/sales/pos', [SalesController::class, 'pos'])->name('sales.pos')->middleware('can:sales.create');
+    Route::post('/sales', [SalesController::class, 'store'])->name('sales.store')->middleware('can:sales.create');
+    Route::get('/sales/{sale}', [SalesController::class, 'show'])->name('sales.show')->middleware('can:sales.view');
+    Route::get('/sales/{sale}/receipt', [SalesController::class, 'receipt'])->name('sales.receipt')->middleware('can:sales.reprint');
+    Route::get('/sales/{sale}/{document}.pdf', [SalesController::class, 'pdf'])->name('sales.pdf')->middleware('can:sales.reprint');
+    Route::post('/sales/{sale}/reverse', [SalesController::class, 'reverse'])->name('sales.reverse')->middleware('can:sales.reverse');
+    Route::post('/sales/{sale}/returns', [SalesController::class, 'returnItems'])->name('sales.returns.store')->middleware('can:sales.return');
 });
