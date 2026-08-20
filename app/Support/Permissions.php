@@ -57,5 +57,10 @@ final class Permissions
         'credit.payments' => ['Record customer credit payments', 'Credit'],
         'credit.reminders' => ['Manage credit reminders', 'Credit'],
         'credit.reports' => ['View credit aging and statements', 'Credit'],
+        'expenses.view' => ['View expenses', 'Expenses'],
+        'expenses.create' => ['Create expenses', 'Expenses'],
+        'expenses.approve' => ['Approve or reject expenses', 'Expenses'],
+        'expenses.manage_categories' => ['Manage expense categories', 'Expenses'],
+        'expenses.reports' => ['View expense reports', 'Expenses'],
     ];
 }

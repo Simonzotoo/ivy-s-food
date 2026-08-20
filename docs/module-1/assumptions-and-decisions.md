@@ -23,3 +23,6 @@
 - Sales with returns are not eligible for full reversal to avoid double-restoring finished stock.
 - Credit reminders use a provider-neutral notification contract bound to a local/test channel until SMS or WhatsApp credentials are approved.
 - Customer credit payments allocate to the oldest outstanding invoices first.
+- Expense categories are configurable and are not pre-filled with invented business categories.
+- Expense receipt handling stores references only until the final file-upload security review defines production upload rules.
+- Expense reports are operational management views and are not presented as formal accounting statements.

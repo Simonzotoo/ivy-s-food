@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 8 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 9 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -164,6 +164,16 @@ php artisan migrate --seed --env=testing
 - Reminder templates and reminder history.
 - Provider-neutral local/test notification channel with no real external sends.
 - Credit permissions and audit logging.
+
+## Module 9 Features
+
+- Configurable expense categories.
+- Expense records with date, amount, payment method and description.
+- Receipt reference fields without unsafe binary upload assumptions.
+- Pending, approved and rejected expense statuses.
+- Approval and rejection workflow with review trail.
+- Operational expense report by period and category.
+- Expense permissions and audit logging.
 
 ## Roadmap
 

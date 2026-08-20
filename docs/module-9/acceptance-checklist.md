@@ -1,0 +1,27 @@
+# Module 9 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Expense categories implemented.
+- [x] Expense record creation implemented.
+- [x] Payment method, date, amount and description captured.
+- [x] Approval workflow implemented.
+- [x] Receipt references implemented.
+- [x] Expense history implemented.
+- [x] Operational expense report implemented.
+- [x] Report wording avoids formal accounting-statement claims.
+- [x] Granular permissions added.
+- [x] Audit logging added.
+- [x] Focused Module 9 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

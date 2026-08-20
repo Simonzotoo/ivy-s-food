@@ -54,5 +54,10 @@
 | Record customer credit payments | Yes | Yes | No | No | No | No | Yes | No | No |
 | Manage credit reminders | Yes | Yes | No | No | No | No | Yes | No | No |
 | View credit aging and statements | Yes | Yes | No | No | No | No | Yes | No | Yes |
+| View expenses | Yes | Yes | No | No | No | No | Yes | No | Yes |
+| Create expenses | Yes | Yes | No | No | No | No | Yes | No | No |
+| Approve or reject expenses | Yes | Yes | No | No | No | No | Yes | No | No |
+| Manage expense categories | Yes | Yes | No | No | No | No | Yes | No | No |
+| View expense reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

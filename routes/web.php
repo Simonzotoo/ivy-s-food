@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CompanySettingsController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
@@ -133,4 +134,14 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/credit/aging', [CreditController::class, 'aging'])->name('credit.aging')->middleware('can:credit.reports');
     Route::get('/credit/reminders', [CreditController::class, 'reminders'])->name('credit.reminders')->middleware('can:credit.reminders');
     Route::post('/credit/reminders/templates', [CreditController::class, 'storeTemplate'])->name('credit.reminders.templates.store')->middleware('can:credit.reminders');
+
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index')->middleware('can:expenses.view');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create')->middleware('can:expenses.create');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store')->middleware('can:expenses.create');
+    Route::get('/expenses/categories', [ExpenseController::class, 'categories'])->name('expenses.categories')->middleware('can:expenses.manage_categories');
+    Route::post('/expenses/categories', [ExpenseController::class, 'storeCategory'])->name('expenses.categories.store')->middleware('can:expenses.manage_categories');
+    Route::get('/expenses/report', [ExpenseController::class, 'report'])->name('expenses.report')->middleware('can:expenses.reports');
+    Route::get('/expenses/{expense}', [ExpenseController::class, 'show'])->name('expenses.show')->middleware('can:expenses.view');
+    Route::post('/expenses/{expense}/approve', [ExpenseController::class, 'approve'])->name('expenses.approve')->middleware('can:expenses.approve');
+    Route::post('/expenses/{expense}/reject', [ExpenseController::class, 'reject'])->name('expenses.reject')->middleware('can:expenses.approve');
 });
