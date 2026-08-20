@@ -22,6 +22,10 @@
                         <p class="truncate text-xs text-slate-300">Management System</p>
                     </div>
                 </div>
+                <div class="border-b border-white/10 px-5 py-3">
+                    <p class="truncate text-sm font-semibold">{{ auth()->user()->name }}</p>
+                    <p class="truncate text-xs text-slate-300">{{ auth()->user()->email }}</p>
+                </div>
                 <nav class="flex-1 space-y-1 px-3 py-4">
                     @can('dashboard.view')
                         <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Dashboard</a>
@@ -81,10 +85,6 @@
                         <a href="{{ route('audit.index') }}" class="nav-link {{ request()->routeIs('audit.*') ? 'nav-link-active' : '' }}">Audit Logs</a>
                     @endcan
                 </nav>
-                <div class="border-t border-white/10 p-4">
-                    <p class="truncate text-sm font-semibold">{{ auth()->user()->name }}</p>
-                    <p class="truncate text-xs text-slate-300">{{ auth()->user()->email }}</p>
-                </div>
             </div>
         </aside>
 

@@ -22,12 +22,20 @@ class OperationalDashboardService
     public function data(): array
     {
         $today = now()->toDateString();
+        $todaySales = Sale::query()->whereDate('sale_date', $today)->where('status', 'completed')->sum('total');
+        $todaySalesCount = Sale::query()->whereDate('sale_date', $today)->where('status', 'completed')->count();
+        $paymentBreakdown = SalePayment::query()->whereDate('received_at', $today)->get()->groupBy('payment_method')->map->sum('amount');
+        $bestSellingProducts = SaleItem::query()->with('productVariant')->get()->groupBy('product_variant_id')->map(fn (Collection $items) => [
+            'product' => $items->first()->productVariant,
+            'quantity' => $items->sum('quantity'),
+            'total' => $items->sum('line_total'),
+        ])->sortByDesc('quantity')->take(5);
 
         return [
-            'todaySales' => Sale::query()->whereDate('sale_date', $today)->where('status', 'completed')->sum('total'),
-            'todaySalesCount' => Sale::query()->whereDate('sale_date', $today)->where('status', 'completed')->count(),
+            'todaySales' => $todaySales,
+            'todaySalesCount' => $todaySalesCount,
             'customerCount' => Customer::query()->count(),
-            'paymentBreakdown' => SalePayment::query()->whereDate('received_at', $today)->get()->groupBy('payment_method')->map->sum('amount'),
+            'paymentBreakdown' => $paymentBreakdown,
             'todayExpenses' => Expense::query()->whereDate('incurred_on', $today)->where('status', 'approved')->sum('amount'),
             'outstandingCredit' => CreditInvoice::query()->where('balance', '>', 0)->sum('balance'),
             'dueSoonCredit' => CreditInvoice::query()->where('balance', '>', 0)->whereBetween('due_date', [now()->addDay()->toDateString(), now()->addDays(7)->toDateString()])->sum('balance'),
@@ -41,11 +49,11 @@ class OperationalDashboardService
             'recentProduction' => ProductionBatch::query()->with('productVariant')->latest('production_date')->limit(5)->get(),
             'recentSales' => Sale::query()->with('customer')->latest('sale_date')->limit(5)->get(),
             'recentAdjustments' => StockAdjustment::query()->latest()->limit(5)->get(),
-            'bestSellingProducts' => SaleItem::query()->with('productVariant')->get()->groupBy('product_variant_id')->map(fn (Collection $items) => [
-                'product' => $items->first()->productVariant,
-                'quantity' => $items->sum('quantity'),
-                'total' => $items->sum('line_total'),
-            ])->sortByDesc('quantity')->take(5),
+            'bestSellingProducts' => $bestSellingProducts,
+            'averageSaleValue' => $todaySalesCount > 0 ? ((float) $todaySales / $todaySalesCount) : 0,
+            'cashSharePercent' => (float) $todaySales > 0 ? (((float) ($paymentBreakdown['Cash'] ?? 0) / (float) $todaySales) * 100) : 0,
+            'topSellingProduct' => $bestSellingProducts->first(),
+            'stockAlertCount' => $this->lowRawMaterials()->count() + $this->lowFinishedProducts()->count(),
             'salesTrend' => Sale::query()->where('sale_date', '>=', now()->subDays(6)->startOfDay())->where('status', 'completed')->get()->groupBy(fn (Sale $sale) => $sale->sale_date->format('d M'))->map->sum('total'),
             'recentMovements' => FinishedStockMovement::query()->with('productVariant')->latest('occurred_at')->limit(5)->get(),
         ];

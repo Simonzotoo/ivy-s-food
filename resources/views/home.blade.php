@@ -19,6 +19,42 @@
         </section>
     </div>
 
+    <section class="mt-6 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="text-base font-bold text-ivy-navy">Analytics</h2>
+                <p class="mt-1 text-sm text-slate-500">Quick readings from today’s activity and current stock.</p>
+            </div>
+            @can('reports.view')
+                <a href="{{ route('reports.index') }}" class="btn-secondary">Open reports</a>
+            @endcan
+        </div>
+        <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div class="rounded-md bg-slate-50 p-4">
+                <p class="text-xs font-semibold uppercase text-slate-500">Average sale value</p>
+                <p class="mt-2 text-2xl font-bold text-ivy-navy">GHS {{ number_format((float) $averageSaleValue, 2) }}</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4">
+                <p class="text-xs font-semibold uppercase text-slate-500">Cash share today</p>
+                <p class="mt-2 text-2xl font-bold text-ivy-navy">{{ number_format((float) $cashSharePercent, 1) }}%</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4">
+                <p class="text-xs font-semibold uppercase text-slate-500">Top product</p>
+                @if ($topSellingProduct)
+                    <p class="mt-2 text-lg font-bold text-ivy-navy">{{ $topSellingProduct['product']?->name ?? 'Unknown product' }}</p>
+                    <p class="mt-1 text-sm text-slate-600">{{ number_format((float) $topSellingProduct['quantity'], 3) }} sold</p>
+                @else
+                    <p class="mt-2 text-lg font-bold text-ivy-navy">No sales yet</p>
+                @endif
+            </div>
+            <div class="rounded-md bg-slate-50 p-4">
+                <p class="text-xs font-semibold uppercase text-slate-500">Stock alerts</p>
+                <p class="mt-2 text-2xl font-bold text-ivy-navy">{{ $stockAlertCount }}</p>
+                <p class="mt-1 text-sm text-slate-600">Low raw or finished stock</p>
+            </div>
+        </div>
+    </section>
+
     <div class="mt-6 grid gap-6 xl:grid-cols-3">
         <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-base font-bold text-ivy-navy">Payment breakdown</h2>
