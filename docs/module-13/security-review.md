@@ -1,6 +1,6 @@
 # Security Review
 
-Status: In Development
+Status: Tested
 
 - Authentication uses guarded login, throttling, password reset, CSRF middleware and session regeneration.
 - Authorization is permission-based through seeded roles and route middleware; Owner / Super Admin remains unrestricted.
