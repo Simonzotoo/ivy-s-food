@@ -50,5 +50,9 @@
 | Process sale returns | Yes | Yes | No | No | No | No | No | No | No |
 | Reverse sales | Yes | Yes | No | No | No | No | No | No | No |
 | Reprint receipts and invoices | Yes | Yes | Yes | No | No | No | Yes | No | No |
+| View credit records | Yes | Yes | No | No | No | No | Yes | No | Yes |
+| Record customer credit payments | Yes | Yes | No | No | No | No | Yes | No | No |
+| Manage credit reminders | Yes | Yes | No | No | No | No | Yes | No | No |
+| View credit aging and statements | Yes | Yes | No | No | No | No | Yes | No | Yes |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

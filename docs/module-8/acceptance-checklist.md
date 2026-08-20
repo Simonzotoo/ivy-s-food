@@ -1,0 +1,30 @@
+# Module 8 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Credit invoice status lifecycle implemented.
+- [x] Payment allocation implemented.
+- [x] Multiple and partial repayments implemented.
+- [x] MoMo reference capture implemented.
+- [x] Customer statements implemented.
+- [x] Payment receipts implemented.
+- [x] Credit-aging report implemented.
+- [x] Reminder templates implemented.
+- [x] Reminder history implemented.
+- [x] Provider-neutral local/test notification channel implemented.
+- [x] No real external message sent.
+- [x] Granular permissions added.
+- [x] Audit logging added.
+- [x] Focused Module 8 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

@@ -21,3 +21,5 @@
 - Customer outstanding balances are initialized to zero and will be maintained by financial transaction modules.
 - Receipt, invoice and delivery-note PDFs use `dompdf/dompdf`, a pure-PHP dependency suitable for Hostinger shared hosting.
 - Sales with returns are not eligible for full reversal to avoid double-restoring finished stock.
+- Credit reminders use a provider-neutral notification contract bound to a local/test channel until SMS or WhatsApp credentials are approved.
+- Customer credit payments allocate to the oldest outstanding invoices first.

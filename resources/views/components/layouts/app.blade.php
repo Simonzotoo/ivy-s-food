@@ -55,6 +55,9 @@
                     @can('sales.view')
                         <a href="{{ route('sales.index') }}" class="nav-link {{ request()->routeIs('sales.*') ? 'nav-link-active' : '' }}">Sales</a>
                     @endcan
+                    @can('credit.view')
+                        <a href="{{ route('credit.invoices') }}" class="nav-link {{ request()->routeIs('credit.*') ? 'nav-link-active' : '' }}">Credit</a>
+                    @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
                     @endcan

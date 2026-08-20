@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 7 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 8 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -154,6 +154,16 @@ php artisan migrate --seed --env=testing
 - Shared-hosting-compatible PDF downloads using Dompdf.
 - Sale returns and guarded sale reversal.
 - Sales permissions and audit logging.
+
+## Module 8 Features
+
+- Credit invoice lifecycle statuses.
+- Customer repayment recording with MoMo/reference fields.
+- Automatic allocation to oldest outstanding credit invoices.
+- Customer statements, payment receipt PDFs and credit-aging report.
+- Reminder templates and reminder history.
+- Provider-neutral local/test notification channel with no real external sends.
+- Credit permissions and audit logging.
 
 ## Roadmap
 

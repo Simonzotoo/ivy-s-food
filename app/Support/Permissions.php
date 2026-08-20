@@ -53,5 +53,9 @@ final class Permissions
         'sales.return' => ['Process sale returns', 'Sales'],
         'sales.reverse' => ['Reverse sales', 'Sales'],
         'sales.reprint' => ['Reprint receipts and invoices', 'Sales'],
+        'credit.view' => ['View credit records', 'Credit'],
+        'credit.payments' => ['Record customer credit payments', 'Credit'],
+        'credit.reminders' => ['Manage credit reminders', 'Credit'],
+        'credit.reports' => ['View credit aging and statements', 'Credit'],
     ];
 }

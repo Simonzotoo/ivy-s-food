@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CompanySettingsController;
+use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
@@ -121,4 +122,15 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/sales/{sale}/{document}.pdf', [SalesController::class, 'pdf'])->name('sales.pdf')->middleware('can:sales.reprint');
     Route::post('/sales/{sale}/reverse', [SalesController::class, 'reverse'])->name('sales.reverse')->middleware('can:sales.reverse');
     Route::post('/sales/{sale}/returns', [SalesController::class, 'returnItems'])->name('sales.returns.store')->middleware('can:sales.return');
+
+    Route::get('/credit/invoices', [CreditController::class, 'invoices'])->name('credit.invoices')->middleware('can:credit.view');
+    Route::get('/credit/invoices/{invoice}', [CreditController::class, 'show'])->name('credit.invoices.show')->middleware('can:credit.view');
+    Route::post('/credit/invoices/{invoice}/reminders', [CreditController::class, 'sendReminder'])->name('credit.invoices.reminders')->middleware('can:credit.reminders');
+    Route::get('/credit/payments', [CreditController::class, 'payments'])->name('credit.payments')->middleware('can:credit.payments');
+    Route::post('/credit/payments', [CreditController::class, 'storePayment'])->name('credit.payments.store')->middleware('can:credit.payments');
+    Route::get('/credit/payments/{payment}/receipt.pdf', [CreditController::class, 'paymentReceipt'])->name('credit.payments.receipt')->middleware('can:credit.view');
+    Route::get('/credit/customers/{customer}/statement', [CreditController::class, 'statement'])->name('credit.statement')->middleware('can:credit.reports');
+    Route::get('/credit/aging', [CreditController::class, 'aging'])->name('credit.aging')->middleware('can:credit.reports');
+    Route::get('/credit/reminders', [CreditController::class, 'reminders'])->name('credit.reminders')->middleware('can:credit.reminders');
+    Route::post('/credit/reminders/templates', [CreditController::class, 'storeTemplate'])->name('credit.reminders.templates.store')->middleware('can:credit.reminders');
 });
