@@ -17,3 +17,5 @@
 - Products cannot be completed in production without an approved recipe; unknown recipes stay configurable and unapproved.
 - Finished-stock balances are derived from finished batches and movement records; users cannot directly overwrite balances.
 - Sales modules will consume Module 5's earliest-expiry-first reservation flow instead of choosing arbitrary finished-product batches.
+- Customer type and sale/pricing type are separate tables so business identity and pricing rules can evolve independently.
+- Customer outstanding balances are initialized to zero and will be maintained by financial transaction modules.

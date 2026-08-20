@@ -43,5 +43,9 @@ final class Permissions
         'inventory.stocktake' => ['Create stocktakes', 'Inventory'],
         'inventory.approve_stocktake' => ['Approve stocktake variances', 'Inventory'],
         'inventory.post_production' => ['Post production output to inventory', 'Inventory'],
+        'customers.view' => ['View customers', 'Customers'],
+        'customers.manage' => ['Manage customers', 'Customers'],
+        'customers.manage_credit' => ['Manage customer credit limits', 'Customers'],
+        'customers.communications' => ['Manage customer communication history', 'Customers'],
     ];
 }

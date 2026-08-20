@@ -9,7 +9,7 @@ This is the authoritative module status file. Only the project owner may set any
 | 3 | Raw Materials, Packaging, Suppliers and Purchases | Tested | `bd811aa` | Configurable materials, suppliers, purchases, receiving, returns and material stock movements. |
 | 4 | Recipes and Production | Tested | `40a5303` | Versioned recipes, production batches, usage, output, wastage and costing estimates. |
 | 5 | Inventory, Batches, Expiry and Stocktaking | Tested | `2865984` | Immutable stock ledger, balances, batch/expiry controls and stocktakes. |
-| 6 | Customers, Customer Types and Pricing | Planned | Pending | Customer records, normalized contacts, pricing defaults, credit configuration. |
+| 6 | Customers, Customer Types and Pricing | Tested | Pending | Customer records, normalized contacts, pricing defaults, credit configuration. |
 | 7 | Sales, POS, Receipts, Invoices and Returns | Planned | Pending | Barcode-assisted sales, payments, stock deduction, receipts, invoices and reversals. |
 | 8 | Credit, Payments and Thirty-Day Reminders | Planned | Pending | Credit lifecycle, allocations, statements, aging and provider-neutral reminders. |
 | 9 | Expenditure Management | Planned | Pending | Expense categories, records, approvals, attachments and reporting. |

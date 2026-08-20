@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CompanySettingsController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
@@ -102,4 +103,12 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/inventory/stocktakes/create', [InventoryController::class, 'createStocktake'])->name('inventory.stocktakes.create')->middleware('can:inventory.stocktake');
     Route::post('/inventory/stocktakes', [InventoryController::class, 'storeStocktake'])->name('inventory.stocktakes.store')->middleware('can:inventory.stocktake');
     Route::post('/inventory/stocktakes/{stocktake}/approve', [InventoryController::class, 'approveStocktake'])->name('inventory.stocktakes.approve')->middleware('can:inventory.approve_stocktake');
+
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index')->middleware('can:customers.view');
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create')->middleware('can:customers.manage');
+    Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store')->middleware('can:customers.manage');
+    Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show')->middleware('can:customers.view');
+    Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit')->middleware('can:customers.manage');
+    Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update')->middleware('can:customers.manage');
+    Route::post('/customers/{customer}/communications', [CustomerController::class, 'logCommunication'])->name('customers.communications.store')->middleware('can:customers.communications');
 });

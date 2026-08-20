@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CompanySettingsSeeder::class,
             ProductCatalogueSeeder::class,
             MaterialFoundationSeeder::class,
+            CustomerFoundationSeeder::class,
             DevelopmentAdminSeeder::class,
         ]);
 

@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1, 2, 3, 4 and 5 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 6 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -133,6 +133,16 @@ php artisan migrate --seed --env=testing
 - Physical stocktakes with variance review and approval.
 - Inventory valuation based on documented production/material cost.
 - Inventory permissions and audit logging.
+
+## Module 6 Features
+
+- Customer types for Individual, Shop, Distributor, Mall / Supermarket and Organization.
+- Separate Retail, Wholesale and Distributor sale/pricing types.
+- Customer records with normalized Ghanaian phone numbers and duplicate detection.
+- Customer status, approved credit limit and outstanding balance fields.
+- Communication consent and local communication history.
+- Purchase-history placeholder that will use live sales records after Module 7.
+- Customer permissions and audit logging.
 
 ## Roadmap
 

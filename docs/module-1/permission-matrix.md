@@ -40,5 +40,9 @@
 | Create stocktakes | Yes | No | No | Yes | No | No | No | No | No |
 | Approve stocktake variances | Yes | Yes | No | No | No | No | No | No | No |
 | Post production output to inventory | Yes | No | No | Yes | No | No | No | No | No |
+| View customers | Yes | Yes | Yes | No | No | No | Yes | Yes | Yes |
+| Manage customers | Yes | Yes | Yes | No | No | No | No | No | No |
+| Manage customer credit limits | Yes | Yes | No | No | No | No | Yes | No | No |
+| Manage customer communication history | Yes | Yes | No | No | No | No | No | Yes | No |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.
