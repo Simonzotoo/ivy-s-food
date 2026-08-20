@@ -15,3 +15,5 @@
 - Supplier balances and purchase settlement belong to later financial modules and are not invented in Module 3.
 - Module 4 records finished production output, but sellable finished-product stock remains deferred to the Module 5 inventory ledger.
 - Products cannot be completed in production without an approved recipe; unknown recipes stay configurable and unapproved.
+- Finished-stock balances are derived from finished batches and movement records; users cannot directly overwrite balances.
+- Sales modules will consume Module 5's earliest-expiry-first reservation flow instead of choosing arbitrary finished-product batches.

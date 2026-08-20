@@ -62,4 +62,9 @@ class ProductVariant extends Model
     {
         return $this->hasMany(Recipe::class);
     }
+
+    public function finishedBatches(): HasMany
+    {
+        return $this->hasMany(FinishedProductBatch::class);
+    }
 }

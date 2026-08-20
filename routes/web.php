@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CompanySettingsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductCatalogueController;
 use App\Http\Controllers\ProductionController;
@@ -90,4 +91,15 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/production/batches/{batch}', [ProductionController::class, 'showBatch'])->name('production.batches.show')->middleware('can:production.view');
     Route::post('/production/batches/{batch}/complete', [ProductionController::class, 'completeBatch'])->name('production.batches.complete')->middleware('can:production.complete');
     Route::post('/production/batches/{batch}/reverse', [ProductionController::class, 'reverseBatch'])->name('production.batches.reverse')->middleware('can:production.reverse');
+
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index')->middleware('can:inventory.view');
+    Route::get('/inventory/finished-batches', [InventoryController::class, 'finishedBatches'])->name('inventory.finished-batches')->middleware('can:inventory.view');
+    Route::get('/inventory/movements', [InventoryController::class, 'movements'])->name('inventory.movements')->middleware('can:inventory.view');
+    Route::get('/inventory/adjustments', [InventoryController::class, 'adjustments'])->name('inventory.adjustments')->middleware('can:inventory.adjust');
+    Route::post('/inventory/adjustments', [InventoryController::class, 'storeAdjustment'])->name('inventory.adjustments.store')->middleware('can:inventory.adjust');
+    Route::post('/inventory/production-outputs/{output}/post', [InventoryController::class, 'postProductionOutput'])->name('inventory.production-outputs.post')->middleware('can:inventory.post_production');
+    Route::get('/inventory/stocktakes', [InventoryController::class, 'stocktakes'])->name('inventory.stocktakes')->middleware('can:inventory.view');
+    Route::get('/inventory/stocktakes/create', [InventoryController::class, 'createStocktake'])->name('inventory.stocktakes.create')->middleware('can:inventory.stocktake');
+    Route::post('/inventory/stocktakes', [InventoryController::class, 'storeStocktake'])->name('inventory.stocktakes.store')->middleware('can:inventory.stocktake');
+    Route::post('/inventory/stocktakes/{stocktake}/approve', [InventoryController::class, 'approveStocktake'])->name('inventory.stocktakes.approve')->middleware('can:inventory.approve_stocktake');
 });

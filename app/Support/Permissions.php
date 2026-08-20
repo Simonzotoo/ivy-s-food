@@ -38,5 +38,10 @@ final class Permissions
         'production.start' => ['Create production batches', 'Recipes & Production'],
         'production.complete' => ['Complete production', 'Recipes & Production'],
         'production.reverse' => ['Reverse production', 'Recipes & Production'],
+        'inventory.view' => ['View inventory', 'Inventory'],
+        'inventory.adjust' => ['Adjust stock', 'Inventory'],
+        'inventory.stocktake' => ['Create stocktakes', 'Inventory'],
+        'inventory.approve_stocktake' => ['Approve stocktake variances', 'Inventory'],
+        'inventory.post_production' => ['Post production output to inventory', 'Inventory'],
     ];
 }

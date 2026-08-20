@@ -46,6 +46,9 @@
                     @can('production.view')
                         <a href="{{ route('production.batches') }}" class="nav-link {{ request()->routeIs('production.*') ? 'nav-link-active' : '' }}">Production</a>
                     @endcan
+                    @can('inventory.view')
+                        <a href="{{ route('inventory.index') }}" class="nav-link {{ request()->routeIs('inventory.*') ? 'nav-link-active' : '' }}">Inventory</a>
+                    @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
                     @endcan

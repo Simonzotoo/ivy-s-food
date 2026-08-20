@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1, 2, 3 and 4 are `Tested`. Approval is reserved for the project owner.
+Modules 1, 2, 3, 4 and 5 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -121,6 +121,18 @@ php artisan migrate --seed --env=testing
 - Finished output, rejected output, wastage, yield, variance and estimated costing records.
 - Production reversal controls that restore consumed material stock.
 - Recipe and production permissions with audit logging.
+
+## Module 5 Features
+
+- Finished-product batch inventory posted from completed production output.
+- Finished stock movement ledger.
+- Raw-material and finished-product balance views.
+- Available, reserved, damaged, expired and quarantined finished-stock quantities.
+- Earliest-expiry-first finished-stock reservation service.
+- Stock adjustments for raw and finished stock with negative-stock protection.
+- Physical stocktakes with variance review and approval.
+- Inventory valuation based on documented production/material cost.
+- Inventory permissions and audit logging.
 
 ## Roadmap
 

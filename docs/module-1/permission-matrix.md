@@ -35,5 +35,10 @@
 | Create production batches | Yes | No | No | No | Yes | No | No | No | No |
 | Complete production | Yes | No | No | No | Yes | No | No | No | No |
 | Reverse production | Yes | No | No | No | No | No | No | No | No |
+| View inventory | Yes | Yes | No | Yes | Yes | No | No | No | Yes |
+| Adjust stock | Yes | No | No | Yes | No | No | No | No | No |
+| Create stocktakes | Yes | No | No | Yes | No | No | No | No | No |
+| Approve stocktake variances | Yes | Yes | No | No | No | No | No | No | No |
+| Post production output to inventory | Yes | No | No | Yes | No | No | No | No | No |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

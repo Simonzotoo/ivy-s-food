@@ -1,0 +1,31 @@
+# Module 5 Acceptance Checklist
+
+- [x] Requirements and dependency modules inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Finished-product batches implemented.
+- [x] Finished stock movements implemented.
+- [x] Raw-material balances exposed from existing batches.
+- [x] Finished-product balances implemented.
+- [x] Available, reserved, damaged, expired and quarantined quantities implemented where applicable.
+- [x] Earliest-expiry-first allocation implemented.
+- [x] Low-stock and expiry alert surfaces implemented.
+- [x] Damage, spoilage, samples and internal-use movements implemented.
+- [x] Stock adjustments implemented.
+- [x] Physical stocktakes implemented.
+- [x] Variance review and approval implemented.
+- [x] Valuation uses documented cost.
+- [x] Granular permissions added.
+- [x] Audit logging added.
+- [x] Focused Module 5 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.
