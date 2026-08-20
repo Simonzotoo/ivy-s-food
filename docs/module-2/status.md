@@ -2,6 +2,8 @@
 
 Status: Tested
 
+Implementation commit: `8fc2ebc`
+
 Scope:
 
 - Product categories.
