@@ -15,6 +15,7 @@ Scope completed in this module:
 Post-test correction:
 
 - Enforced `roles.assign` in the user administration service whenever role IDs are submitted during user creation or update.
+- Moved the sidebar account card directly beneath the navigation items and added audited staff profile-photo uploads with proportional sidebar/profile display.
 
 Not included:
 

@@ -26,6 +26,7 @@ Create the local SQLite file if needed:
 ```bash
 touch database/database.sqlite
 php artisan migrate:fresh --seed
+php artisan storage:link
 npm run build
 php artisan serve --host=127.0.0.1 --port=8026
 ```
@@ -97,6 +98,7 @@ php artisan migrate --seed --env=testing
 - Company settings seeded for Ivy's Food, GHS, Africa/Accra and 30-day default credit period.
 - Reusable audit log service with sensitive-value redaction.
 - Responsive Blade/Tailwind administrative interface using the official Ivy's Food logo.
+- Staff profile photos stored on the public disk and displayed proportionally in the profile page and sidebar account card.
 
 ## Module 2 Features
 

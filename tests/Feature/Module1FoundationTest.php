@@ -10,9 +10,11 @@ use App\Services\AuditService;
 use Database\Seeders\CompanySettingsSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class Module1FoundationTest extends TestCase
@@ -192,6 +194,22 @@ class Module1FoundationTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['event' => 'company_settings.updated']);
     }
 
+    public function test_profile_photo_can_be_uploaded_and_audited(): void
+    {
+        Storage::fake('public');
+        $owner = $this->ownerUser();
+
+        $this->actingAs($owner)->put('/profile/photo', [
+            'profile_photo' => UploadedFile::fake()->image('owner.jpg', 160, 160),
+        ])->assertRedirect();
+
+        $owner->refresh();
+        $this->assertNotNull($owner->profile_photo_path);
+        $this->assertStringStartsWith('/storage/profile-photos/', $owner->profilePhotoUrl());
+        Storage::disk('public')->assertExists($owner->profile_photo_path);
+        $this->assertDatabaseHas('audit_logs', ['event' => 'profile.photo_updated', 'auditable_id' => $owner->id]);
+    }
+
     public function test_sensitive_audit_values_are_redacted(): void
     {
         $log = app(AuditService::class)->record('security.test', new User, [], [
@@ -227,7 +245,8 @@ class Module1FoundationTest extends TestCase
             ->assertOk()
             ->assertSee('Module 1 foundation')
             ->assertSee('images/ivys-logo.png', false)
-            ->assertSee('max-h-full max-w-full object-contain', false);
+            ->assertSee('max-h-full max-w-full object-contain', false)
+            ->assertSee('View profile');
 
         $this->actingAs($owner)->withHeader('User-Agent', 'Mobile Safari')->get('/company-settings')->assertOk()->assertSee('Company Settings');
     }

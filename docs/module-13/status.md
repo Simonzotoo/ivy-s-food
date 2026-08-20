@@ -34,5 +34,6 @@ Verification:
 - Live branded 404 and 403 pages returned expected statuses.
 - Desktop, tablet and mobile visual review passed with no horizontal overflow.
 - Sidebar logo visual review passed on desktop expanded, tablet open, mobile open and mobile closed states; the official logo uses proportional containment with no clipping or distortion.
+- Post-test sidebar/profile refinement passed desktop, tablet and mobile visual review; the account card now sits beneath the navigation items, uploaded profile images render from `/storage`, and no horizontal overflow was detected.
 
 Acceptance status: Tested, not Approved.

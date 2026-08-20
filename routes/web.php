@@ -40,6 +40,7 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout')->withoutMiddleware('password.changed');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->withoutMiddleware('password.changed');
+    Route::put('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo')->withoutMiddleware('password.changed');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password')->withoutMiddleware('password.changed');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('can:users.view');

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'profile_photo_path',
         'password',
         'status',
         'last_login_at',
@@ -58,6 +60,23 @@ class User extends Authenticatable
         return $this->roles->contains(
             fn (Role $role) => $role->permissions->contains('slug', $permission)
         );
+    }
+
+    public function profilePhotoUrl(): ?string
+    {
+        return $this->profile_photo_path
+            ? '/storage/'.ltrim($this->profile_photo_path, '/')
+            : null;
+    }
+
+    public function initials(): string
+    {
+        return Str::of($this->name)
+            ->explode(' ')
+            ->filter()
+            ->take(2)
+            ->map(fn (string $part): string => Str::substr($part, 0, 1))
+            ->implode('');
     }
 
     /**
