@@ -28,6 +28,9 @@
                     @can('roles.view')
                         <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.*') ? 'nav-link-active' : '' }}">Roles & Permissions</a>
                     @endcan
+                    @can('catalogue.view')
+                        <a href="{{ route('catalogue.index') }}" class="nav-link {{ request()->routeIs('catalogue.*') ? 'nav-link-active' : '' }}">Product Catalogue</a>
+                    @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
                     @endcan
@@ -51,7 +54,7 @@
                         <button type="button" class="btn-secondary px-3 lg:hidden" @click="sidebarOpen = true" aria-label="Open navigation">Menu</button>
                         <div>
                             <h1 class="text-lg font-bold text-ivy-navy">{{ $title ?? 'System Setup' }}</h1>
-                            <p class="hidden text-xs text-slate-500 sm:block">Module 1 foundation</p>
+                            <p class="hidden text-xs text-slate-500 sm:block">Ivy's Food operations</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">

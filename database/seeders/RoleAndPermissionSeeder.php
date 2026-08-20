@@ -25,13 +25,13 @@ class RoleAndPermissionSeeder extends Seeder
 
         $roles = [
             'Owner / Super Admin' => ['is_owner' => true, 'description' => 'Unrestricted system owner access.'],
-            'Manager' => ['permissions' => ['users.view', 'company.view', 'audit.view', 'roles.view']],
-            'Cashier / Sales Officer' => ['permissions' => []],
-            'Inventory Officer' => ['permissions' => []],
-            'Production Officer' => ['permissions' => []],
-            'Purchasing Officer' => ['permissions' => []],
+            'Manager' => ['permissions' => ['users.view', 'company.view', 'audit.view', 'roles.view', 'catalogue.view', 'catalogue.export']],
+            'Cashier / Sales Officer' => ['permissions' => ['catalogue.view']],
+            'Inventory Officer' => ['permissions' => ['catalogue.view', 'catalogue.create', 'catalogue.edit', 'catalogue.activate', 'catalogue.export']],
+            'Production Officer' => ['permissions' => ['catalogue.view']],
+            'Purchasing Officer' => ['permissions' => ['catalogue.view']],
             'Accounts Officer' => ['permissions' => []],
-            'Marketing Officer' => ['permissions' => []],
+            'Marketing Officer' => ['permissions' => ['catalogue.view', 'catalogue.export']],
             'Auditor' => ['permissions' => ['audit.view', 'company.view']],
         ];
 

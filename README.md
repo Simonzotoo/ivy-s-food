@@ -88,6 +88,20 @@ php artisan migrate --seed --env=testing
 - Reusable audit log service with sensitive-value redaction.
 - Responsive Blade/Tailwind administrative interface using the official Ivy's Food logo.
 
+## Module 2 Features
+
+- Confirmed product categories, official types/flavours, product sizes and measurement units.
+- Draft product variants for all confirmed possible size/type combinations.
+- SKU, barcode, Retail, Wholesale and Distributor price controls.
+- Draft, Active and Inactive statuses with activation safeguards.
+- Reorder-level and shelf-life fields left blank until business confirmation.
+- Catalogue search, filtering and CSV export.
+- Catalogue permissions and audit logging.
+
+## Roadmap
+
+The authoritative module roadmap and status record is maintained in `docs/modules-roadmap.md`.
+
 ## Source Assets
 
 Original stakeholder files are preserved in `docs/source/`. The application uses a copied logo at `public/images/ivys-logo.png`.

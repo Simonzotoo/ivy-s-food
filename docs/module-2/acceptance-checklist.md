@@ -1,0 +1,24 @@
+# Module 2 Acceptance Checklist
+
+- [x] Confirmed requirements inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Categories, types, sizes and units implemented.
+- [x] Draft variants seeded without inventing prices or barcodes.
+- [x] SKU and barcode duplicate prevention implemented.
+- [x] Activation blocked until required prices and SKU are present.
+- [x] Search, filtering and CSV export implemented.
+- [x] Granular permissions added.
+- [x] Audit logging added for variant updates and status changes.
+- [x] Focused Module 2 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

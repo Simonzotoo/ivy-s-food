@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CompanySettingsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductCatalogueController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -42,4 +43,10 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::put('/company-settings', [CompanySettingsController::class, 'update'])->name('company.update')->middleware('can:company.edit');
 
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit.index')->middleware('can:audit.view');
+
+    Route::get('/catalogue', [ProductCatalogueController::class, 'index'])->name('catalogue.index')->middleware('can:catalogue.view');
+    Route::get('/catalogue/export', [ProductCatalogueController::class, 'export'])->name('catalogue.export')->middleware('can:catalogue.export');
+    Route::get('/catalogue/variants/{variant}/edit', [ProductCatalogueController::class, 'edit'])->name('catalogue.variants.edit')->middleware('can:catalogue.edit');
+    Route::put('/catalogue/variants/{variant}', [ProductCatalogueController::class, 'update'])->name('catalogue.variants.update')->middleware('can:catalogue.edit');
+    Route::patch('/catalogue/variants/{variant}/status', [ProductCatalogueController::class, 'status'])->name('catalogue.variants.status')->middleware('can:catalogue.activate');
 });
