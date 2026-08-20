@@ -40,6 +40,16 @@ IVY_DEV_ADMIN_PASSWORD=change-this-local-password
 
 Never commit `.env`, real credentials, production passwords, database dumps or private keys.
 
+## Local Demo Data
+
+To populate the local system with safe sample sales, purchases, production, stock, customers, credit and expenses:
+
+```bash
+php artisan db:seed --class=DemoDataSeeder
+```
+
+The demo seeder is explicit, idempotent and disabled in `production`. It is not called by the normal production seed path.
+
 ## Production Environment
 
 Use MySQL/MariaDB on Hostinger:

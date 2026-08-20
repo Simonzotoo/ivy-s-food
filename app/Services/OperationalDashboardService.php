@@ -28,6 +28,7 @@ class OperationalDashboardService
             'todaySalesCount' => Sale::query()->whereDate('sale_date', $today)->where('status', 'completed')->count(),
             'customerCount' => Customer::query()->count(),
             'paymentBreakdown' => SalePayment::query()->whereDate('received_at', $today)->get()->groupBy('payment_method')->map->sum('amount'),
+            'todayCreditSales' => CreditInvoice::query()->whereDate('issue_date', $today)->sum('total'),
             'todayExpenses' => Expense::query()->whereDate('incurred_on', $today)->where('status', 'approved')->sum('amount'),
             'outstandingCredit' => CreditInvoice::query()->where('balance', '>', 0)->sum('balance'),
             'dueSoonCredit' => CreditInvoice::query()->where('balance', '>', 0)->whereBetween('due_date', [now()->addDay()->toDateString(), now()->addDays(7)->toDateString()])->sum('balance'),

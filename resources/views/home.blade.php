@@ -47,7 +47,7 @@
         </section>
         <section class="metric-card">
             <p class="metric-label">Credit sales</p>
-            <p class="metric-value">GHS {{ number_format((float) ($paymentBreakdown['Credit'] ?? 0), 2) }}</p>
+            <p class="metric-value">GHS {{ number_format((float) $todayCreditSales, 2) }}</p>
         </section>
         <section class="metric-card">
             <p class="metric-label">Customers owing</p>
