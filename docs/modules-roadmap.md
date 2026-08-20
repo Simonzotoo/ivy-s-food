@@ -16,6 +16,6 @@ This is the authoritative module status file. Only the project owner may set any
 | 10 | Broadcasting and Customer Communication | Tested | `4afe3bd` | Segmentation, templates, consent, opt-out and provider-neutral local/test delivery. |
 | 11 | Dashboard and Reports | Tested | `c4f56ab` | Data-backed operational dashboard, reports, exports and filters. |
 | 12 | Data Migration and Configuration Readiness | Tested | `b9ed26e` | Import templates, dry-runs, validation, duplicate detection and reconciliation. |
-| 13 | Security, Performance, Deployment and Final Acceptance | Tested | `f570de4` | Full security/performance/deployment review and final acceptance checklist. |
+| 13 | Security, Performance, Deployment and Final Acceptance | Tested | `f570de4`, documentation correction `b98d278` | Full security/performance/deployment review and final acceptance checklist. |
 
 Roadmap basis: requirements document dated 18 August 2026 plus the controlled engineering sequence authorized on 20 August 2026.
