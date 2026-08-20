@@ -1,5 +1,9 @@
 <x-layouts.app title="Sales">
-    <div class="mb-5 flex justify-end">
+    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-xl font-bold text-ivy-navy">Sales</h2>
+            <p class="mt-1 text-sm text-slate-600">Record new sales and reopen receipts or invoices when customers need them.</p>
+        </div>
         @can('sales.create')
             <a href="{{ route('sales.pos') }}" class="btn-primary">New sale</a>
         @endcan
@@ -19,7 +23,12 @@
                     </div>
                 </article>
             @empty
-                <div class="px-5 py-12 text-center text-slate-500">No sales have been recorded yet.</div>
+                <div class="px-5 py-12 text-center">
+                    <p class="font-semibold text-ivy-navy">No sales recorded yet.</p>
+                    @can('sales.create')
+                        <a href="{{ route('sales.pos') }}" class="mt-4 btn-primary">Record first sale</a>
+                    @endcan
+                </div>
             @endforelse
         </div>
     </div>

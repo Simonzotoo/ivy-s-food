@@ -61,7 +61,7 @@ class Module11DashboardReportsTest extends TestCase
             ->assertOk()
             ->assertSee("Today's sales", false)
             ->assertSee('GHS 25.00')
-            ->assertSee('Outstanding credit')
+            ->assertSee('Customers owing')
             ->assertSee('GHS 12.00')
             ->assertSee("Today's expenses", false);
     }

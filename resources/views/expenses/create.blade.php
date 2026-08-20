@@ -1,4 +1,9 @@
 <x-layouts.app title="Record Expense">
+    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 class="text-xl font-bold text-ivy-navy">Record expense</h2>
+        <p class="mt-1 text-sm text-slate-600">Enter what was spent, how it was paid and the amount. Receipt details can be added if available.</p>
+    </section>
+
     <form method="POST" action="{{ route('expenses.store') }}" class="space-y-6 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         @csrf
         <div class="grid gap-5 md:grid-cols-2">
@@ -32,13 +37,14 @@
             <label class="form-label" for="description">Description</label>
             <textarea class="form-input" id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
         </div>
-        <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <h2 class="text-base font-bold text-ivy-navy">Receipt reference</h2>
+        <details class="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <summary class="cursor-pointer text-sm font-bold text-ivy-navy">More details</summary>
+            <h2 class="mt-4 text-base font-bold text-ivy-navy">Receipt reference</h2>
             <div class="mt-3 grid gap-3 md:grid-cols-2">
                 <input class="form-input mt-0" name="receipt_original_name" value="{{ old('receipt_original_name') }}" placeholder="Receipt filename or reference">
                 <input class="form-input mt-0" name="receipt_path" value="{{ old('receipt_path') }}" placeholder="Stored receipt path or reference">
             </div>
-        </div>
+        </details>
         <div class="flex justify-end gap-3">
             <a href="{{ route('expenses.index') }}" class="btn-secondary">Cancel</a>
             <button class="btn-primary" type="submit" @disabled($categories->isEmpty())>Save for review</button>

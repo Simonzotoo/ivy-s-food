@@ -1,4 +1,9 @@
-<x-layouts.app title="Create Purchase">
+<x-layouts.app title="Add Purchase">
+    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 class="text-xl font-bold text-ivy-navy">Add purchase</h2>
+        <p class="mt-1 text-sm text-slate-600">Enter the supplier and materials bought. You can receive the purchase into stock after saving.</p>
+    </section>
+
     <form method="POST" action="{{ route('purchases.store') }}" class="space-y-6 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         @csrf
         <div class="grid gap-5 md:grid-cols-2">
@@ -16,7 +21,7 @@
             </div>
         </div>
         <div>
-            <h2 class="text-base font-bold text-ivy-navy">Items</h2>
+            <h2 class="text-base font-bold text-ivy-navy">Materials bought</h2>
             <div class="mt-3 space-y-3">
                 @for ($i = 0; $i < 5; $i++)
                     <div class="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 lg:grid-cols-[1fr_160px_140px_140px]">
@@ -38,19 +43,18 @@
                 @endfor
             </div>
         </div>
-        <div>
-            <label class="form-label" for="notes">Notes</label>
+        <details class="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <summary class="cursor-pointer text-sm font-bold text-ivy-navy">More details</summary>
+            <label class="form-label mt-4" for="notes">Notes</label>
             <textarea class="form-input" id="notes" name="notes" rows="3">{{ old('notes') }}</textarea>
-        </div>
-        <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <h2 class="text-base font-bold text-ivy-navy">Attachment references</h2>
+            <h2 class="mt-5 text-base font-bold text-ivy-navy">Receipt or document reference</h2>
             <div class="mt-3 grid gap-3 md:grid-cols-2">
                 @for ($i = 0; $i < 2; $i++)
                     <input class="form-input mt-0" name="attachments[{{ $i }}][original_name]" value="{{ old("attachments.$i.original_name") }}" placeholder="Document name">
                     <input class="form-input mt-0" name="attachments[{{ $i }}][path]" value="{{ old("attachments.$i.path") }}" placeholder="Stored file reference">
                 @endfor
             </div>
-        </div>
+        </details>
         <div class="flex justify-end gap-3">
             <a href="{{ route('purchases.index') }}" class="btn-secondary">Cancel</a>
             <button class="btn-primary" type="submit">Save purchase</button>

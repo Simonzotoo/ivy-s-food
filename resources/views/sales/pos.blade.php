@@ -1,4 +1,9 @@
-<x-layouts.app title="Point of Sale">
+<x-layouts.app title="New Sale">
+    <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 class="text-xl font-bold text-ivy-navy">New sale</h2>
+        <p class="mt-1 text-sm text-slate-600">Choose the customer, add products and enter how the customer is paying. The sale will only complete when stock and payment rules are valid.</p>
+    </section>
+
     <form method="GET" class="mb-5 grid gap-3 rounded-md border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-[1fr_auto]">
         <input class="form-input mt-0" name="search" value="{{ request('search') }}" placeholder="Scan barcode or search product">
         <button class="btn-secondary" type="submit">Search</button>
@@ -17,7 +22,7 @@
                 </select>
             </div>
             <div>
-                <label class="form-label" for="sale_type_id">Sale type</label>
+                <label class="form-label" for="sale_type_id">Price type</label>
                 <select class="form-input" id="sale_type_id" name="sale_type_id" required>
                     @foreach ($saleTypes as $saleType)
                         <option value="{{ $saleType->id }}">{{ $saleType->name }}</option>
@@ -31,7 +36,7 @@
         </div>
 
         <section>
-            <h2 class="text-base font-bold text-ivy-navy">Items</h2>
+            <h2 class="text-base font-bold text-ivy-navy">Products sold</h2>
             <div class="mt-3 space-y-3">
                 @for ($i = 0; $i < 6; $i++)
                     <div class="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 lg:grid-cols-[1fr_150px_160px]">
@@ -51,7 +56,7 @@
         </section>
 
         <section class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <h2 class="text-base font-bold text-ivy-navy">Payments</h2>
+            <h2 class="text-base font-bold text-ivy-navy">How the customer is paying</h2>
             <div class="mt-3 space-y-3">
                 @foreach (['Cash', 'MoMo', 'Credit'] as $i => $method)
                     <div class="grid gap-3 md:grid-cols-[160px_160px_1fr]">
@@ -64,8 +69,11 @@
             </div>
         </section>
 
-        <label class="form-label" for="notes">Notes</label>
-        <textarea class="form-input" id="notes" name="notes" rows="3"></textarea>
+        <details class="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <summary class="cursor-pointer text-sm font-bold text-ivy-navy">More details</summary>
+            <label class="form-label mt-4" for="notes">Notes</label>
+            <textarea class="form-input" id="notes" name="notes" rows="3"></textarea>
+        </details>
         <div class="flex justify-end gap-3">
             <a href="{{ route('sales.index') }}" class="btn-secondary">Cancel</a>
             <button class="btn-primary" type="submit">Complete sale</button>

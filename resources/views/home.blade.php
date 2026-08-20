@@ -1,135 +1,129 @@
-<x-layouts.app title="Dashboard">
+<x-layouts.app title="Home">
+    <section class="mb-6 rounded-md bg-ivy-navy p-6 text-white shadow-sm">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+                <p class="text-sm font-semibold text-red-100">Today at Ivy's Food</p>
+                <h2 class="mt-1 text-2xl font-bold">Start the common daily jobs from here.</h2>
+                <p class="mt-2 max-w-3xl text-sm text-slate-200">Record sales, check stock, receive payments, add purchases and review what needs attention.</p>
+            </div>
+            <img src="{{ asset('images/ivys-logo.png') }}" alt="Ivy's Food" class="h-16 w-20 rounded-md bg-white p-1 object-contain">
+        </div>
+    </section>
+
+    <section class="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
+        @can('sales.create')
+            <a href="{{ route('sales.pos') }}" class="quick-action">New Sale</a>
+        @endcan
+        @can('production.start')
+            <a href="{{ route('production.batches.create') }}" class="quick-action">Record Production</a>
+        @endcan
+        @can('purchases.create')
+            <a href="{{ route('purchases.create') }}" class="quick-action">Add Purchase</a>
+        @endcan
+        @can('credit.payments')
+            <a href="{{ route('credit.payments') }}" class="quick-action">Receive Payment</a>
+        @endcan
+        @can('expenses.create')
+            <a href="{{ route('expenses.create') }}" class="quick-action">Record Expense</a>
+        @endcan
+        @can('inventory.view')
+            <a href="{{ route('inventory.index') }}" class="quick-action">Check Stock</a>
+        @endcan
+    </section>
+
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-sm font-semibold text-slate-500">Today's sales</p>
-            <p class="mt-2 text-3xl font-bold text-ivy-navy">GHS {{ number_format((float) $todaySales, 2) }}</p>
-            <p class="mt-1 text-xs text-slate-500">{{ $todaySalesCount }} completed sales</p>
+        <section class="metric-card">
+            <p class="metric-label">Today's sales</p>
+            <p class="metric-value">GHS {{ number_format((float) $todaySales, 2) }}</p>
+            <p class="metric-note">{{ $todaySalesCount }} completed sales</p>
         </section>
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-sm font-semibold text-slate-500">Customers</p>
-            <p class="mt-2 text-3xl font-bold text-ivy-navy">{{ $customerCount }}</p>
+        <section class="metric-card">
+            <p class="metric-label">Cash received</p>
+            <p class="metric-value">GHS {{ number_format((float) ($paymentBreakdown['Cash'] ?? 0), 2) }}</p>
         </section>
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-sm font-semibold text-slate-500">Today's expenses</p>
-            <p class="mt-2 text-3xl font-bold text-ivy-navy">GHS {{ number_format((float) $todayExpenses, 2) }}</p>
+        <section class="metric-card">
+            <p class="metric-label">MoMo received</p>
+            <p class="metric-value">GHS {{ number_format((float) ($paymentBreakdown['MoMo'] ?? 0), 2) }}</p>
         </section>
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-sm font-semibold text-slate-500">Outstanding credit</p>
-            <p class="mt-2 text-3xl font-bold text-ivy-navy">GHS {{ number_format((float) $outstandingCredit, 2) }}</p>
+        <section class="metric-card">
+            <p class="metric-label">Credit sales</p>
+            <p class="metric-value">GHS {{ number_format((float) ($paymentBreakdown['Credit'] ?? 0), 2) }}</p>
+        </section>
+        <section class="metric-card">
+            <p class="metric-label">Customers owing</p>
+            <p class="metric-value">GHS {{ number_format((float) $outstandingCredit, 2) }}</p>
+            @can('credit.view')
+                <a href="{{ route('credit.invoices') }}" class="metric-link">View customers owing</a>
+            @endcan
+        </section>
+        <section class="metric-card">
+            <p class="metric-label">Low stock</p>
+            <p class="metric-value">{{ $lowRawMaterials->count() + $lowFinishedProducts->count() }}</p>
+            <p class="metric-note">Materials and finished products</p>
+        </section>
+        <section class="metric-card">
+            <p class="metric-label">Expiring soon</p>
+            <p class="metric-value">{{ $nearExpiryProducts->count() }}</p>
+            <p class="metric-note">{{ $expiredProducts->count() }} already expired</p>
+        </section>
+        <section class="metric-card">
+            <p class="metric-label">Today's expenses</p>
+            <p class="metric-value">GHS {{ number_format((float) $todayExpenses, 2) }}</p>
         </section>
     </div>
 
     <div class="mt-6 grid gap-6 xl:grid-cols-3">
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-base font-bold text-ivy-navy">Payment breakdown</h2>
-            <div class="mt-4 space-y-3">
-                @foreach (['Cash', 'MoMo', 'Credit'] as $method)
-                    <div class="flex items-center justify-between text-sm">
-                        <span>{{ $method }}</span>
-                        <span class="font-bold text-ivy-navy">GHS {{ number_format((float) ($paymentBreakdown[$method] ?? 0), 2) }}</span>
+        <section class="calm-panel xl:col-span-2">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="panel-title">Needs attention</h2>
+                    <p class="panel-help">Only urgent stock, expiry and credit items are shown here.</p>
+                </div>
+                @can('reports.view')
+                    <a href="{{ route('reports.index') }}" class="btn-secondary">View reports</a>
+                @endcan
+            </div>
+            <div class="mt-5 grid gap-4 md:grid-cols-3">
+                <div class="attention-box">
+                    <h3>Low raw materials</h3>
+                    @forelse ($lowRawMaterials->take(3) as $material)
+                        <p>{{ $material->name }} · {{ $material->availableQuantity() }} {{ $material->baseUnit?->symbol }}</p>
+                    @empty
+                        <p>No low raw-material alerts.</p>
+                    @endforelse
+                </div>
+                <div class="attention-box">
+                    <h3>Low finished stock</h3>
+                    @forelse ($lowFinishedProducts->take(3) as $variant)
+                        <p>{{ $variant->name }} · {{ number_format((float) $variant->finishedBatches->sum('quantity_available'), 3) }}</p>
+                    @empty
+                        <p>No low finished-stock alerts.</p>
+                    @endforelse
+                </div>
+                <div class="attention-box">
+                    <h3>Credit due</h3>
+                    <p>Due soon: GHS {{ number_format((float) $dueSoonCredit, 2) }}</p>
+                    <p>Due today: GHS {{ number_format((float) $dueTodayCredit, 2) }}</p>
+                    <p>Overdue: GHS {{ number_format((float) $overdueCredit, 2) }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="calm-panel">
+            <h2 class="panel-title">Recent activity</h2>
+            <p class="panel-help">A quick check that work is being recorded.</p>
+            <div class="mt-4 space-y-4">
+                @foreach ([['Sales', $recentSales, 'sale_number'], ['Purchases', $recentPurchases, 'purchase_number'], ['Production', $recentProduction, 'batch_number']] as [$title, $items, $primary])
+                    <div>
+                        <h3 class="text-sm font-bold text-ivy-navy">{{ $title }}</h3>
+                        @forelse ($items->take(2) as $item)
+                            <p class="mt-1 text-sm text-slate-600">{{ $item->{$primary} }}</p>
+                        @empty
+                            <p class="mt-1 text-sm text-slate-500">No records yet.</p>
+                        @endforelse
                     </div>
                 @endforeach
             </div>
         </section>
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-base font-bold text-ivy-navy">Credit reminders</h2>
-            <dl class="mt-4 grid grid-cols-3 gap-3 text-center text-sm">
-                <div class="rounded-md bg-slate-50 p-3"><dt class="text-slate-500">Due soon</dt><dd class="font-bold text-ivy-navy">GHS {{ number_format((float) $dueSoonCredit, 2) }}</dd></div>
-                <div class="rounded-md bg-slate-50 p-3"><dt class="text-slate-500">Today</dt><dd class="font-bold text-ivy-navy">GHS {{ number_format((float) $dueTodayCredit, 2) }}</dd></div>
-                <div class="rounded-md bg-slate-50 p-3"><dt class="text-slate-500">Overdue</dt><dd class="font-bold text-ivy-navy">GHS {{ number_format((float) $overdueCredit, 2) }}</dd></div>
-            </dl>
-        </section>
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-base font-bold text-ivy-navy">Sales trend</h2>
-            <div class="mt-4 space-y-2">
-                @forelse ($salesTrend as $day => $total)
-                    <div class="flex items-center justify-between text-sm"><span>{{ $day }}</span><span class="font-bold text-ivy-navy">GHS {{ number_format((float) $total, 2) }}</span></div>
-                @empty
-                    <p class="text-sm text-slate-500">No completed sales in the last seven days.</p>
-                @endforelse
-            </div>
-        </section>
     </div>
-
-    <div class="mt-6 grid gap-6 xl:grid-cols-2">
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-base font-bold text-ivy-navy">Inventory alerts</h2>
-            <div class="mt-4 grid gap-4 md:grid-cols-2">
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-500">Low raw materials</h3>
-                    @forelse ($lowRawMaterials as $material)
-                        <p class="mt-2 text-sm">{{ $material->name }} · {{ $material->availableQuantity() }} {{ $material->baseUnit?->symbol }}</p>
-                    @empty
-                        <p class="mt-2 text-sm text-slate-500">No low raw-material alerts.</p>
-                    @endforelse
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-500">Low finished stock</h3>
-                    @forelse ($lowFinishedProducts as $variant)
-                        <p class="mt-2 text-sm">{{ $variant->name }} · {{ number_format((float) $variant->finishedBatches->sum('quantity_available'), 3) }}</p>
-                    @empty
-                        <p class="mt-2 text-sm text-slate-500">No low finished-stock alerts.</p>
-                    @endforelse
-                </div>
-            </div>
-        </section>
-        <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-base font-bold text-ivy-navy">Expiry controls</h2>
-            <div class="mt-4 grid gap-4 md:grid-cols-2">
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-500">Near expiry</h3>
-                    @forelse ($nearExpiryProducts as $batch)
-                        <p class="mt-2 text-sm">{{ $batch->productVariant?->name }} · {{ $batch->expiry_date?->format('d M Y') }}</p>
-                    @empty
-                        <p class="mt-2 text-sm text-slate-500">No near-expiry finished stock.</p>
-                    @endforelse
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-500">Expired</h3>
-                    @forelse ($expiredProducts as $batch)
-                        <p class="mt-2 text-sm">{{ $batch->productVariant?->name }} · {{ $batch->expiry_date?->format('d M Y') }}</p>
-                    @empty
-                        <p class="mt-2 text-sm text-slate-500">No expired finished stock.</p>
-                    @endforelse
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div class="mt-6 grid gap-6 xl:grid-cols-3">
-        @foreach ([['Recent sales', $recentSales, 'sale_number', 'total'], ['Recent purchases', $recentPurchases, 'purchase_number', 'subtotal'], ['Recent production', $recentProduction, 'batch_number', 'status']] as [$title, $items, $primary, $secondary])
-            <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 class="text-base font-bold text-ivy-navy">{{ $title }}</h2>
-                <div class="mt-4 space-y-3">
-                    @forelse ($items as $item)
-                        <p class="text-sm"><span class="font-semibold text-ivy-navy">{{ $item->{$primary} }}</span> · {{ $item->{$secondary} }}</p>
-                    @empty
-                        <p class="text-sm text-slate-500">No records yet.</p>
-                    @endforelse
-                </div>
-            </section>
-        @endforeach
-    </div>
-
-    <section class="mt-6 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-base font-bold text-ivy-navy">Best-selling products</h2>
-        <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-            @forelse ($bestSellingProducts as $row)
-                <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-                    <p class="font-semibold text-ivy-navy">{{ $row['product']?->name ?? 'Unknown product' }}</p>
-                    <p class="mt-1 text-sm text-slate-600">{{ number_format((float) $row['quantity'], 3) }} sold · GHS {{ number_format((float) $row['total'], 2) }}</p>
-                </div>
-            @empty
-                <p class="text-sm text-slate-500">No product sales yet.</p>
-            @endforelse
-        </div>
-    </section>
-
-    <section class="mt-6 flex flex-col gap-4 rounded-md border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h2 class="text-base font-bold text-ivy-navy">Module 1 foundation</h2>
-            <p class="mt-1 text-sm text-slate-600">Authentication, company settings and audit controls remain active beneath the operational modules.</p>
-        </div>
-        <img src="{{ asset('images/ivys-logo.png') }}" alt="Ivy's Food" class="h-16 w-16 object-contain">
-    </section>
 </x-layouts.app>

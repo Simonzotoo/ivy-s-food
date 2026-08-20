@@ -225,11 +225,34 @@ class Module1FoundationTest extends TestCase
 
         $this->actingAs($owner)->withHeader('User-Agent', 'Desktop Browser')->get('/home')
             ->assertOk()
-            ->assertSee('Module 1 foundation')
+            ->assertSee('Today at Ivy')
+            ->assertSee('New Sale')
             ->assertSee('images/ivys-logo.png', false)
             ->assertSee('max-h-full max-w-full object-contain', false);
 
         $this->actingAs($owner)->withHeader('User-Agent', 'Mobile Safari')->get('/company-settings')->assertOk()->assertSee('Company Settings');
+    }
+
+    public function test_sidebar_navigation_is_grouped_and_permission_aware(): void
+    {
+        $cashier = $this->userWithRole('Cashier / Sales Officer');
+        $auditor = $this->userWithRole('Auditor');
+
+        $this->actingAs($cashier)->get('/home')
+            ->assertOk()
+            ->assertSee('Daily work')
+            ->assertSee('Sales')
+            ->assertSee('Customers')
+            ->assertDontSee('Administration')
+            ->assertDontSee('Staff accounts')
+            ->assertDontSee('Audit history');
+
+        $this->actingAs($auditor)->get('/home')
+            ->assertOk()
+            ->assertSee('Reports')
+            ->assertSee('Audit history')
+            ->assertDontSee('New Sale')
+            ->assertDontSee('Record Expense');
     }
 
     private function ownerUser(array $attributes = []): User

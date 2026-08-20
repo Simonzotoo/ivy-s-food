@@ -1,4 +1,4 @@
-<x-layouts.app title="Material Stock Movements">
+<x-layouts.app title="Material Stock History">
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-sm">
@@ -23,7 +23,7 @@
                             <td class="px-4 py-3">{{ $movement->notes }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="px-4 py-10 text-center text-slate-500">No material movements yet.</td></tr>
+                        <tr><td colspan="6" class="px-4 py-10 text-center text-slate-500">No material stock history yet.</td></tr>
                     @endforelse
                 </tbody>
             </table>

@@ -22,64 +22,98 @@
                         <p class="truncate text-xs text-slate-300">Management System</p>
                     </div>
                 </div>
-                <nav class="flex-1 space-y-1 px-3 py-4">
+                <nav class="flex-1 space-y-4 overflow-y-auto px-3 py-4">
                     @can('dashboard.view')
-                        <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Dashboard</a>
+                        <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Home</a>
                     @endcan
-                    @can('users.view')
-                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'nav-link-active' : '' }}">Users</a>
-                    @endcan
-                    @can('roles.view')
-                        <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.*') ? 'nav-link-active' : '' }}">Roles & Permissions</a>
-                    @endcan
-                    @can('catalogue.view')
-                        <a href="{{ route('catalogue.index') }}" class="nav-link {{ request()->routeIs('catalogue.*') ? 'nav-link-active' : '' }}">Product Catalogue</a>
-                    @endcan
-                    @can('materials.view')
-                        <a href="{{ route('materials.index') }}" class="nav-link {{ request()->routeIs('materials.*') ? 'nav-link-active' : '' }}">Materials</a>
-                    @endcan
-                    @can('suppliers.view')
-                        <a href="{{ route('suppliers.index') }}" class="nav-link {{ request()->routeIs('suppliers.*') ? 'nav-link-active' : '' }}">Suppliers</a>
-                    @endcan
-                    @can('purchases.view')
-                        <a href="{{ route('purchases.index') }}" class="nav-link {{ request()->routeIs('purchases.*') ? 'nav-link-active' : '' }}">Purchases</a>
-                    @endcan
-                    @can('recipes.view')
-                        <a href="{{ route('recipes.index') }}" class="nav-link {{ request()->routeIs('recipes.*') ? 'nav-link-active' : '' }}">Recipes</a>
-                    @endcan
-                    @can('production.view')
-                        <a href="{{ route('production.batches') }}" class="nav-link {{ request()->routeIs('production.*') ? 'nav-link-active' : '' }}">Production</a>
-                    @endcan
-                    @can('inventory.view')
-                        <a href="{{ route('inventory.index') }}" class="nav-link {{ request()->routeIs('inventory.*') ? 'nav-link-active' : '' }}">Inventory</a>
-                    @endcan
-                    @can('customers.view')
-                        <a href="{{ route('customers.index') }}" class="nav-link {{ request()->routeIs('customers.*') ? 'nav-link-active' : '' }}">Customers</a>
-                    @endcan
-                    @can('sales.view')
-                        <a href="{{ route('sales.index') }}" class="nav-link {{ request()->routeIs('sales.*') ? 'nav-link-active' : '' }}">Sales</a>
-                    @endcan
-                    @can('credit.view')
-                        <a href="{{ route('credit.invoices') }}" class="nav-link {{ request()->routeIs('credit.*') ? 'nav-link-active' : '' }}">Credit</a>
-                    @endcan
-                    @can('expenses.view')
-                        <a href="{{ route('expenses.index') }}" class="nav-link {{ request()->routeIs('expenses.*') ? 'nav-link-active' : '' }}">Expenses</a>
-                    @endcan
-                    @can('broadcasts.view')
-                        <a href="{{ route('broadcasts.index') }}" class="nav-link {{ request()->routeIs('broadcasts.*') ? 'nav-link-active' : '' }}">Broadcasts</a>
-                    @endcan
-                    @can('reports.view')
-                        <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'nav-link-active' : '' }}">Reports</a>
-                    @endcan
-                    @can('imports.view')
-                        <a href="{{ route('imports.index') }}" class="nav-link {{ request()->routeIs('imports.*') ? 'nav-link-active' : '' }}">Imports</a>
-                    @endcan
-                    @can('company.view')
-                        <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
-                    @endcan
-                    @can('audit.view')
-                        <a href="{{ route('audit.index') }}" class="nav-link {{ request()->routeIs('audit.*') ? 'nav-link-active' : '' }}">Audit Logs</a>
-                    @endcan
+                    @canany(['sales.view', 'sales.create', 'production.view', 'inventory.view', 'purchases.view', 'customers.view', 'credit.view', 'expenses.view', 'reports.view'])
+                        <div>
+                            <p class="nav-section-label">Daily work</p>
+                            <div class="mt-1 space-y-1">
+                                @can('sales.view')
+                                    <a href="{{ route('sales.index') }}" class="nav-link {{ request()->routeIs('sales.*') ? 'nav-link-active' : '' }}">Sales</a>
+                                @endcan
+                                @can('production.view')
+                                    <a href="{{ route('production.batches') }}" class="nav-link {{ request()->routeIs('production.*') || request()->routeIs('recipes.*') ? 'nav-link-active' : '' }}">Production</a>
+                                @endcan
+                                @can('inventory.view')
+                                    <a href="{{ route('inventory.index') }}" class="nav-link {{ request()->routeIs('inventory.*') ? 'nav-link-active' : '' }}">Inventory</a>
+                                @endcan
+                                @can('purchases.view')
+                                    <a href="{{ route('purchases.index') }}" class="nav-link {{ request()->routeIs('purchases.*') || request()->routeIs('materials.*') || request()->routeIs('suppliers.*') ? 'nav-link-active' : '' }}">Purchases</a>
+                                @endcan
+                                @can('customers.view')
+                                    <a href="{{ route('customers.index') }}" class="nav-link {{ request()->routeIs('customers.*') ? 'nav-link-active' : '' }}">Customers</a>
+                                @endcan
+                                @can('credit.view')
+                                    <a href="{{ route('credit.invoices') }}" class="nav-link {{ request()->routeIs('credit.*') ? 'nav-link-active' : '' }}">Credit</a>
+                                @endcan
+                                @can('expenses.view')
+                                    <a href="{{ route('expenses.index') }}" class="nav-link {{ request()->routeIs('expenses.*') ? 'nav-link-active' : '' }}">Expenses</a>
+                                @endcan
+                                @can('reports.view')
+                                    <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'nav-link-active' : '' }}">Reports</a>
+                                @endcan
+                            </div>
+                        </div>
+                    @endcanany
+                    @canany(['broadcasts.view', 'broadcasts.create', 'broadcasts.manage_templates', 'broadcasts.manage_consent'])
+                        <details class="nav-group" {{ request()->routeIs('broadcasts.*') ? 'open' : '' }}>
+                            <summary>Communication</summary>
+                            <div class="mt-1 space-y-1">
+                                @can('broadcasts.view')
+                                    <a href="{{ route('broadcasts.index') }}" class="nav-sublink {{ request()->routeIs('broadcasts.index', 'broadcasts.show') ? 'nav-link-active' : '' }}">Customer messages</a>
+                                @endcan
+                                @can('broadcasts.create')
+                                    <a href="{{ route('broadcasts.create') }}" class="nav-sublink {{ request()->routeIs('broadcasts.create') ? 'nav-link-active' : '' }}">Send message</a>
+                                @endcan
+                                @can('broadcasts.manage_templates')
+                                    <a href="{{ route('broadcasts.templates') }}" class="nav-sublink {{ request()->routeIs('broadcasts.templates') ? 'nav-link-active' : '' }}">Message templates</a>
+                                @endcan
+                                @can('broadcasts.manage_consent')
+                                    <a href="{{ route('broadcasts.consent') }}" class="nav-sublink {{ request()->routeIs('broadcasts.consent') ? 'nav-link-active' : '' }}">Customer consent</a>
+                                @endcan
+                            </div>
+                        </details>
+                    @endcanany
+                    @canany(['users.view', 'roles.view', 'audit.view', 'imports.view'])
+                        <details class="nav-group" {{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('audit.*') || request()->routeIs('imports.*') ? 'open' : '' }}>
+                            <summary>Administration</summary>
+                            <div class="mt-1 space-y-1">
+                                @can('users.view')
+                                    <a href="{{ route('users.index') }}" class="nav-sublink {{ request()->routeIs('users.*') ? 'nav-link-active' : '' }}">Staff accounts</a>
+                                @endcan
+                                @can('roles.view')
+                                    <a href="{{ route('roles.index') }}" class="nav-sublink {{ request()->routeIs('roles.*') ? 'nav-link-active' : '' }}">Access rules</a>
+                                @endcan
+                                @can('imports.view')
+                                    <a href="{{ route('imports.index') }}" class="nav-sublink {{ request()->routeIs('imports.*') ? 'nav-link-active' : '' }}">Import data</a>
+                                @endcan
+                                @can('audit.view')
+                                    <a href="{{ route('audit.index') }}" class="nav-sublink {{ request()->routeIs('audit.*') ? 'nav-link-active' : '' }}">Audit history</a>
+                                @endcan
+                            </div>
+                        </details>
+                    @endcanany
+                    @canany(['catalogue.view', 'materials.view', 'suppliers.view', 'company.view'])
+                        <details class="nav-group" {{ request()->routeIs('catalogue.*') || request()->routeIs('materials.*') || request()->routeIs('suppliers.*') || request()->routeIs('company.*') ? 'open' : '' }}>
+                            <summary>Settings</summary>
+                            <div class="mt-1 space-y-1">
+                                @can('catalogue.view')
+                                    <a href="{{ route('catalogue.index') }}" class="nav-sublink {{ request()->routeIs('catalogue.*') ? 'nav-link-active' : '' }}">Products and sizes</a>
+                                @endcan
+                                @can('materials.view')
+                                    <a href="{{ route('materials.index') }}" class="nav-sublink {{ request()->routeIs('materials.*') ? 'nav-link-active' : '' }}">Materials list</a>
+                                @endcan
+                                @can('suppliers.view')
+                                    <a href="{{ route('suppliers.index') }}" class="nav-sublink {{ request()->routeIs('suppliers.*') ? 'nav-link-active' : '' }}">Suppliers list</a>
+                                @endcan
+                                @can('company.view')
+                                    <a href="{{ route('company.edit') }}" class="nav-sublink {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company details</a>
+                                @endcan
+                            </div>
+                        </details>
+                    @endcanany
                 </nav>
                 <div class="border-t border-white/10 p-4">
                     <p class="truncate text-sm font-semibold">{{ auth()->user()->name }}</p>

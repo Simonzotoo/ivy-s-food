@@ -1,21 +1,21 @@
-<x-layouts.app title="Product Catalogue">
+<x-layouts.app title="Products and Sizes">
     <div class="mb-5 grid gap-4 md:grid-cols-3">
         <div class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
             <p class="text-sm font-semibold text-slate-500">Categories</p>
             <p class="mt-2 text-3xl font-bold text-ivy-navy">{{ $categories->count() }}</p>
         </div>
         <div class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-sm font-semibold text-slate-500">Draft variants</p>
+            <p class="text-sm font-semibold text-slate-500">Draft products</p>
             <p class="mt-2 text-3xl font-bold text-ivy-navy">{{ $statusCounts['draft'] ?? 0 }}</p>
         </div>
         <div class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-sm font-semibold text-slate-500">Active variants</p>
+            <p class="text-sm font-semibold text-slate-500">Active products</p>
             <p class="mt-2 text-3xl font-bold text-ivy-navy">{{ $statusCounts['active'] ?? 0 }}</p>
         </div>
     </div>
 
     <section class="mb-5 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-base font-bold text-ivy-navy">Confirmed catalogue baseline</h2>
+        <h2 class="text-base font-bold text-ivy-navy">Confirmed product list</h2>
         <div class="mt-4 grid gap-3 lg:grid-cols-3">
             @foreach ($categories as $category)
                 <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
@@ -27,7 +27,7 @@
     </section>
 
     <form method="GET" class="mb-5 grid gap-3 rounded-md border border-slate-200 bg-white p-4 shadow-sm lg:grid-cols-[1fr_220px_180px_auto_auto]">
-        <input class="form-input mt-0" name="search" value="{{ request('search') }}" placeholder="Search variant, SKU or barcode">
+        <input class="form-input mt-0" name="search" value="{{ request('search') }}" placeholder="Search product, SKU or barcode">
         <select class="form-input mt-0" name="category">
             <option value="">All categories</option>
             @foreach ($categories as $category)
@@ -98,7 +98,7 @@
                     </div>
                 </article>
             @empty
-                <div class="px-4 py-10 text-center text-slate-500">No product variants match the current filters.</div>
+                <div class="px-4 py-10 text-center text-slate-500">No products match the current filters.</div>
             @endforelse
         </div>
 
@@ -106,7 +106,7 @@
             <table class="min-w-full divide-y divide-slate-200 text-sm">
                 <thead class="bg-slate-50 text-left text-xs font-semibold uppercase text-slate-600">
                     <tr>
-                        <th class="px-4 py-3">Variant</th>
+                        <th class="px-4 py-3">Product and size</th>
                         <th class="px-4 py-3">SKU / Barcode</th>
                         <th class="px-4 py-3">Prices</th>
                         <th class="px-4 py-3">Controls</th>
@@ -151,7 +151,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="px-4 py-10 text-center text-slate-500">No product variants match the current filters.</td></tr>
+                        <tr><td colspan="5" class="px-4 py-10 text-center text-slate-500">No products match the current filters.</td></tr>
                     @endforelse
                 </tbody>
             </table>
