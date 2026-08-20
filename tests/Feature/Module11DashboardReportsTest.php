@@ -63,6 +63,10 @@ class Module11DashboardReportsTest extends TestCase
             ->assertSee('GHS 25.00')
             ->assertSee('Outstanding credit')
             ->assertSee('Analytics')
+            ->assertSee('Charts from actual sales, payments and stock activity.')
+            ->assertSee('Payment mix today')
+            ->assertSee('Top products')
+            ->assertSee('conic-gradient', false)
             ->assertSee('GHS 12.00')
             ->assertSee("Today's expenses", false);
     }

@@ -19,38 +19,107 @@
         </section>
     </div>
 
+    @php
+        $salesTrendMax = max(1, (float) collect($salesTrend)->max());
+        $paymentTotal = max(0, (float) collect($paymentBreakdown)->sum());
+        $cashPercent = $paymentTotal > 0 ? (((float) ($paymentBreakdown['Cash'] ?? 0) / $paymentTotal) * 100) : 0;
+        $momoPercent = $paymentTotal > 0 ? (((float) ($paymentBreakdown['MoMo'] ?? 0) / $paymentTotal) * 100) : 0;
+        $paymentDonut = $paymentTotal > 0
+            ? 'conic-gradient(#e30613 0 '.$cashPercent.'%, #1f3a5a '.$cashPercent.'% '.($cashPercent + $momoPercent).'%, #111827 '.($cashPercent + $momoPercent).'% 100%)'
+            : '#e2e8f0';
+        $productChartMax = max(1, (float) collect($bestSellingProducts)->max('quantity'));
+    @endphp
+
     <section class="mt-6 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h2 class="text-base font-bold text-ivy-navy">Analytics</h2>
-                <p class="mt-1 text-sm text-slate-500">Quick readings from today’s activity and current stock.</p>
+                <p class="mt-1 text-sm text-slate-500">Charts from actual sales, payments and stock activity.</p>
             </div>
             @can('reports.view')
                 <a href="{{ route('reports.index') }}" class="btn-secondary">Open reports</a>
             @endcan
         </div>
+        <div class="mt-5 grid gap-5 xl:grid-cols-[1.25fr_0.9fr]">
+            <div class="rounded-md bg-slate-50 p-4">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-sm font-bold text-ivy-navy">Sales trend</h3>
+                        <p class="mt-1 text-xs text-slate-500">Last seven days</p>
+                    </div>
+                    <p class="text-sm font-semibold text-slate-600">Avg GHS {{ number_format((float) $averageSaleValue, 2) }}</p>
+                </div>
+                <div class="mt-5 flex h-48 items-end gap-2 overflow-hidden">
+                    @foreach ($salesTrend as $day => $total)
+                        @php($barHeight = max(6, ((float) $total / $salesTrendMax) * 100))
+                        <div class="flex min-w-0 flex-1 flex-col items-center gap-2">
+                            <div class="flex h-36 w-full items-end rounded-md bg-white px-1">
+                                <div class="w-full rounded-t-md bg-ivy-red transition" style="height: {{ $barHeight }}%" title="{{ $day }}: GHS {{ number_format((float) $total, 2) }}"></div>
+                            </div>
+                            <div class="min-h-8 text-center">
+                                <p class="truncate text-[11px] font-semibold text-slate-500">{{ $day }}</p>
+                                <p class="truncate text-[11px] text-ivy-navy">GHS {{ number_format((float) $total, 0) }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-1">
+                <div class="rounded-md bg-slate-50 p-4">
+                    <h3 class="text-sm font-bold text-ivy-navy">Payment mix today</h3>
+                    <div class="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center">
+                        <div class="relative mx-auto h-32 w-32 shrink-0 rounded-full" style="background: {{ $paymentDonut }};">
+                            <div class="absolute inset-5 flex items-center justify-center rounded-full bg-slate-50 text-center">
+                                <span class="text-sm font-bold text-ivy-navy">GHS {{ number_format($paymentTotal, 0) }}</span>
+                            </div>
+                        </div>
+                        <div class="w-full space-y-2 text-sm">
+                            @foreach ([['Cash', 'bg-ivy-red'], ['MoMo', 'bg-ivy-navy'], ['Credit', 'bg-slate-900']] as [$method, $color])
+                                <div class="flex items-center justify-between gap-3">
+                                    <span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full {{ $color }}"></span>{{ $method }}</span>
+                                    <span class="font-semibold text-ivy-navy">GHS {{ number_format((float) ($paymentBreakdown[$method] ?? 0), 2) }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-md bg-slate-50 p-4">
+                    <h3 class="text-sm font-bold text-ivy-navy">Top products</h3>
+                    <div class="mt-4 space-y-3">
+                        @forelse ($bestSellingProducts->take(4) as $row)
+                            @php($width = max(5, ((float) $row['quantity'] / $productChartMax) * 100))
+                            <div>
+                                <div class="flex items-center justify-between gap-3 text-xs">
+                                    <span class="truncate font-semibold text-ivy-navy">{{ $row['product']?->name ?? 'Unknown product' }}</span>
+                                    <span class="shrink-0 text-slate-500">{{ number_format((float) $row['quantity'], 3) }}</span>
+                                </div>
+                                <div class="mt-1 h-2 rounded-full bg-white">
+                                    <div class="h-2 rounded-full bg-ivy-navy" style="width: {{ $width }}%"></div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-sm text-slate-500">No product sales yet.</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div class="rounded-md bg-slate-50 p-4">
+            <div class="rounded-md border border-slate-200 p-4">
                 <p class="text-xs font-semibold uppercase text-slate-500">Average sale value</p>
-                <p class="mt-2 text-2xl font-bold text-ivy-navy">GHS {{ number_format((float) $averageSaleValue, 2) }}</p>
+                <p class="mt-2 text-xl font-bold text-ivy-navy">GHS {{ number_format((float) $averageSaleValue, 2) }}</p>
             </div>
-            <div class="rounded-md bg-slate-50 p-4">
+            <div class="rounded-md border border-slate-200 p-4">
                 <p class="text-xs font-semibold uppercase text-slate-500">Cash share today</p>
-                <p class="mt-2 text-2xl font-bold text-ivy-navy">{{ number_format((float) $cashSharePercent, 1) }}%</p>
+                <p class="mt-2 text-xl font-bold text-ivy-navy">{{ number_format((float) $cashSharePercent, 1) }}%</p>
             </div>
-            <div class="rounded-md bg-slate-50 p-4">
+            <div class="rounded-md border border-slate-200 p-4">
                 <p class="text-xs font-semibold uppercase text-slate-500">Top product</p>
-                @if ($topSellingProduct)
-                    <p class="mt-2 text-lg font-bold text-ivy-navy">{{ $topSellingProduct['product']?->name ?? 'Unknown product' }}</p>
-                    <p class="mt-1 text-sm text-slate-600">{{ number_format((float) $topSellingProduct['quantity'], 3) }} sold</p>
-                @else
-                    <p class="mt-2 text-lg font-bold text-ivy-navy">No sales yet</p>
-                @endif
+                <p class="mt-2 text-base font-bold text-ivy-navy">{{ $topSellingProduct ? ($topSellingProduct['product']?->name ?? 'Unknown product') : 'No sales yet' }}</p>
             </div>
-            <div class="rounded-md bg-slate-50 p-4">
+            <div class="rounded-md border border-slate-200 p-4">
                 <p class="text-xs font-semibold uppercase text-slate-500">Stock alerts</p>
-                <p class="mt-2 text-2xl font-bold text-ivy-navy">{{ $stockAlertCount }}</p>
-                <p class="mt-1 text-sm text-slate-600">Low raw or finished stock</p>
+                <p class="mt-2 text-xl font-bold text-ivy-navy">{{ $stockAlertCount }}</p>
             </div>
         </div>
     </section>

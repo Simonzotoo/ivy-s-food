@@ -49,6 +49,10 @@ Verification:
 - CSRF rejection is not applicable to Module 11's GET-only report routes.
 - Desktop, tablet and mobile browser visual review passed with no horizontal overflow.
 
+Post-test refinement:
+
+- Dashboard Analytics now includes visual charts for seven-day sales trend, today's payment mix and top-selling products, using actual system data and neutral empty states.
+
 Known limitations:
 
 - Reports depend on the completeness and quality of operational data entered or imported.

@@ -15,6 +15,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\SalePayment;
 use App\Models\StockAdjustment;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 
 class OperationalDashboardService
@@ -35,7 +36,9 @@ class OperationalDashboardService
             'todaySales' => $todaySales,
             'todaySalesCount' => $todaySalesCount,
             'customerCount' => Customer::query()->count(),
-            'paymentBreakdown' => $paymentBreakdown,
+            'paymentBreakdown' => collect(['Cash', 'MoMo', 'Credit'])->mapWithKeys(fn (string $method): array => [
+                $method => (float) ($paymentBreakdown[$method] ?? 0),
+            ]),
             'todayExpenses' => Expense::query()->whereDate('incurred_on', $today)->where('status', 'approved')->sum('amount'),
             'outstandingCredit' => CreditInvoice::query()->where('balance', '>', 0)->sum('balance'),
             'dueSoonCredit' => CreditInvoice::query()->where('balance', '>', 0)->whereBetween('due_date', [now()->addDay()->toDateString(), now()->addDays(7)->toDateString()])->sum('balance'),
@@ -54,9 +57,24 @@ class OperationalDashboardService
             'cashSharePercent' => (float) $todaySales > 0 ? (((float) ($paymentBreakdown['Cash'] ?? 0) / (float) $todaySales) * 100) : 0,
             'topSellingProduct' => $bestSellingProducts->first(),
             'stockAlertCount' => $this->lowRawMaterials()->count() + $this->lowFinishedProducts()->count(),
-            'salesTrend' => Sale::query()->where('sale_date', '>=', now()->subDays(6)->startOfDay())->where('status', 'completed')->get()->groupBy(fn (Sale $sale) => $sale->sale_date->format('d M'))->map->sum('total'),
+            'salesTrend' => $this->salesTrend(),
             'recentMovements' => FinishedStockMovement::query()->with('productVariant')->latest('occurred_at')->limit(5)->get(),
         ];
+    }
+
+    private function salesTrend(): Collection
+    {
+        $salesByDay = Sale::query()
+            ->where('sale_date', '>=', now()->subDays(6)->startOfDay())
+            ->where('status', 'completed')
+            ->get()
+            ->groupBy(fn (Sale $sale): string => $sale->sale_date->toDateString())
+            ->map->sum('total');
+
+        return collect(CarbonPeriod::create(now()->subDays(6)->startOfDay(), now()->startOfDay()))
+            ->mapWithKeys(fn ($day): array => [
+                $day->format('d M') => (float) ($salesByDay[$day->toDateString()] ?? 0),
+            ]);
     }
 
     private function lowRawMaterials(): Collection
