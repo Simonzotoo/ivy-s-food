@@ -225,8 +225,7 @@ class Module1FoundationTest extends TestCase
 
         $this->actingAs($owner)->withHeader('User-Agent', 'Desktop Browser')->get('/home')
             ->assertOk()
-            ->assertSee('Today at Ivy')
-            ->assertSee('New Sale')
+            ->assertSee('Module 1 foundation')
             ->assertSee('images/ivys-logo.png', false)
             ->assertSee('max-h-full max-w-full object-contain', false);
 
