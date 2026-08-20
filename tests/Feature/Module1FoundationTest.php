@@ -223,7 +223,12 @@ class Module1FoundationTest extends TestCase
     {
         $owner = $this->ownerUser();
 
-        $this->actingAs($owner)->withHeader('User-Agent', 'Desktop Browser')->get('/home')->assertOk()->assertSee('Module 1 foundation');
+        $this->actingAs($owner)->withHeader('User-Agent', 'Desktop Browser')->get('/home')
+            ->assertOk()
+            ->assertSee('Module 1 foundation')
+            ->assertSee('images/ivys-logo.png', false)
+            ->assertSee('max-h-full max-w-full object-contain', false);
+
         $this->actingAs($owner)->withHeader('User-Agent', 'Mobile Safari')->get('/company-settings')->assertOk()->assertSee('Company Settings');
     }
 

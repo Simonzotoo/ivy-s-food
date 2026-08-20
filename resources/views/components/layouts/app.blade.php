@@ -11,10 +11,12 @@
 <body>
     <div x-data="{ sidebarOpen: false }" class="min-h-screen lg:grid lg:grid-cols-[280px_1fr]">
         <aside class="fixed inset-y-0 left-0 z-40 w-72 -translate-x-full bg-ivy-navy text-white transition lg:static lg:translate-x-0"
-               :class="{ 'translate-x-0': sidebarOpen }">
+               :class="{ '!translate-x-0': sidebarOpen }">
             <div class="flex h-full flex-col">
                 <div class="flex items-center gap-3 border-b border-white/10 px-5 py-4">
-                    <img src="{{ asset('images/ivys-logo.png') }}" alt="Ivy's Food" class="h-14 w-14 shrink-0 object-contain">
+                    <div class="flex h-20 w-28 shrink-0 items-center justify-center rounded-md bg-white p-1.5 shadow-sm ring-1 ring-white/20">
+                        <img src="{{ asset('images/ivys-logo.png') }}" alt="Ivy's Food" class="max-h-full max-w-full object-contain">
+                    </div>
                     <div class="min-w-0">
                         <p class="truncate text-base font-bold">Ivy's Food</p>
                         <p class="truncate text-xs text-slate-300">Management System</p>
