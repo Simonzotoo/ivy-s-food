@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Modules 1 through 12 are `Tested`. Approval is reserved for the project owner.
+Modules 1 through 13 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -203,6 +203,14 @@ php artisan migrate --seed --env=testing
 - Opening stock imports create batch records and `opening_balance` stock movements.
 - Open credit balance imports create auditable opening sales and credit invoices.
 - Supported rollback for opening stock imports.
+
+## Module 13 Features
+
+- Security headers and branded error pages.
+- Security, authorization, validation, dependency and performance review documentation.
+- Hostinger production checklist, cron guidance and shared-hosting queue strategy.
+- Backup and restore procedure.
+- Final responsive visual review artifacts.
 
 ## Roadmap
 
