@@ -6,9 +6,12 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CompanySettingsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductCatalogueController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,4 +52,24 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/catalogue/variants/{variant}/edit', [ProductCatalogueController::class, 'edit'])->name('catalogue.variants.edit')->middleware('can:catalogue.edit');
     Route::put('/catalogue/variants/{variant}', [ProductCatalogueController::class, 'update'])->name('catalogue.variants.update')->middleware('can:catalogue.edit');
     Route::patch('/catalogue/variants/{variant}/status', [ProductCatalogueController::class, 'status'])->name('catalogue.variants.status')->middleware('can:catalogue.activate');
+
+    Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index')->middleware('can:materials.view');
+    Route::get('/materials/create', [MaterialController::class, 'create'])->name('materials.create')->middleware('can:materials.manage');
+    Route::post('/materials', [MaterialController::class, 'store'])->name('materials.store')->middleware('can:materials.manage');
+    Route::get('/materials/{material}/edit', [MaterialController::class, 'edit'])->name('materials.edit')->middleware('can:materials.manage');
+    Route::put('/materials/{material}', [MaterialController::class, 'update'])->name('materials.update')->middleware('can:materials.manage');
+    Route::get('/material-stock-movements', [PurchaseController::class, 'movements'])->name('materials.movements')->middleware('can:material_stock.view');
+
+    Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index')->middleware('can:suppliers.view');
+    Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create')->middleware('can:suppliers.manage');
+    Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store')->middleware('can:suppliers.manage');
+    Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit')->middleware('can:suppliers.manage');
+    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update')->middleware('can:suppliers.manage');
+
+    Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index')->middleware('can:purchases.view');
+    Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create')->middleware('can:purchases.create');
+    Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store')->middleware('can:purchases.create');
+    Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show')->middleware('can:purchases.view');
+    Route::post('/purchases/{purchase}/receive', [PurchaseController::class, 'receive'])->name('purchases.receive')->middleware('can:purchases.receive');
+    Route::post('/material-batches/{batch}/return', [PurchaseController::class, 'returnBatch'])->name('material-batches.return')->middleware('can:purchases.return');
 });

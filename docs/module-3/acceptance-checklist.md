@@ -1,0 +1,28 @@
+# Module 3 Acceptance Checklist
+
+- [x] Requirements and roadmap inspected.
+- [x] Module marked `In Development` before implementation.
+- [x] Raw-material and packaging-material categories implemented.
+- [x] Materials implemented with base units, reorder fields, lot and expiry controls.
+- [x] Unit conversions implemented.
+- [x] Supplier management implemented.
+- [x] Purchase records and purchase items implemented.
+- [x] Goods receiving creates material batches/lots.
+- [x] Purchase attachment references implemented without unsafe file uploads.
+- [x] Purchase returns implemented.
+- [x] Raw-material stock movements implemented as an append-only ledger.
+- [x] Granular permissions added.
+- [x] Audit logging added for sensitive actions.
+- [x] Focused Module 3 tests passed.
+- [x] Full regression suite passed.
+- [x] Migration rollback/reapplication passed.
+- [x] Seeder idempotency verified.
+- [x] Production-mode seeding safety verified.
+- [x] Composer validation passed.
+- [x] Pint style check passed.
+- [x] Frontend production build passed.
+- [x] Live HTTP checks passed.
+- [x] CSRF rejection verified by live HTTP request.
+- [x] Desktop, tablet and mobile visual review completed.
+- [ ] Project owner review.
+- [ ] Project owner approval.

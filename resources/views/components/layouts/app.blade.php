@@ -31,6 +31,15 @@
                     @can('catalogue.view')
                         <a href="{{ route('catalogue.index') }}" class="nav-link {{ request()->routeIs('catalogue.*') ? 'nav-link-active' : '' }}">Product Catalogue</a>
                     @endcan
+                    @can('materials.view')
+                        <a href="{{ route('materials.index') }}" class="nav-link {{ request()->routeIs('materials.*') ? 'nav-link-active' : '' }}">Materials</a>
+                    @endcan
+                    @can('suppliers.view')
+                        <a href="{{ route('suppliers.index') }}" class="nav-link {{ request()->routeIs('suppliers.*') ? 'nav-link-active' : '' }}">Suppliers</a>
+                    @endcan
+                    @can('purchases.view')
+                        <a href="{{ route('purchases.index') }}" class="nav-link {{ request()->routeIs('purchases.*') ? 'nav-link-active' : '' }}">Purchases</a>
+                    @endcan
                     @can('company.view')
                         <a href="{{ route('company.edit') }}" class="nav-link {{ request()->routeIs('company.*') ? 'nav-link-active' : '' }}">Company Settings</a>
                     @endcan

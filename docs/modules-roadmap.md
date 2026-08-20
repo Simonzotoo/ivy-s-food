@@ -6,7 +6,7 @@ This is the authoritative module status file. Only the project owner may set any
 | --- | --- | --- | --- | --- |
 | 1 | Application Foundation, Authentication, Users, Roles, Permissions, Company Settings and Audit Foundation | Tested | `240e8bf438029a01b269552a925b84c3c8e60fe1`, correction `1781876` | Not approved. Role-assignment guard hardened after baseline audit. |
 | 2 | Product Catalogue and Variants | Tested | `8fc2ebc` | Product categories, official types/flavours, sizes, units, draft variants, SKU/barcode/price/status controls. |
-| 3 | Raw Materials, Packaging, Suppliers and Purchases | Planned | Pending | Configurable materials, suppliers, purchases, receiving and stock-in movements. |
+| 3 | Raw Materials, Packaging, Suppliers and Purchases | Tested | Pending | Configurable materials, suppliers, purchases, receiving, returns and material stock movements. |
 | 4 | Recipes and Production | Planned | Pending | Versioned recipes, production batches, usage, output, wastage and costing estimates. |
 | 5 | Inventory, Batches, Expiry and Stocktaking | Planned | Pending | Immutable stock ledger, balances, batch/expiry controls and stocktakes. |
 | 6 | Customers, Customer Types and Pricing | Planned | Pending | Customer records, normalized contacts, pricing defaults, credit configuration. |

@@ -20,5 +20,15 @@ final class Permissions
         'catalogue.edit' => ['Edit product catalogue records', 'Product Catalogue'],
         'catalogue.activate' => ['Activate or deactivate product variants', 'Product Catalogue'],
         'catalogue.export' => ['Export product catalogue', 'Product Catalogue'],
+        'materials.view' => ['View materials', 'Materials & Purchases'],
+        'materials.manage' => ['Manage materials', 'Materials & Purchases'],
+        'suppliers.view' => ['View suppliers', 'Materials & Purchases'],
+        'suppliers.manage' => ['Manage suppliers', 'Materials & Purchases'],
+        'purchases.view' => ['View purchases', 'Materials & Purchases'],
+        'purchases.create' => ['Create purchases', 'Materials & Purchases'],
+        'purchases.edit' => ['Edit draft purchases', 'Materials & Purchases'],
+        'purchases.receive' => ['Receive purchases', 'Materials & Purchases'],
+        'purchases.return' => ['Return purchases', 'Materials & Purchases'],
+        'material_stock.view' => ['View material stock movements', 'Materials & Purchases'],
     ];
 }

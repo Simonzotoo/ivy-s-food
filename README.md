@@ -4,7 +4,7 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 ## Module Status
 
-Module 1: Application Foundation, Authentication, Users, Roles, Permissions, Company Settings and Audit Foundation is `Tested`. Approval is reserved for the project owner.
+Modules 1, 2 and 3 are `Tested`. Approval is reserved for the project owner.
 
 ## Local Setup
 
@@ -97,6 +97,18 @@ php artisan migrate --seed --env=testing
 - Reorder-level and shelf-life fields left blank until business confirmation.
 - Catalogue search, filtering and CSV export.
 - Catalogue permissions and audit logging.
+
+## Module 3 Features
+
+- Generic raw-material and packaging-material category foundation.
+- Materials with base units, reorder settings and lot/expiry controls.
+- Unit conversions for configurable material handling.
+- Supplier management.
+- Purchase records, purchase items and safe attachment references.
+- Goods receiving into material batches/lots.
+- Purchase returns with available-quantity validation.
+- Material stock movements derived from receiving and returns.
+- Materials, suppliers, purchases and stock-movement permissions with audit logging.
 
 ## Roadmap
 

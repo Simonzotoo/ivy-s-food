@@ -25,14 +25,14 @@ class RoleAndPermissionSeeder extends Seeder
 
         $roles = [
             'Owner / Super Admin' => ['is_owner' => true, 'description' => 'Unrestricted system owner access.'],
-            'Manager' => ['permissions' => ['users.view', 'company.view', 'audit.view', 'roles.view', 'catalogue.view', 'catalogue.export']],
+            'Manager' => ['permissions' => ['users.view', 'company.view', 'audit.view', 'roles.view', 'catalogue.view', 'catalogue.export', 'materials.view', 'suppliers.view', 'purchases.view', 'material_stock.view']],
             'Cashier / Sales Officer' => ['permissions' => ['catalogue.view']],
-            'Inventory Officer' => ['permissions' => ['catalogue.view', 'catalogue.create', 'catalogue.edit', 'catalogue.activate', 'catalogue.export']],
-            'Production Officer' => ['permissions' => ['catalogue.view']],
-            'Purchasing Officer' => ['permissions' => ['catalogue.view']],
+            'Inventory Officer' => ['permissions' => ['catalogue.view', 'catalogue.create', 'catalogue.edit', 'catalogue.activate', 'catalogue.export', 'materials.view', 'materials.manage', 'suppliers.view', 'purchases.view', 'purchases.receive', 'purchases.return', 'material_stock.view']],
+            'Production Officer' => ['permissions' => ['catalogue.view', 'materials.view', 'material_stock.view']],
+            'Purchasing Officer' => ['permissions' => ['catalogue.view', 'materials.view', 'materials.manage', 'suppliers.view', 'suppliers.manage', 'purchases.view', 'purchases.create', 'purchases.edit', 'purchases.receive', 'purchases.return', 'material_stock.view']],
             'Accounts Officer' => ['permissions' => []],
             'Marketing Officer' => ['permissions' => ['catalogue.view', 'catalogue.export']],
-            'Auditor' => ['permissions' => ['audit.view', 'company.view']],
+            'Auditor' => ['permissions' => ['audit.view', 'company.view', 'materials.view', 'suppliers.view', 'purchases.view', 'material_stock.view']],
         ];
 
         foreach ($roles as $name => $settings) {

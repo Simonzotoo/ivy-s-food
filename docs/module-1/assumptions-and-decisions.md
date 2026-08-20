@@ -11,3 +11,5 @@
 - Owner / Super Admin access is represented by role metadata and backed by granular permissions.
 - Audit values are recorded through `AuditService` so sensitive keys can be redacted consistently.
 - Users are soft deleted to protect future audit and business-record relationships.
+- Purchase attachments initially store safe document references only; binary upload handling will be reviewed under file-upload security.
+- Supplier balances and purchase settlement belong to later financial modules and are not invented in Module 3.
