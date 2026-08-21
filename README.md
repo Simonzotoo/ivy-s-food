@@ -213,12 +213,17 @@ php artisan migrate --seed --env=testing
 
 ## Module 12 Features
 
-- CSV import templates for product variants, barcodes, prices, raw materials, suppliers, customers, opening stock and open credit balances.
-- Dry-run validation with row-level errors.
-- Auditable import batches and reconciliation summaries.
-- Opening stock imports create batch records and `opening_balance` stock movements.
-- Open credit balance imports create auditable opening sales and credit invoices.
-- Supported rollback for opening stock imports.
+- File upload (CSV and XLSX) for product variants, barcodes, prices, raw materials, suppliers, customers, opening stock and open credit balances, with downloadable templates (example row, notes, accepted values).
+- Automatic column-mapping suggestions with manual override, and a dry-run preview showing valid/invalid/duplicate/new/update/skipped row counts before anything is saved.
+- Customer import: Ghanaian phone normalization, exact/likely duplicate detection, and an explicit Skip / Update / Stop-and-review duplicate strategy (defaults to the safest option). See `docs/module-12/customer-import-guide.md`.
+- Explicit in-app confirmation before every commit - no browser-native alert boxes.
+- Granular import permissions (view, history, template download, upload, validate, per-type commit, rollback).
+- Row-level error reporting with a downloadable, formula-injection-safe error file.
+- Opening stock imports create batch records and `opening_balance` stock movements; they never edit stock totals directly.
+- Open credit balance imports create auditable opening sales and credit invoices, kept separate from the normal customer import.
+- Rollback for opening-stock imports and for customer imports (newly created customers only, retained if they have acquired sales or credit records since import).
+- Uploaded files are stored privately with a checksum; `imports:prune` (scheduled weekly) removes stored files for completed imports older than 30 days while keeping the audit record.
+- No third-party spreadsheet library is used for XLSX - see `docs/module-12/status.md` for why, and how reading is done safely against PHP's built-in zip/XML support.
 
 ## Module 13 Features
 

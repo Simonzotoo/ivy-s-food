@@ -165,8 +165,13 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::get('/reports/export.pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf')->middleware('can:reports.export');
 
     Route::get('/imports', [ImportController::class, 'index'])->name('imports.index')->middleware('can:imports.view');
-    Route::get('/imports/templates/{type}', [ImportController::class, 'template'])->name('imports.template')->middleware('can:imports.view');
-    Route::post('/imports', [ImportController::class, 'store'])->name('imports.store')->middleware('can:imports.run');
+    Route::get('/imports/templates/{type}', [ImportController::class, 'template'])->name('imports.template')->middleware('can:imports.templates');
+    Route::get('/imports/create/{type}', [ImportController::class, 'create'])->name('imports.create')->middleware('can:imports.upload');
+    Route::post('/imports', [ImportController::class, 'store'])->name('imports.store')->middleware('can:imports.upload');
+    Route::get('/imports/{batch}/map', [ImportController::class, 'map'])->name('imports.map')->middleware('can:imports.validate');
+    Route::post('/imports/{batch}/map', [ImportController::class, 'validateMapping'])->name('imports.map.store')->middleware('can:imports.validate');
     Route::get('/imports/{batch}', [ImportController::class, 'show'])->name('imports.show')->middleware('can:imports.view');
+    Route::get('/imports/{batch}/errors.csv', [ImportController::class, 'errors'])->name('imports.errors')->middleware('can:imports.view');
+    Route::post('/imports/{batch}/commit', [ImportController::class, 'commit'])->name('imports.commit')->middleware('can:imports.validate');
     Route::post('/imports/{batch}/rollback', [ImportController::class, 'rollback'])->name('imports.rollback')->middleware('can:imports.rollback');
 });

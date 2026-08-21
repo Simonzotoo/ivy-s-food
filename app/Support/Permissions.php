@@ -71,7 +71,14 @@ final class Permissions
         'reports.view' => ['View operational reports', 'Reports'],
         'reports.export' => ['Export operational reports', 'Reports'],
         'imports.view' => ['View imports', 'Imports'],
-        'imports.run' => ['Run dry-run or apply imports', 'Imports'],
-        'imports.rollback' => ['Rollback supported imports', 'Imports'],
+        'imports.history' => ['View import history', 'Imports'],
+        'imports.templates' => ['Download import templates', 'Imports'],
+        'imports.upload' => ['Upload import files', 'Imports'],
+        'imports.validate' => ['Run import validation', 'Imports'],
+        'imports.commit_customers' => ['Commit customer imports', 'Imports'],
+        'imports.commit_suppliers' => ['Commit supplier imports', 'Imports'],
+        'imports.commit_catalogue' => ['Commit catalogue imports', 'Imports'],
+        'imports.commit_opening_stock' => ['Commit opening-stock and credit-balance imports', 'Imports'],
+        'imports.rollback' => ['Rollback eligible imports', 'Imports'],
     ];
 }

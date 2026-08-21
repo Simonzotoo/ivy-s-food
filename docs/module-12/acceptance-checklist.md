@@ -1,30 +1,30 @@
 # Module 12 Acceptance Checklist
 
 - [x] Requirements and dependency modules inspected.
-- [x] Module marked `In Development` before implementation.
-- [x] Import templates implemented.
-- [x] Product variant update import implemented.
-- [x] Barcode import implemented.
-- [x] Price import implemented.
-- [x] Raw-material import implemented.
-- [x] Supplier import implemented.
-- [x] Customer import implemented.
-- [x] Opening stock import as auditable movements implemented.
-- [x] Open-credit balance import implemented.
-- [x] Dry-run mode implemented.
-- [x] Error reporting implemented.
-- [x] Reconciliation report implemented.
-- [x] Import audit trail implemented.
-- [x] Focused Module 12 tests passed.
-- [x] Full regression suite passed.
+- [x] Real file upload implemented (CSV and XLSX), replacing the paste-CSV-content flow.
+- [x] Downloadable templates with example row, notes and accepted values for every type.
+- [x] Column preview and automatic column-mapping suggestions implemented.
+- [x] Manual column mapping override implemented.
+- [x] Dry-run validation preview implemented, with valid/invalid/duplicate/new/update/skipped counts.
+- [x] Customer import: phone normalization, duplicate detection and a Skip/Update/Stop-and-review strategy (default Stop) implemented.
+- [x] Explicit in-app confirmation required before commit (no browser-native alert boxes).
+- [x] Row-level error reporting and downloadable error file implemented.
+- [x] CSV/formula-injection protection applied to every downloadable CSV.
+- [x] Malicious/oversized file protection implemented (extension allowlist, size cap, genuine-file signature check, row cap).
+- [x] Granular import permissions implemented (view, history, templates, upload, validate, per-type commit, rollback).
+- [x] Import audit trail (batch + row errors + checksum + mapping + confirmation) implemented.
+- [x] Opening stock import as auditable movements implemented (unchanged).
+- [x] Open-credit balance import implemented (unchanged), kept separate from the customer import.
+- [x] Supplier, raw-material, product-status, barcode and price imports migrated to the same safe engine.
+- [x] Rollback implemented: newly created customers only, retained if dependent sales/credit records exist since import.
+- [x] Private file storage with checksum and a documented, scheduled retention/prune policy.
+- [x] Focused Module 12 tests passed (17 tests, 81 assertions).
+- [x] Full regression suite passed (105 tests, 524 assertions).
 - [x] Migration rollback/reapplication passed.
 - [x] Seeder idempotency verified.
-- [x] Production-mode seeding safety verified.
-- [x] Composer validation passed.
+- [x] Composer validation and `composer audit` passed with no advisories.
 - [x] Pint style check passed.
 - [x] Frontend production build passed.
-- [x] Live HTTP checks passed.
-- [x] CSRF rejection verified by live HTTP request.
-- [x] Desktop, tablet and mobile visual review completed.
+- [x] Live browser walkthrough on desktop and mobile completed with no horizontal overflow.
 - [ ] Project owner review.
 - [ ] Project owner approval.

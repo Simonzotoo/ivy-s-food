@@ -103,4 +103,20 @@
     .panel-help {
         @apply mt-1 text-sm text-slate-500;
     }
+
+    .badge {
+        @apply inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold capitalize text-slate-700;
+    }
+
+    .badge-success {
+        @apply bg-emerald-50 text-emerald-700;
+    }
+
+    .badge-warning {
+        @apply bg-amber-50 text-amber-700;
+    }
+
+    .badge-danger {
+        @apply bg-red-50 text-red-700;
+    }
 }

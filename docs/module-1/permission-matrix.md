@@ -67,8 +67,15 @@
 | View operational dashboard | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | View operational reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
 | Export operational reports | Yes | Yes | No | No | No | No | Yes | No | Yes |
-| View imports | Yes | Yes | No | Yes | No | No | Yes | No | Yes |
-| Run dry-run or apply imports | Yes | Yes | No | Yes | No | No | Yes | No | No |
-| Rollback supported imports | Yes | Yes | No | No | No | No | No | No | No |
+| View imports | Yes | Yes | No | Yes | No | Yes | Yes | No | Yes |
+| View import history | Yes | Yes | No | Yes | No | No | Yes | No | Yes |
+| Download import templates | Yes | Yes | No | Yes | No | Yes | Yes | No | No |
+| Upload import files | Yes | Yes | No | Yes | No | Yes | Yes | No | No |
+| Run import validation | Yes | Yes | No | Yes | No | Yes | Yes | No | No |
+| Commit customer imports | Yes | Yes | No | No | No | No | Yes | No | No |
+| Commit supplier imports | Yes | Yes | No | No | No | Yes | No | No | No |
+| Commit catalogue imports | Yes | Yes | No | Yes | No | No | No | No | No |
+| Commit opening-stock and credit-balance imports | Yes | Yes | No | Yes | No | No | Yes | No | No |
+| Rollback eligible imports | Yes | Yes | No | No | No | No | No | No | No |
 
 Owner / Super Admin is seeded with unrestricted access. Other role permissions are intentionally conservative and configurable.

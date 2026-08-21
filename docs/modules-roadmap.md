@@ -15,11 +15,15 @@ This is the authoritative module status file. Only the project owner may set any
 | 9 | Expenditure Management | Tested | `375a89c` | Expense categories, records, approvals, receipt references and operational reporting. |
 | 10 | Broadcasting and Customer Communication | Tested | `4afe3bd` | Segmentation, templates, consent, opt-out and provider-neutral local/test delivery. |
 | 11 | Dashboard and Reports | Tested | `c4f56ab` | Data-backed operational dashboard, reports, exports and filters. |
-| 12 | Data Migration and Configuration Readiness | Tested | `b9ed26e` | Import templates, dry-runs, validation, duplicate detection and reconciliation. |
+| 12 | Data Migration and Configuration Readiness | Tested | `b9ed26e`, extended 21 August 2026 | File-upload (CSV/XLSX) import engine with column mapping, dry-run preview, customer duplicate detection and strategy, granular permissions, rollback and audit trail. See `docs/module-12/status.md`. |
 | 13 | Security, Performance, Deployment and Final Acceptance | Tested | `f570de4`, documentation correction `b98d278` | Full security/performance/deployment review and final acceptance checklist. |
 
 Roadmap basis: requirements document dated 18 August 2026 plus the controlled engineering sequence authorized on 20 August 2026.
 
 ## Staff-facing UX simplification (21 August 2026)
 
-A cross-module presentation pass reorganized navigation, the dashboard and selected screen labels around daily staff workflows. No module's status, business logic, calculations, permissions or data changed. See `docs/ux-simplification-audit.md` for findings and validation. Module 12 (imports) is being extended next with a redesigned upload/mapping/dry-run flow and a customer import safety rework; see that module's own status file once updated.
+A cross-module presentation pass reorganized navigation, the dashboard and selected screen labels around daily staff workflows. No module's status, business logic, calculations, permissions or data changed. See `docs/ux-simplification-audit.md` for findings and validation.
+
+## Module 12 import engine rebuild (21 August 2026)
+
+Module 12's paste-CSV-only import flow was redesigned into a full file-upload (CSV/XLSX), column-mapping, dry-run-preview and granular-permission engine, prioritizing customer import safety (Ghanaian phone normalization, duplicate detection, an explicit Skip/Update/Stop-and-review strategy defaulting to the safest option, and dependency-checked rollback). Supplier, raw-material, product-status, barcode, price, opening-stock and open-credit-balance imports were migrated onto the same engine. See `docs/module-12/status.md` and `docs/module-12/customer-import-guide.md`.
