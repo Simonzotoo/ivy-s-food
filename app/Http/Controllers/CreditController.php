@@ -16,13 +16,20 @@ use Illuminate\View\View;
 
 class CreditController extends Controller
 {
-    public function invoices(CreditService $service): View
+    public function invoices(Request $request, CreditService $service): View
     {
         $service->refreshStatuses();
 
-        return view('credit.invoices', [
-            'invoices' => CreditInvoice::query()->with(['customer', 'sale'])->latest()->paginate(20),
-        ]);
+        $invoices = CreditInvoice::query()
+            ->with(['customer', 'sale'])
+            ->when($request->filled('search'), fn ($query) => $query->where('invoice_number', 'like', '%'.$request->string('search').'%')
+                ->orWhereHas('customer', fn ($c) => $c->where('name', 'like', '%'.$request->string('search').'%')))
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('credit.invoices', ['invoices' => $invoices]);
     }
 
     public function show(CreditInvoice $invoice): View
@@ -35,8 +42,14 @@ class CreditController extends Controller
 
     public function payments(): View
     {
+        $customers = Customer::query()->where('outstanding_balance', '>', 0)->orderBy('name')->get();
+
         return view('credit.payments', [
-            'customers' => Customer::query()->where('outstanding_balance', '>', 0)->orderBy('name')->get(),
+            'customerOptions' => $customers->map(fn (Customer $customer): array => [
+                'value' => $customer->id,
+                'label' => $customer->name,
+                'sublabel' => 'Owes GHS '.number_format((float) $customer->outstanding_balance, 2),
+            ])->values(),
             'payments' => CustomerPayment::query()->with('customer')->latest('received_at')->paginate(20),
         ]);
     }

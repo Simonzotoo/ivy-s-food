@@ -23,6 +23,9 @@
                 <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
                     <dt class="text-xs font-semibold uppercase text-slate-500">Outstanding</dt>
                     <dd class="mt-1 font-bold text-ivy-navy">GHS {{ $customer->outstanding_balance }}</dd>
+                    @can('credit.reports')
+                        <a href="{{ route('credit.statement', $customer) }}" class="metric-link">View statement</a>
+                    @endcan
                 </div>
             </dl>
             @can('sales.view')

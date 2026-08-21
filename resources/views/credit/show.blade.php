@@ -2,7 +2,10 @@
     <div class="grid gap-6 lg:grid-cols-[1fr_360px]">
         <section class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
             <p class="text-sm font-semibold uppercase text-slate-500">{{ $invoice->customer->name }}</p>
-            <h2 class="mt-1 text-xl font-bold text-ivy-navy">{{ $invoice->invoice_number }}</h2>
+            <div class="mt-1 flex flex-wrap items-center gap-3">
+                <h2 class="text-xl font-bold text-ivy-navy">{{ $invoice->invoice_number }}</h2>
+                <span class="badge {{ $invoice->status === 'overdue' ? 'badge-danger' : (in_array($invoice->status, ['due_today', 'due_soon'], true) ? 'badge-warning' : ($invoice->status === 'paid' ? 'badge-success' : '')) }}">{{ ucfirst(str_replace('_', ' ', $invoice->status)) }}</span>
+            </div>
             <dl class="mt-6 grid gap-4 md:grid-cols-3">
                 <div class="rounded-md border border-slate-200 bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Total</dt><dd class="mt-1 font-bold text-ivy-navy">GHS {{ $invoice->total }}</dd></div>
                 <div class="rounded-md border border-slate-200 bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Balance</dt><dd class="mt-1 font-bold text-ivy-navy">GHS {{ $invoice->balance }}</dd></div>
@@ -19,7 +22,10 @@
         </section>
         <aside class="space-y-5">
             @can('credit.payments')
-                <a href="{{ route('credit.payments') }}" class="btn-primary w-full">Record payment</a>
+                <a href="{{ route('credit.payments') }}" class="btn-primary w-full block text-center">Record payment</a>
+            @endcan
+            @can('credit.reports')
+                <a href="{{ route('credit.statement', $invoice->customer) }}" class="btn-secondary w-full block text-center">View customer statement</a>
             @endcan
             @can('credit.reminders')
                 <form method="POST" action="{{ route('credit.invoices.reminders', $invoice) }}" class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
