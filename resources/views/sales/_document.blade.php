@@ -1,34 +1,34 @@
 <section>
-    <h1>Ivy's Food</h1>
-    <p>{{ str_replace('-', ' ', ucfirst($document)) }} · {{ $sale->sale_number }}</p>
-    <p>{{ $sale->sale_date->format('d M Y H:i') }}</p>
-    <p>Customer: {{ $sale->customer?->name ?? 'Walk-in customer' }}</p>
-    <table>
+    <h1 class="text-xl font-bold text-ivy-navy">Ivy's Food</h1>
+    <p class="mt-1 text-sm text-slate-600">{{ str_replace('-', ' ', ucfirst($document)) }} · {{ $sale->sale_number }}</p>
+    <p class="text-sm text-slate-600">{{ $sale->sale_date->format('d M Y H:i') }}</p>
+    <p class="mt-2 text-sm text-slate-600">Customer: {{ $sale->customer?->name ?? 'Walk-in customer' }}</p>
+    <table class="mt-4 w-full border-collapse text-sm">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th class="border-b border-slate-300 px-2 py-2 text-left">Product</th>
+                <th class="border-b border-slate-300 px-2 py-2 text-left">Qty</th>
+                <th class="border-b border-slate-300 px-2 py-2 text-left">Price</th>
+                <th class="border-b border-slate-300 px-2 py-2 text-left">Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($sale->items as $item)
                 <tr>
-                    <td>{{ $item->productVariant->name }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>GHS {{ $item->unit_price }}</td>
-                    <td>GHS {{ $item->line_total }}</td>
+                    <td class="border-b border-slate-100 px-2 py-2">{{ $item->productVariant->name }}</td>
+                    <td class="border-b border-slate-100 px-2 py-2">{{ $item->quantity }}</td>
+                    <td class="border-b border-slate-100 px-2 py-2">GHS {{ number_format((float) $item->unit_price, 2) }}</td>
+                    <td class="border-b border-slate-100 px-2 py-2">GHS {{ number_format((float) $item->line_total, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <p class="total">Total: GHS {{ $sale->total }}</p>
-    <p>Paid: GHS {{ $sale->amount_paid }} · Balance: GHS {{ $sale->balance_due }}</p>
+    <p class="total mt-3 text-lg font-bold text-ivy-navy">Total: GHS {{ number_format((float) $sale->total, 2) }}</p>
+    <p class="text-sm text-slate-600">Paid: GHS {{ number_format((float) $sale->amount_paid, 2) }} · Balance: GHS {{ number_format((float) $sale->balance_due, 2) }}</p>
     @if ($document === 'invoice' && $sale->creditInvoice)
-        <p>Invoice: {{ $sale->creditInvoice->invoice_number }} · Due {{ $sale->creditInvoice->due_date->format('d M Y') }}</p>
+        <p class="mt-2 text-sm text-slate-600">Invoice: {{ $sale->creditInvoice->invoice_number }} · Due {{ $sale->creditInvoice->due_date->format('d M Y') }}</p>
     @endif
     @if ($document === 'delivery-note' && $sale->deliveryNote)
-        <p>Delivery note: {{ $sale->deliveryNote->note_number }}</p>
+        <p class="mt-2 text-sm text-slate-600">Delivery note: {{ $sale->deliveryNote->note_number }}</p>
     @endif
 </section>

@@ -17,7 +17,7 @@
         </div>
         <div class="metric-card">
             <p class="metric-label">Credit Sales</p>
-            <p class="metric-value">GHS {{ number_format((float) ($paymentBreakdown['Credit'] ?? 0), 2) }}</p>
+            <p class="metric-value">GHS {{ number_format((float) $creditSalesToday, 2) }}</p>
             <p class="metric-note">Given today</p>
         </div>
         <div class="metric-card">

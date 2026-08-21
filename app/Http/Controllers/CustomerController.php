@@ -53,6 +53,7 @@ class CustomerController extends Controller
     {
         return view('customers.show', [
             'customer' => $customer->load(['type', 'defaultSaleType', 'communications']),
+            'recentSales' => $customer->sales()->with('saleType')->latest('sale_date')->limit(10)->get(),
         ]);
     }
 

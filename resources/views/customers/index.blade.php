@@ -25,7 +25,10 @@
         <div class="divide-y divide-slate-100 md:hidden">
             @forelse ($customers as $customer)
                 <article class="p-4">
-                    <p class="font-bold text-ivy-navy">{{ $customer->name }}</p>
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="font-bold text-ivy-navy">{{ $customer->name }}</p>
+                        <span class="badge {{ $customer->status === 'active' ? 'badge-success' : ($customer->status === 'suspended' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($customer->status) }}</span>
+                    </div>
                     <p class="mt-1 text-sm text-slate-600">{{ $customer->type->name }} · {{ $customer->defaultSaleType?->name ?? 'Sale type pending' }}</p>
                     <p class="mt-1 text-sm text-slate-600">{{ $customer->normalized_phone ?: 'Phone pending' }}</p>
                     <div class="mt-4 flex justify-end gap-2">
@@ -51,7 +54,10 @@
                     @forelse ($customers as $customer)
                         <tr>
                             <td class="px-4 py-3">
-                                <p class="font-semibold text-ivy-navy">{{ $customer->name }}</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-semibold text-ivy-navy">{{ $customer->name }}</p>
+                                    <span class="badge {{ $customer->status === 'active' ? 'badge-success' : ($customer->status === 'suspended' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($customer->status) }}</span>
+                                </div>
                                 <p class="text-xs text-slate-500">{{ $customer->normalized_phone ?: 'Phone pending' }}{{ $customer->email ? ' · '.$customer->email : '' }}</p>
                             </td>
                             <td class="px-4 py-3">{{ $customer->type->name }}</td>

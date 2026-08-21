@@ -39,6 +39,9 @@ class OperationalDashboardService
             'paymentBreakdown' => collect(['Cash', 'MoMo', 'Credit'])->mapWithKeys(fn (string $method): array => [
                 $method => (float) ($paymentBreakdown[$method] ?? 0),
             ]),
+            // A credit sale never creates a SalePayment row (credit is a liability, not money received),
+            // so today's credit sales must be read from CreditInvoice, not from the payment breakdown above.
+            'creditSalesToday' => CreditInvoice::query()->whereDate('issue_date', $today)->sum('total'),
             'todayExpenses' => Expense::query()->whereDate('incurred_on', $today)->where('status', 'approved')->sum('amount'),
             'outstandingCredit' => CreditInvoice::query()->where('balance', '>', 0)->sum('balance'),
             'dueSoonCredit' => CreditInvoice::query()->where('balance', '>', 0)->whereBetween('due_date', [now()->addDay()->toDateString(), now()->addDays(7)->toDateString()])->sum('balance'),

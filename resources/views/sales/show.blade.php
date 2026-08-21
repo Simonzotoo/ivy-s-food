@@ -62,34 +62,48 @@
             </section>
             @can('sales.return')
                 @if ($sale->status === 'completed')
-                    <form method="POST" action="{{ route('sales.returns.store', $sale) }}" class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
-                        @csrf
+                    <section class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
                         <h3 class="text-base font-bold text-ivy-navy">Return item</h3>
-                        <label class="form-label mt-4" for="sale_item_id">Item</label>
-                        <select class="form-input" id="sale_item_id" name="items[0][sale_item_id]" required>
-                            @foreach ($sale->items as $item)
-                                <option value="{{ $item->id }}">{{ $item->productVariant->name }}</option>
-                            @endforeach
-                        </select>
-                        <label class="form-label mt-4" for="quantity">Quantity</label>
-                        <input class="form-input" id="quantity" name="items[0][quantity]" type="number" min="0.001" step="0.001" required>
-                        <label class="form-label mt-4" for="return_date">Return date</label>
-                        <input class="form-input" id="return_date" name="return_date" type="date" value="{{ now()->toDateString() }}" required>
-                        <label class="form-label mt-4" for="reason">Reason</label>
-                        <textarea class="form-input" id="reason" name="reason" rows="3" required></textarea>
-                        <button class="btn-primary mt-5 w-full" type="submit">Record return</button>
-                    </form>
+                        <p class="mt-1 text-sm text-slate-500">Puts the item back into stock and adjusts this sale's records.</p>
+                        <x-confirm-form
+                            action="{{ route('sales.returns.store', $sale) }}"
+                            trigger="Record return"
+                            button-class="btn-primary mt-5 w-full"
+                            message="Record this return? Stock will be increased and the sale total adjusted."
+                            confirm-label="Yes, record return"
+                        >
+                            <label class="form-label mt-4" for="sale_item_id">Item</label>
+                            <select class="form-input" id="sale_item_id" name="items[0][sale_item_id]" required>
+                                @foreach ($sale->items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->productVariant->name }}</option>
+                                @endforeach
+                            </select>
+                            <label class="form-label mt-4" for="quantity">Quantity</label>
+                            <input class="form-input" id="quantity" name="items[0][quantity]" type="number" min="0.001" step="0.001" required>
+                            <label class="form-label mt-4" for="return_date">Return date</label>
+                            <input class="form-input" id="return_date" name="return_date" type="date" value="{{ now()->toDateString() }}" required>
+                            <label class="form-label mt-4" for="reason">Reason <span class="text-ivy-red">*</span></label>
+                            <textarea class="form-input" id="reason" name="reason" rows="3" required></textarea>
+                        </x-confirm-form>
+                    </section>
                 @endif
             @endcan
             @can('sales.reverse')
                 @if ($sale->status === 'completed')
-                    <form method="POST" action="{{ route('sales.reverse', $sale) }}" class="rounded-md border border-red-200 bg-white p-6 shadow-sm">
-                        @csrf
+                    <section class="rounded-md border border-red-200 bg-white p-6 shadow-sm">
                         <h3 class="text-base font-bold text-ivy-navy">Reverse sale</h3>
-                        <label class="form-label mt-4" for="reverse_reason">Reason</label>
-                        <textarea class="form-input" id="reverse_reason" name="reason" rows="3" required></textarea>
-                        <button class="btn-secondary mt-5 w-full" type="submit">Reverse sale</button>
-                    </form>
+                        <p class="mt-1 text-sm text-slate-500">Cancels this entire sale, restores stock and reverses any credit or payments. This cannot be undone from here.</p>
+                        <x-confirm-form
+                            action="{{ route('sales.reverse', $sale) }}"
+                            trigger="Reverse sale"
+                            button-class="btn-secondary mt-5 w-full"
+                            message="Reverse the whole sale {{ $sale->sale_number }}? Stock will be restored and any payments or credit reversed. This cannot be undone from here."
+                            confirm-label="Yes, reverse this sale"
+                        >
+                            <label class="form-label mt-4" for="reverse_reason">Reason <span class="text-ivy-red">*</span></label>
+                            <textarea class="form-input" id="reverse_reason" name="reason" rows="3" required></textarea>
+                        </x-confirm-form>
+                    </section>
                 @endif
             @endcan
         </aside>

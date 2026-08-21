@@ -159,6 +159,47 @@ class Module7SalesTest extends TestCase
         $this->assertSame(1, FinishedStockMovement::query()->where('movement_type', 'sale_reversal')->count());
     }
 
+    public function test_sales_index_filters_by_search_type_and_payment_status(): void
+    {
+        $cashier = $this->userWithRole('Cashier / Sales Officer');
+        $variant = $this->activeVariant();
+        $this->finishedBatch($variant, 'FIN-FILTER-001', '2026-09-30', '10');
+        $customer = $this->customer();
+
+        $this->actingAs($cashier)->post('/sales', $this->salePayload($variant, 'Retail', '1', [['payment_method' => 'Cash', 'amount' => '5']], $customer));
+        $this->actingAs($cashier)->post('/sales', $this->salePayload($variant, 'Wholesale', '1', [['payment_method' => 'Credit', 'amount' => '0']], $customer));
+
+        $retailSale = Sale::query()->where('payment_status', 'paid')->firstOrFail();
+        $creditSale = Sale::query()->where('payment_status', '!=', 'paid')->firstOrFail();
+
+        $this->actingAs($cashier)->get('/sales?search='.$customer->name)
+            ->assertOk()->assertSee($retailSale->sale_number)->assertSee($creditSale->sale_number);
+
+        $this->actingAs($cashier)->get('/sales?payment_status=unpaid')
+            ->assertOk()->assertSee($creditSale->sale_number)->assertDontSee($retailSale->sale_number);
+
+        $wholesaleType = SaleType::query()->where('name', 'Wholesale')->firstOrFail();
+        $this->actingAs($cashier)->get('/sales?sale_type='.$wholesaleType->id)
+            ->assertOk()->assertSee($creditSale->sale_number)->assertDontSee($retailSale->sale_number);
+    }
+
+    public function test_dashboard_credit_sales_tile_reflects_credit_invoices_not_payments(): void
+    {
+        $cashier = $this->userWithRole('Cashier / Sales Officer');
+        $manager = $this->userWithRole('Manager');
+        $variant = $this->activeVariant();
+        $this->finishedBatch($variant, 'FIN-DASH-001', '2026-09-30', '10');
+        $customer = $this->customer();
+
+        $this->actingAs($cashier)->post('/sales', $this->salePayload($variant, 'Retail', '2', [['payment_method' => 'Credit', 'amount' => '0']], $customer))
+            ->assertRedirect();
+
+        $this->actingAs($manager)->get('/home')
+            ->assertOk()
+            ->assertSee('Credit Sales')
+            ->assertSee('GHS 10.00');
+    }
+
     public function test_module_seven_permission_seeder_is_idempotent(): void
     {
         $count = Role::query()->withCount('permissions')->get()->sum('permissions_count');

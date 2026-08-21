@@ -25,10 +25,30 @@
                     <dd class="mt-1 font-bold text-ivy-navy">GHS {{ $customer->outstanding_balance }}</dd>
                 </div>
             </dl>
-            <section class="mt-8 rounded-md border border-slate-200 bg-slate-50 p-5">
-                <h3 class="text-base font-bold text-ivy-navy">Purchase history</h3>
-                <p class="mt-3 text-sm text-slate-600">No sales records exist yet. This section will use live sales history after Module 7.</p>
-            </section>
+            @can('sales.view')
+                <section class="mt-8 rounded-md border border-slate-200 bg-slate-50 p-5">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-bold text-ivy-navy">Recent purchases</h3>
+                        <a href="{{ route('sales.index') }}" class="metric-link">View all sales</a>
+                    </div>
+                    <div class="mt-3 divide-y divide-slate-200">
+                        @forelse ($recentSales as $sale)
+                            <a href="{{ route('sales.show', $sale) }}" class="flex items-center justify-between gap-3 py-3 text-sm hover:bg-slate-100">
+                                <div>
+                                    <p class="font-semibold text-ivy-navy">{{ $sale->sale_number }}</p>
+                                    <p class="text-slate-500">{{ $sale->sale_date->format('d M Y') }} · {{ $sale->saleType->name }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-ivy-navy">GHS {{ number_format((float) $sale->total, 2) }}</p>
+                                    <span class="badge {{ $sale->payment_status === 'paid' ? 'badge-success' : ($sale->payment_status === 'unpaid' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($sale->payment_status) }}</span>
+                                </div>
+                            </a>
+                        @empty
+                            <p class="py-6 text-center text-sm text-slate-500">No sales recorded for this customer yet.</p>
+                        @endforelse
+                    </div>
+                </section>
+            @endcan
         </section>
 
         <aside class="space-y-5">

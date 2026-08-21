@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\CustomerCommunication;
 use App\Models\CustomerType;
 use App\Models\Role;
+use App\Models\Sale;
 use App\Models\SaleType;
 use App\Models\User;
 use Database\Seeders\CompanySettingsSeeder;
@@ -134,6 +135,40 @@ class Module6CustomersTest extends TestCase
 
         $this->assertSame(1, CustomerCommunication::query()->count());
         $this->assertDatabaseHas('audit_logs', ['event' => 'customer.communication_logged']);
+    }
+
+    public function test_customer_show_lists_recent_sales_only_for_authorized_roles(): void
+    {
+        $manager = $this->userWithRole('Manager');
+        $marketing = $this->userWithRole('Marketing Officer');
+        $customer = Customer::query()->create([
+            'customer_type_id' => CustomerType::query()->where('name', 'Shop')->firstOrFail()->id,
+            'name' => 'History Shop',
+            'status' => 'active',
+        ]);
+        $saleType = SaleType::query()->where('name', 'Retail')->firstOrFail();
+        Sale::query()->create([
+            'sale_number' => 'SALE-HIST-1',
+            'customer_id' => $customer->id,
+            'sale_type_id' => $saleType->id,
+            'sale_date' => now(),
+            'subtotal' => '20.00',
+            'total' => '20.00',
+            'balance_due' => '0.00',
+            'status' => 'completed',
+            'payment_status' => 'paid',
+        ]);
+
+        $this->actingAs($manager)->get(route('customers.show', $customer))
+            ->assertOk()
+            ->assertSee('Recent purchases')
+            ->assertSee('SALE-HIST-1');
+
+        // Marketing Officer can view the customer but has no sales.view permission,
+        // so the purchase-history section (and the sale number within it) must not appear.
+        $this->actingAs($marketing)->get(route('customers.show', $customer))
+            ->assertOk()
+            ->assertDontSee('SALE-HIST-1');
     }
 
     public function test_module_six_seeders_are_idempotent(): void

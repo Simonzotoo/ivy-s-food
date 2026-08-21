@@ -15,29 +15,47 @@ use Illuminate\View\View;
 
 class SalesController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $sales = Sale::query()
+            ->with(['customer', 'saleType', 'items'])
+            ->when($request->filled('search'), function ($query) use ($request): void {
+                $search = $request->string('search');
+                $query->where(fn ($inner) => $inner->where('sale_number', 'like', "%{$search}%")
+                    ->orWhereHas('customer', fn ($c) => $c->where('name', 'like', "%{$search}%")));
+            })
+            ->when($request->filled('sale_type'), fn ($query) => $query->where('sale_type_id', $request->integer('sale_type')))
+            ->when($request->filled('payment_status'), fn ($query) => $query->where('payment_status', $request->string('payment_status')))
+            ->latest('sale_date')
+            ->paginate(20)
+            ->withQueryString();
+
         return view('sales.index', [
-            'sales' => Sale::query()->with(['customer', 'saleType', 'items'])->latest('sale_date')->paginate(20),
+            'sales' => $sales,
+            'saleTypes' => SaleType::query()->orderBy('name')->get(),
         ]);
     }
 
-    public function pos(Request $request): View
+    public function pos(): View
     {
-        $variants = ProductVariant::query()
-            ->where('status', 'active')
-            ->when($request->filled('search'), function ($query) use ($request): void {
-                $search = $request->string('search');
-                $query->where(fn ($inner) => $inner->where('name', 'like', "%{$search}%")->orWhere('barcode', 'like', "%{$search}%")->orWhere('sku', 'like', "%{$search}%"));
-            })
-            ->orderBy('name')
-            ->limit(50)
-            ->get();
+        $variants = ProductVariant::query()->where('status', 'active')->orderBy('name')->get();
+        $customers = Customer::query()->where('status', 'active')->orderBy('name')->get();
 
         return view('sales.pos', [
-            'variants' => $variants,
-            'customers' => Customer::query()->where('status', 'active')->orderBy('name')->get(),
-            'saleTypes' => SaleType::query()->orderBy('name')->get(),
+            'variantOptions' => $variants->map(fn (ProductVariant $variant): array => [
+                'value' => $variant->id,
+                'label' => $variant->name,
+                'sublabel' => $variant->barcode ? 'Barcode '.$variant->barcode : ($variant->sku ? 'SKU '.$variant->sku : null),
+                'retail' => $variant->retail_price,
+                'wholesale' => $variant->wholesale_price,
+                'distributor' => $variant->distributor_price,
+            ])->values(),
+            'customerOptions' => $customers->map(fn (Customer $customer): array => [
+                'value' => $customer->id,
+                'label' => $customer->name,
+                'sublabel' => $customer->normalized_phone,
+            ])->values(),
+            'saleTypes' => SaleType::query()->orderBy('name')->get(['id', 'name', 'slug']),
         ]);
     }
 
