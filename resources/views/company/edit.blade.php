@@ -28,11 +28,13 @@
             @endforeach
             <div>
                 <label class="form-label" for="currency">Currency</label>
-                <input class="form-input" id="currency" name="currency" value="{{ old('currency', $settings->currency) }}" required readonly>
+                <input class="form-input bg-slate-100" id="currency" name="currency" value="{{ old('currency', $settings->currency) }}" required readonly>
+                <p class="mt-1 text-xs text-slate-500">Fixed for this system - contact your developer to change it.</p>
             </div>
             <div>
                 <label class="form-label" for="time_zone">Time zone</label>
-                <input class="form-input" id="time_zone" name="time_zone" value="{{ old('time_zone', $settings->time_zone) }}" required readonly>
+                <input class="form-input bg-slate-100" id="time_zone" name="time_zone" value="{{ old('time_zone', $settings->time_zone) }}" required readonly>
+                <p class="mt-1 text-xs text-slate-500">Fixed for this system - contact your developer to change it.</p>
             </div>
             <div>
                 <label class="form-label" for="default_credit_period_days">Default credit period</label>

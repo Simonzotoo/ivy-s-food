@@ -24,7 +24,7 @@
                                 <p class="font-semibold text-ivy-navy">{{ $user->name }}</p>
                                 <p class="text-xs text-slate-500">{{ $user->email }}{{ $user->phone ? ' · '.$user->phone : '' }}</p>
                             </td>
-                            <td class="px-4 py-3">{{ ucfirst($user->status) }}</td>
+                            <td class="px-4 py-3"><span class="badge {{ $user->status === 'active' ? 'badge-success' : 'badge-danger' }}">{{ ucfirst($user->status) }}</span></td>
                             <td class="px-4 py-3">{{ $user->roles->pluck('name')->join(', ') ?: 'No role' }}</td>
                             <td class="px-4 py-3">{{ $user->last_login_at?->format('d M Y H:i') ?? 'Never' }}</td>
                             <td class="px-4 py-3">
@@ -33,12 +33,15 @@
                                         <a href="{{ route('users.edit', $user) }}" class="btn-secondary">Edit</a>
                                     @endcan
                                     @can('users.activate_suspend')
-                                        <form method="POST" action="{{ route('users.status', $user) }}">
-                                            @csrf
+                                        <x-confirm-form
+                                            action="{{ route('users.status', $user) }}"
+                                            trigger="{{ $user->status === 'active' ? 'Suspend' : 'Activate' }}"
+                                            message="{{ $user->status === 'active' ? $user->name.' will no longer be able to sign in.' : 'Allow '.$user->name.' to sign in again?' }}"
+                                            confirm-label="Yes, {{ strtolower($user->status === 'active' ? 'suspend' : 'activate') }}"
+                                        >
                                             @method('PATCH')
                                             <input type="hidden" name="status" value="{{ $user->status === 'active' ? 'suspended' : 'active' }}">
-                                            <button class="btn-secondary" type="submit">{{ $user->status === 'active' ? 'Suspend' : 'Activate' }}</button>
-                                        </form>
+                                        </x-confirm-form>
                                     @endcan
                                 </div>
                             </td>
