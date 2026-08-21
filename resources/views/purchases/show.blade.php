@@ -32,13 +32,19 @@
                                     <td colspan="4" class="px-3 py-2 text-xs text-slate-600">
                                         Batch {{ $batch->lot_number ?: '#'.$batch->id }} · Available {{ $batch->quantity_available }} · Expires {{ $batch->expiry_date?->format('d M Y') ?? 'Not set' }}
                                         @can('purchases.return')
-                                            <form method="POST" action="{{ route('material-batches.return', $batch) }}" class="mt-2 grid gap-2 sm:grid-cols-[120px_140px_1fr_auto]">
-                                                @csrf
-                                                <input class="form-input mt-0" name="quantity" type="number" min="0.001" step="0.001" placeholder="Qty" required>
-                                                <input class="form-input mt-0" name="return_date" type="date" value="{{ now()->toDateString() }}" required>
-                                                <input class="form-input mt-0" name="reason" placeholder="Return reason" required>
-                                                <button class="btn-secondary" type="submit">Return</button>
-                                            </form>
+                                            <x-confirm-form
+                                                action="{{ route('material-batches.return', $batch) }}"
+                                                trigger="Return"
+                                                button-class="btn-secondary"
+                                                message="Return stock from this batch to the supplier? This reduces available quantity and cannot be undone here."
+                                                confirm-label="Yes, record return"
+                                            >
+                                                <div class="mb-2 grid gap-2 sm:grid-cols-3">
+                                                    <input class="form-input mt-0" name="quantity" type="number" min="0.001" step="0.001" placeholder="Qty" required>
+                                                    <input class="form-input mt-0" name="return_date" type="date" value="{{ now()->toDateString() }}" required>
+                                                    <input class="form-input mt-0" name="reason" placeholder="Return reason" required>
+                                                </div>
+                                            </x-confirm-form>
                                         @endcan
                                     </td>
                                 </tr>
@@ -64,24 +70,31 @@
                 @if ($purchase->status === 'received')
                     <p class="mt-3 text-sm text-slate-600">This purchase has already been received.</p>
                 @else
-                    <form method="POST" action="{{ route('purchases.receive', $purchase) }}" class="mt-4 space-y-4">
-                        @csrf
-                        <div>
-                            <label class="form-label" for="received_date">Received date</label>
-                            <input class="form-input" id="received_date" name="received_date" type="date" value="{{ now()->toDateString() }}" required>
-                        </div>
-                        @foreach ($purchase->items as $item)
-                            <div class="rounded-md border border-slate-200 bg-slate-50 p-3">
-                                <p class="text-sm font-semibold text-ivy-navy">{{ $item->material->name }}</p>
-                                <input type="hidden" name="batches[{{ $loop->index }}][purchase_item_id]" value="{{ $item->id }}">
-                                <label class="form-label mt-3" for="lot-{{ $item->id }}">Lot number</label>
-                                <input class="form-input" id="lot-{{ $item->id }}" name="batches[{{ $loop->index }}][lot_number]">
-                                <label class="form-label mt-3" for="expiry-{{ $item->id }}">Expiry date</label>
-                                <input class="form-input" id="expiry-{{ $item->id }}" name="batches[{{ $loop->index }}][expiry_date]" type="date">
+                    <p class="mt-1 text-sm text-slate-500">Add the lot number and expiry date for each item, if known, then confirm. This creates the stock batches.</p>
+                    <x-confirm-form
+                        action="{{ route('purchases.receive', $purchase) }}"
+                        trigger="Receive purchase"
+                        button-class="btn-primary w-full mt-4"
+                        message="Receive this purchase now? Stock batches will be created for every item and become available immediately."
+                        confirm-label="Yes, receive it"
+                    >
+                        <div class="space-y-4">
+                            <div>
+                                <label class="form-label" for="received_date">Received date</label>
+                                <input class="form-input" id="received_date" name="received_date" type="date" value="{{ now()->toDateString() }}" required>
                             </div>
-                        @endforeach
-                        <button class="btn-primary w-full" type="submit">Receive purchase</button>
-                    </form>
+                            @foreach ($purchase->items as $item)
+                                <div class="rounded-md border border-slate-200 bg-slate-50 p-3">
+                                    <p class="text-sm font-semibold text-ivy-navy">{{ $item->material->name }}</p>
+                                    <input type="hidden" name="batches[{{ $loop->index }}][purchase_item_id]" value="{{ $item->id }}">
+                                    <label class="form-label mt-3" for="lot-{{ $item->id }}">Lot number</label>
+                                    <input class="form-input" id="lot-{{ $item->id }}" name="batches[{{ $loop->index }}][lot_number]">
+                                    <label class="form-label mt-3" for="expiry-{{ $item->id }}">Expiry date</label>
+                                    <input class="form-input" id="expiry-{{ $item->id }}" name="batches[{{ $loop->index }}][expiry_date]" type="date">
+                                </div>
+                            @endforeach
+                        </div>
+                    </x-confirm-form>
                 @endif
             </aside>
         @endcan

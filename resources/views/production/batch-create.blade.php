@@ -1,18 +1,22 @@
 <x-layouts.app title="Record Production">
     <form method="POST" action="{{ route('production.batches.store') }}" class="space-y-5 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         @csrf
+        <p class="text-sm text-slate-500">Starting a batch reserves the recipe's materials. Come back here to complete it once production finishes.</p>
         <div>
-            <label class="form-label" for="recipe_id">Approved recipe</label>
+            <label class="form-label" for="recipe_id">Approved recipe <span class="text-ivy-red">*</span></label>
             <select class="form-input" id="recipe_id" name="recipe_id" required>
                 @foreach ($recipes as $recipe)
                     <option value="{{ $recipe->id }}">{{ $recipe->productVariant->name }} v{{ $recipe->version }}</option>
                 @endforeach
             </select>
+            @if ($recipes->isEmpty())
+                <p class="mt-1 text-xs text-amber-700">No approved recipes yet - ask a manager to approve one first.</p>
+            @endif
         </div>
         <div>
             <label class="form-label" for="production_plan_id">Production plan</label>
             <select class="form-input" id="production_plan_id" name="production_plan_id">
-                <option value="">No plan</option>
+                <option value="">No plan - record this batch directly</option>
                 @foreach ($plans as $plan)
                     <option value="{{ $plan->id }}">{{ $plan->productVariant->name }} · {{ $plan->planned_date->format('d M Y') }}</option>
                 @endforeach

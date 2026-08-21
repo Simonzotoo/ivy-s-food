@@ -80,29 +80,43 @@
         <aside class="space-y-5">
             @can('production.complete')
                 @if ($batch->status === 'draft')
-                    <form method="POST" action="{{ route('production.batches.complete', $batch) }}" class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
-                        @csrf
+                    <section class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
                         <h3 class="text-base font-bold text-ivy-navy">Complete batch</h3>
-                        <label class="form-label mt-4" for="actual_output_quantity">Accepted output</label>
-                        <input class="form-input" id="actual_output_quantity" name="actual_output_quantity" type="number" min="0" step="0.001" required>
-                        <label class="form-label mt-4" for="rejected_quantity">Rejected output</label>
-                        <input class="form-input" id="rejected_quantity" name="rejected_quantity" type="number" min="0" step="0.001" value="0">
-                        <label class="form-label mt-4" for="wastage_quantity">Wastage</label>
-                        <input class="form-input" id="wastage_quantity" name="wastage_quantity" type="number" min="0" step="0.001" value="0">
-                        <button class="btn-primary mt-5 w-full" type="submit">Complete production</button>
-                    </form>
+                        <p class="mt-1 text-sm text-slate-500">This records the finished stock and deducts the materials actually used.</p>
+                        <x-confirm-form
+                            action="{{ route('production.batches.complete', $batch) }}"
+                            trigger="Complete production"
+                            button-class="btn-primary mt-5 w-full"
+                            message="Complete this production batch? Finished stock will be added and materials deducted - this cannot be undone from here except by reversing the whole batch."
+                            confirm-label="Yes, complete it"
+                        >
+                            <label class="form-label mt-4" for="actual_output_quantity">Accepted output <span class="text-ivy-red">*</span></label>
+                            <input class="form-input" id="actual_output_quantity" name="actual_output_quantity" type="number" min="0" step="0.001" required>
+                            <label class="form-label mt-4" for="rejected_quantity">Rejected output</label>
+                            <input class="form-input" id="rejected_quantity" name="rejected_quantity" type="number" min="0" step="0.001" value="0">
+                            <label class="form-label mt-4" for="wastage_quantity">Wastage</label>
+                            <input class="form-input" id="wastage_quantity" name="wastage_quantity" type="number" min="0" step="0.001" value="0">
+                        </x-confirm-form>
+                    </section>
                 @endif
             @endcan
 
             @can('production.reverse')
                 @if ($batch->status === 'completed')
-                    <form method="POST" action="{{ route('production.batches.reverse', $batch) }}" class="rounded-md border border-red-200 bg-white p-6 shadow-sm">
-                        @csrf
+                    <section class="rounded-md border border-red-200 bg-white p-6 shadow-sm">
                         <h3 class="text-base font-bold text-ivy-navy">Reverse batch</h3>
-                        <label class="form-label mt-4" for="reason">Reason</label>
-                        <textarea class="form-input" id="reason" name="reason" rows="3" required></textarea>
-                        <button class="btn-secondary mt-5 w-full" type="submit">Reverse production</button>
-                    </form>
+                        <p class="mt-1 text-sm text-slate-500">Cancels this batch, restores the materials used and removes the finished stock it created.</p>
+                        <x-confirm-form
+                            action="{{ route('production.batches.reverse', $batch) }}"
+                            trigger="Reverse production"
+                            button-class="btn-secondary mt-5 w-full"
+                            message="Reverse batch {{ $batch->batch_number }}? Materials will be restored and the finished stock it created will be removed. This cannot be undone."
+                            confirm-label="Yes, reverse this batch"
+                        >
+                            <label class="form-label mt-4" for="reason">Reason <span class="text-ivy-red">*</span></label>
+                            <textarea class="form-input" id="reason" name="reason" rows="3" required></textarea>
+                        </x-confirm-form>
+                    </section>
                 @endif
             @endcan
         </aside>

@@ -7,13 +7,15 @@
                 <p class="mt-1 text-sm text-slate-600">Expected output: {{ $recipe->expected_output_quantity ?? 'Not set' }} {{ $recipe->outputUnit?->symbol }}</p>
             </div>
             <div class="flex items-center gap-2">
-                <span class="rounded-full px-2 py-1 text-xs font-semibold {{ $recipe->status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">{{ ucfirst($recipe->status) }}</span>
+                <span class="badge {{ $recipe->status === 'approved' ? 'badge-success' : 'badge-warning' }}">{{ ucfirst($recipe->status) }}</span>
                 @can('recipes.approve')
                     @if ($recipe->status !== 'approved')
-                        <form method="POST" action="{{ route('recipes.approve', $recipe) }}">
-                            @csrf
-                            <button class="btn-primary" type="submit">Approve</button>
-                        </form>
+                        <x-confirm-form
+                            action="{{ route('recipes.approve', $recipe) }}"
+                            trigger="Approve"
+                            message="Approve this recipe? Once approved it can be used to start production."
+                            confirm-label="Yes, approve"
+                        />
                     @endif
                 @endcan
             </div>

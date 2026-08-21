@@ -22,12 +22,21 @@
                     @forelse ($materials as $material)
                         <tr>
                             <td class="px-4 py-3">
-                                <p class="font-semibold text-ivy-navy">{{ $material->name }}</p>
-                                <p class="text-xs text-slate-500">SKU: {{ $material->sku ?: 'Pending' }} · {{ ucfirst($material->status) }}</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-semibold text-ivy-navy">{{ $material->name }}</p>
+                                    <span class="badge {{ $material->status === 'active' ? 'badge-success' : '' }}">{{ ucfirst($material->status) }}</span>
+                                </div>
+                                <p class="text-xs text-slate-500">SKU: {{ $material->sku ?: 'Pending' }}</p>
                             </td>
                             <td class="px-4 py-3">{{ $material->category->name }}</td>
                             <td class="px-4 py-3">{{ $material->baseUnit->symbol }}</td>
-                            <td class="px-4 py-3">{{ $material->availableQuantity() }}</td>
+                            <td class="px-4 py-3">
+                                @php($low = $material->reorder_level !== null && (float) $material->availableQuantity() <= (float) $material->reorder_level)
+                                <span class="{{ $low ? 'font-semibold text-ivy-red' : '' }}">{{ $material->availableQuantity() }}</span>
+                                @if ($low)
+                                    <span class="badge badge-warning ml-1">Low</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3">{{ $material->reorder_level ?? 'Pending' }}</td>
                             <td class="px-4 py-3 text-right">
                                 @can('materials.manage')

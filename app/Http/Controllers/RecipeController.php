@@ -22,7 +22,16 @@ class RecipeController extends Controller
 
     public function create(): View
     {
-        return view('recipes.create', $this->formData());
+        $data = $this->formData();
+
+        return view('recipes.create', $data + [
+            'materialOptions' => $data['materials']->map(fn (Material $material): array => [
+                'value' => $material->id,
+                'label' => $material->name,
+                'sublabel' => $material->sku ? 'SKU '.$material->sku : null,
+                'unit_id' => $material->base_unit_id,
+            ])->values(),
+        ]);
     }
 
     public function store(Request $request, RecipeProductionService $service): RedirectResponse

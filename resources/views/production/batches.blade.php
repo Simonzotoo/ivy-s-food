@@ -15,7 +15,7 @@
                             <p class="mt-1 text-sm text-slate-600">{{ $batch->productVariant->name }} · {{ $batch->production_date->format('d M Y') }} · {{ $batch->planned_quantity }} planned</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="rounded-full px-2 py-1 text-xs font-semibold {{ $batch->status === 'completed' ? 'bg-emerald-100 text-emerald-800' : ($batch->status === 'reversed' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800') }}">{{ ucfirst($batch->status) }}</span>
+                            <span class="badge {{ $batch->status === 'completed' ? 'badge-success' : ($batch->status === 'reversed' ? '' : 'badge-warning') }}">{{ ucfirst($batch->status) }}</span>
                             <a href="{{ route('production.batches.show', $batch) }}" class="btn-secondary">Open</a>
                         </div>
                     </div>

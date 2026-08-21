@@ -22,7 +22,7 @@
                         <tr>
                             <td class="px-4 py-3 font-semibold text-ivy-navy">{{ $supplier->name }}</td>
                             <td class="px-4 py-3 text-slate-700">{{ $supplier->phone ?: 'Phone pending' }}{{ $supplier->email ? ' · '.$supplier->email : '' }}</td>
-                            <td class="px-4 py-3">{{ ucfirst($supplier->status) }}</td>
+                            <td class="px-4 py-3"><span class="badge {{ $supplier->status === 'active' ? 'badge-success' : '' }}">{{ ucfirst($supplier->status) }}</span></td>
                             <td class="px-4 py-3">{{ $supplier->purchases_count }}</td>
                             <td class="px-4 py-3 text-right">
                                 @can('suppliers.manage')

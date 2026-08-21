@@ -15,16 +15,32 @@ use Illuminate\View\View;
 
 class PurchaseController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('purchases.index', [
-            'purchases' => Purchase::query()->with(['supplier', 'items'])->latest()->paginate(15),
-        ]);
+        $purchases = Purchase::query()
+            ->with(['supplier', 'items'])
+            ->when($request->filled('search'), fn ($query) => $query->where('purchase_number', 'like', '%'.$request->string('search').'%')
+                ->orWhereHas('supplier', fn ($s) => $s->where('name', 'like', '%'.$request->string('search').'%')))
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('purchases.index', ['purchases' => $purchases]);
     }
 
     public function create(): View
     {
-        return view('purchases.create', $this->formData());
+        $data = $this->formData();
+
+        return view('purchases.create', $data + [
+            'materialOptions' => $data['materials']->map(fn (Material $material): array => [
+                'value' => $material->id,
+                'label' => $material->name,
+                'sublabel' => $material->sku ? 'SKU '.$material->sku : null,
+                'unit_id' => $material->base_unit_id,
+            ])->values(),
+        ]);
     }
 
     public function store(Request $request, PurchaseService $service): RedirectResponse
