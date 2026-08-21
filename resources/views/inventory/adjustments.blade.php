@@ -1,4 +1,4 @@
-<x-layouts.app title="Stock Adjustments">
+<x-layouts.app title="Adjust Stock">
     <form method="POST" action="{{ route('inventory.adjustments.store') }}" class="mb-6 grid gap-4 rounded-md border border-slate-200 bg-white p-5 shadow-sm lg:grid-cols-[120px_1fr_180px_140px_1fr_auto]">
         @csrf
         <select class="form-input mt-0" name="stock_type" required>

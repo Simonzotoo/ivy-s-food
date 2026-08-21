@@ -59,16 +59,12 @@ class Module11DashboardReportsTest extends TestCase
 
         $this->actingAs($manager)->get('/home')
             ->assertOk()
-            ->assertSee("Today's sales", false)
+            ->assertSee("Today's Sales", false)
             ->assertSee('GHS 25.00')
-            ->assertSee('Outstanding credit')
-            ->assertSee('Analytics')
-            ->assertSee('Charts from actual sales, payments and stock activity.')
-            ->assertSee('Payment mix today')
-            ->assertSee('Top products')
-            ->assertSee('conic-gradient', false)
+            ->assertSee('Customers Owing')
+            ->assertSee('Quick actions')
             ->assertSee('GHS 12.00')
-            ->assertSee("Today's expenses", false);
+            ->assertSee("Today's Expenses", false);
     }
 
     public function test_reports_render_all_defined_report_types(): void
@@ -127,7 +123,7 @@ class Module11DashboardReportsTest extends TestCase
             'sale_number' => 'SALE-REPORT',
             'customer_id' => $customer->id,
             'sale_type_id' => $saleType->id,
-            'sale_date' => '2026-08-20 10:00:00',
+            'sale_date' => now()->format('Y-m-d').' 10:00:00',
             'subtotal' => '25.00',
             'total' => '25.00',
             'amount_paid' => '13.00',
@@ -146,14 +142,14 @@ class Module11DashboardReportsTest extends TestCase
             'sale_id' => $sale->id,
             'payment_method' => 'Cash',
             'amount' => '13.00',
-            'received_at' => '2026-08-20 10:02:00',
+            'received_at' => now()->format('Y-m-d').' 10:02:00',
         ]);
         CreditInvoice::query()->create([
             'invoice_number' => 'INV-REPORT',
             'sale_id' => $sale->id,
             'customer_id' => $customer->id,
-            'issue_date' => '2026-08-20',
-            'due_date' => '2026-08-20',
+            'issue_date' => now()->toDateString(),
+            'due_date' => now()->toDateString(),
             'total' => '12.00',
             'balance' => '12.00',
             'status' => 'due_today',
@@ -162,7 +158,7 @@ class Module11DashboardReportsTest extends TestCase
         Expense::query()->create([
             'expense_number' => 'EXP-REPORT',
             'expense_category_id' => $category->id,
-            'incurred_on' => '2026-08-20',
+            'incurred_on' => now()->toDateString(),
             'payment_method' => 'Cash',
             'amount' => '4.00',
             'description' => 'Report expense.',

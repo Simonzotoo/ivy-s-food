@@ -1,4 +1,4 @@
-<x-layouts.app title="Material Stock Movements">
+<x-layouts.app title="Materials Used">
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-sm">

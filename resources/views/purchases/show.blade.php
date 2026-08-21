@@ -60,7 +60,7 @@
         </section>
         @can('purchases.receive')
             <aside class="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 class="text-base font-bold text-ivy-navy">Receive goods</h2>
+                <h2 class="text-base font-bold text-ivy-navy">Receive Purchase</h2>
                 @if ($purchase->status === 'received')
                     <p class="mt-3 text-sm text-slate-600">This purchase has already been received.</p>
                 @else

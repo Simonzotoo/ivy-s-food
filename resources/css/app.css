@@ -47,4 +47,60 @@
     .nav-link-active {
         @apply bg-ivy-red text-white;
     }
+
+    .nav-sublink {
+        @apply ml-2 flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white;
+    }
+
+    .nav-section-label {
+        @apply px-3 text-xs font-bold uppercase tracking-wide text-slate-400;
+    }
+
+    .nav-group {
+        @apply rounded-md;
+    }
+
+    .nav-group summary {
+        @apply cursor-pointer list-none rounded-md px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400 transition hover:bg-white/5 hover:text-white;
+    }
+
+    .nav-group summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .quick-action {
+        @apply inline-flex min-h-12 items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-3 text-center text-sm font-bold text-ivy-navy shadow-sm transition hover:border-ivy-red hover:text-ivy-red focus:outline-none focus:ring-2 focus:ring-ivy-red focus:ring-offset-2;
+    }
+
+    .metric-card {
+        @apply rounded-md border border-slate-200 bg-white p-5 shadow-sm;
+    }
+
+    .metric-label {
+        @apply text-sm font-semibold text-slate-500;
+    }
+
+    .metric-value {
+        @apply mt-2 text-3xl font-bold text-ivy-navy;
+    }
+
+    .metric-note {
+        @apply mt-1 text-xs text-slate-500;
+    }
+
+    .metric-link {
+        @apply mt-2 inline-flex text-xs font-bold text-ivy-red hover:text-red-700;
+    }
+
+    .calm-panel {
+        @apply rounded-md border border-slate-200 bg-white p-5 shadow-sm;
+    }
+
+    .panel-title {
+        @apply text-base font-bold text-ivy-navy;
+    }
+
+    .panel-help {
+        @apply mt-1 text-sm text-slate-500;
+    }
 }

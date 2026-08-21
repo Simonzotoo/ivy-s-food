@@ -6,6 +6,10 @@ Laravel 13 modular monolith for Ivy's Food, a Ghana-based yoghurt and fruit juic
 
 Modules 1 through 13 are `Tested`. Approval is reserved for the project owner.
 
+## Staff-Facing Navigation
+
+Navigation is organized around daily work rather than internal module names: Home, Sales, Production, Inventory, Purchases, Customers, Credit, Expenses and Reports, with Communication, Data Imports, Administration and Settings grouped separately for occasional/administrative use. See `docs/ux-simplification-audit.md` for the full findings and validation record.
+
 ## Local Setup
 
 ```bash

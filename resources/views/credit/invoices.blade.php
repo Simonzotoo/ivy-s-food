@@ -1,4 +1,4 @@
-<x-layouts.app title="Credit Invoices">
+<x-layouts.app title="Customers Owing">
     <div class="mb-5 flex flex-wrap gap-3">
         <a href="{{ route('credit.payments') }}" class="btn-secondary">Payments</a>
         <a href="{{ route('credit.aging') }}" class="btn-secondary">Aging</a>

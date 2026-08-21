@@ -19,3 +19,7 @@ This is the authoritative module status file. Only the project owner may set any
 | 13 | Security, Performance, Deployment and Final Acceptance | Tested | `f570de4`, documentation correction `b98d278` | Full security/performance/deployment review and final acceptance checklist. |
 
 Roadmap basis: requirements document dated 18 August 2026 plus the controlled engineering sequence authorized on 20 August 2026.
+
+## Staff-facing UX simplification (21 August 2026)
+
+A cross-module presentation pass reorganized navigation, the dashboard and selected screen labels around daily staff workflows. No module's status, business logic, calculations, permissions or data changed. See `docs/ux-simplification-audit.md` for findings and validation. Module 12 (imports) is being extended next with a redesigned upload/mapping/dry-run flow and a customer import safety rework; see that module's own status file once updated.

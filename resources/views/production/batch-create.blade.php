@@ -1,4 +1,4 @@
-<x-layouts.app title="Create Production Batch">
+<x-layouts.app title="Record Production">
     <form method="POST" action="{{ route('production.batches.store') }}" class="space-y-5 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         @csrf
         <div>

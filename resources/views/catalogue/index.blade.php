@@ -1,4 +1,4 @@
-<x-layouts.app title="Product Catalogue">
+<x-layouts.app title="Products and Sizes">
     <div class="mb-5 grid gap-4 md:grid-cols-3">
         <div class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
             <p class="text-sm font-semibold text-slate-500">Categories</p>

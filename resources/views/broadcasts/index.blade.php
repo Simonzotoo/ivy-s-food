@@ -1,4 +1,4 @@
-<x-layouts.app title="Broadcasts">
+<x-layouts.app title="Customer Messages">
     <div class="mb-5 flex flex-wrap items-center justify-end gap-2">
         @can('broadcasts.manage_consent')
             <a href="{{ route('broadcasts.consent') }}" class="btn-secondary">Consent</a>

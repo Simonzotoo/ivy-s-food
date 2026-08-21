@@ -1,4 +1,4 @@
-<x-layouts.app title="Create Purchase">
+<x-layouts.app title="Add Purchase">
     <form method="POST" action="{{ route('purchases.store') }}" class="space-y-6 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         @csrf
         <div class="grid gap-5 md:grid-cols-2">

@@ -1,4 +1,4 @@
-<x-layouts.app title="Stock Movements">
+<x-layouts.app title="Stock History">
     <div class="grid gap-6 xl:grid-cols-2">
         <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-base font-bold text-ivy-navy">Raw-material movements</h2>
