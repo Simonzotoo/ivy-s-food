@@ -10,14 +10,17 @@
                 <article class="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <p class="font-bold text-ivy-navy">{{ ucfirst($stocktake->stock_type) }} stocktake · {{ $stocktake->stocktake_date->format('d M Y') }}</p>
-                        <p class="text-sm text-slate-600">{{ $stocktake->items_count }} item(s) · {{ ucfirst(str_replace('_', ' ', $stocktake->status)) }}</p>
+                        <p class="mt-1 text-sm text-slate-600">{{ $stocktake->items_count }} item(s)</p>
+                        <span class="badge {{ $stocktake->status === 'approved' ? 'badge-success' : 'badge-warning' }}">{{ ucfirst(str_replace('_', ' ', $stocktake->status)) }}</span>
                     </div>
                     @can('inventory.approve_stocktake')
                         @if ($stocktake->status === 'pending_review')
-                            <form method="POST" action="{{ route('inventory.stocktakes.approve', $stocktake) }}">
-                                @csrf
-                                <button class="btn-primary" type="submit">Approve variances</button>
-                            </form>
+                            <x-confirm-form
+                                action="{{ route('inventory.stocktakes.approve', $stocktake) }}"
+                                trigger="Approve variances"
+                                message="Approve this stocktake's variances? Stock will be adjusted to match the counted quantities."
+                                confirm-label="Yes, approve"
+                            />
                         @endif
                     @endcan
                 </article>

@@ -22,14 +22,25 @@ class InventoryController extends Controller
     public function index(): View
     {
         $settings = CompanySetting::query()->first();
-        $expiryDays = $settings?->default_expiry_alert_days;
+        $expiryDays = $settings?->default_expiry_alert_days ?? 14;
+
+        $materials = Material::query()->with(['category', 'baseUnit', 'batches'])->orderBy('name')->get();
+        $variants = ProductVariant::query()->with('finishedBatches')->orderBy('name')->get();
+
+        $needsAttention = FinishedProductBatch::query()
+            ->with('productVariant')
+            ->where(fn ($q) => $q->where('quantity_damaged', '>', 0)->orWhere('quantity_quarantined', '>', 0))
+            ->get();
 
         return view('inventory.index', [
-            'materials' => Material::query()->with(['category', 'baseUnit', 'batches'])->orderBy('name')->get(),
-            'variants' => ProductVariant::query()->with('finishedBatches')->orderBy('name')->get(),
+            'materials' => $materials,
+            'variants' => $variants,
+            'lowRawMaterials' => $materials->filter(fn (Material $m) => $m->reorder_level !== null && (float) $m->availableQuantity() <= (float) $m->reorder_level),
+            'lowFinishedProducts' => $variants->filter(fn (ProductVariant $v) => $v->reorder_level !== null && (float) $v->finishedBatches->sum('quantity_available') <= (float) $v->reorder_level),
             'pendingOutputs' => ProductionOutput::query()->where('status', 'pending_inventory')->with('productVariant', 'productionBatch')->latest()->get(),
-            'nearExpiryFinished' => $expiryDays === null ? collect() : FinishedProductBatch::query()->whereDate('expiry_date', '<=', now()->addDays($expiryDays))->where('quantity_available', '>', 0)->get(),
-            'expiredFinished' => FinishedProductBatch::query()->whereDate('expiry_date', '<', now()->toDateString())->where('quantity_available', '>', 0)->get(),
+            'nearExpiryFinished' => FinishedProductBatch::query()->with('productVariant')->whereDate('expiry_date', '>=', now()->toDateString())->whereDate('expiry_date', '<=', now()->addDays($expiryDays))->where('quantity_available', '>', 0)->get(),
+            'expiredFinished' => FinishedProductBatch::query()->with('productVariant')->whereDate('expiry_date', '<', now()->toDateString())->where('quantity_available', '>', 0)->get(),
+            'needsAttention' => $needsAttention,
         ]);
     }
 
@@ -50,10 +61,24 @@ class InventoryController extends Controller
 
     public function adjustments(): View
     {
+        $rawBatches = MaterialBatch::query()->with('material')->where('quantity_available', '>', 0)->latest()->get();
+        $finishedBatches = FinishedProductBatch::query()->with('productVariant')->where('quantity_available', '>', 0)->latest()->get();
+
         return view('inventory.adjustments', [
             'adjustments' => StockAdjustment::query()->with(['materialBatch.material', 'finishedProductBatch.productVariant'])->latest()->paginate(20),
-            'rawBatches' => MaterialBatch::query()->with('material')->where('quantity_available', '>', 0)->latest()->get(),
-            'finishedBatches' => FinishedProductBatch::query()->with('productVariant')->where('quantity_available', '>', 0)->latest()->get(),
+            'rawBatches' => $rawBatches,
+            'finishedBatches' => $finishedBatches,
+            'batchOptions' => $rawBatches->map(fn (MaterialBatch $batch): array => [
+                'value' => $batch->id,
+                'stock_type' => 'raw',
+                'label' => 'Raw: '.$batch->material->name.' #'.$batch->id,
+                'sublabel' => 'Available '.$batch->quantity_available,
+            ])->values()->concat($finishedBatches->map(fn (FinishedProductBatch $batch): array => [
+                'value' => $batch->id,
+                'stock_type' => 'finished',
+                'label' => 'Finished: '.$batch->productVariant->name.' '.$batch->batch_number,
+                'sublabel' => 'Available '.$batch->quantity_available,
+            ])->values()),
         ]);
     }
 
@@ -92,9 +117,22 @@ class InventoryController extends Controller
 
     public function createStocktake(): View
     {
+        $rawBatches = MaterialBatch::query()->with('material')->where('quantity_available', '>', 0)->latest()->limit(30)->get();
+        $finishedBatches = FinishedProductBatch::query()->with('productVariant')->where('quantity_available', '>', 0)->latest()->limit(30)->get();
+
         return view('inventory.stocktake-create', [
-            'rawBatches' => MaterialBatch::query()->with('material')->where('quantity_available', '>', 0)->latest()->limit(30)->get(),
-            'finishedBatches' => FinishedProductBatch::query()->with('productVariant')->where('quantity_available', '>', 0)->latest()->limit(30)->get(),
+            'rawBatches' => $rawBatches,
+            'finishedBatches' => $finishedBatches,
+            'rawBatchOptions' => $rawBatches->map(fn (MaterialBatch $batch): array => [
+                'value' => $batch->id,
+                'label' => $batch->material->name.' #'.$batch->id,
+                'sublabel' => 'System quantity: '.$batch->quantity_available,
+            ])->values(),
+            'finishedBatchOptions' => $finishedBatches->map(fn (FinishedProductBatch $batch): array => [
+                'value' => $batch->id,
+                'label' => $batch->productVariant->name.' '.$batch->batch_number,
+                'sublabel' => 'System quantity: '.$batch->quantity_available,
+            ])->values(),
         ]);
     }
 
