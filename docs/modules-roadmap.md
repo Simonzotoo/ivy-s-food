@@ -27,3 +27,16 @@ A cross-module presentation pass reorganized navigation, the dashboard and selec
 ## Module 12 import engine rebuild (21 August 2026)
 
 Module 12's paste-CSV-only import flow was redesigned into a full file-upload (CSV/XLSX), column-mapping, dry-run-preview and granular-permission engine, prioritizing customer import safety (Ghanaian phone normalization, duplicate detection, an explicit Skip/Update/Stop-and-review strategy defaulting to the safest option, and dependency-checked rollback). Supplier, raw-material, product-status, barcode, price, opening-stock and open-credit-balance imports were migrated onto the same engine. See `docs/module-12/status.md` and `docs/module-12/customer-import-guide.md`.
+
+## Six-group workflow simplification sweep (21 August 2026)
+
+Following the navigation/dashboard rework and the import rebuild above, every daily-use workflow was audited and simplified in six controlled groups, each with its own commit, tests and documentation:
+
+1. Sales and customers - `docs/ux-simplification-group-1-sales-customers.md`
+2. Purchases and production - `docs/ux-simplification-group-2-purchases-production.md`
+3. Inventory - `docs/ux-simplification-group-3-inventory.md`
+4. Credit and payments - `docs/ux-simplification-group-4-credit-payments.md`
+5. Expenses, communication and reports - `docs/ux-simplification-group-5-expenses-communication-reports.md`
+6. Administration and settings - `docs/ux-simplification-group-6-administration-settings.md`
+
+The full 20-step acceptance walkthrough (customer creation/import through to a complete purchase-production-sale-payment-expense cycle and dashboard/report review) is recorded in `docs/ux-simplification-acceptance-walkthrough.md`. No module's business logic, permissions or calculations changed; no module was marked Approved.
