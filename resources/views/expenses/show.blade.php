@@ -12,7 +12,7 @@
             <dl class="mt-6 grid gap-4 md:grid-cols-3">
                 <div class="rounded-md border border-slate-200 bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Date</dt><dd class="mt-1 font-bold text-ivy-navy">{{ $expense->incurred_on->format('d M Y') }}</dd></div>
                 <div class="rounded-md border border-slate-200 bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Method</dt><dd class="mt-1 font-bold text-ivy-navy">{{ $expense->payment_method }}</dd></div>
-                <div class="rounded-md border border-slate-200 bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Status</dt><dd class="mt-1 font-bold text-ivy-navy">{{ ucfirst($expense->status) }}</dd></div>
+                <div class="rounded-md border border-slate-200 bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Status</dt><dd class="mt-1"><span class="badge {{ $expense->status === 'approved' ? 'badge-success' : ($expense->status === 'rejected' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($expense->status) }}</span></dd></div>
             </dl>
             @if ($expense->receipt_path || $expense->receipt_original_name)
                 <div class="mt-6 rounded-md border border-slate-200 bg-slate-50 p-4 text-sm">
@@ -37,16 +37,27 @@
             </div>
             @can('expenses.approve')
                 @if ($expense->status === 'pending')
-                    <form method="POST" action="{{ route('expenses.approve', $expense) }}" class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-                        @csrf
-                        <button class="btn-primary w-full" type="submit">Approve expense</button>
-                    </form>
-                    <form method="POST" action="{{ route('expenses.reject', $expense) }}" class="space-y-3 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-                        @csrf
-                        <label class="form-label" for="rejection_reason">Rejection reason</label>
-                        <textarea class="form-input" id="rejection_reason" name="rejection_reason" rows="3" required></textarea>
-                        <button class="btn-secondary w-full" type="submit">Reject expense</button>
-                    </form>
+                    <div class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+                        <x-confirm-form
+                            action="{{ route('expenses.approve', $expense) }}"
+                            trigger="Approve expense"
+                            button-class="btn-primary w-full"
+                            message="Approve this GHS {{ number_format((float) $expense->amount, 2) }} expense?"
+                            confirm-label="Yes, approve"
+                        />
+                    </div>
+                    <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+                        <x-confirm-form
+                            action="{{ route('expenses.reject', $expense) }}"
+                            trigger="Reject expense"
+                            button-class="btn-secondary w-full"
+                            message="Reject this expense? The person who recorded it will see your reason."
+                            confirm-label="Yes, reject"
+                        >
+                            <label class="form-label" for="rejection_reason">Rejection reason <span class="text-ivy-red">*</span></label>
+                            <textarea class="form-input mb-3" id="rejection_reason" name="rejection_reason" rows="3" required></textarea>
+                        </x-confirm-form>
+                    </section>
                 @endif
             @endcan
         </aside>

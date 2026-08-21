@@ -52,7 +52,7 @@
                             <td class="px-4 py-3">{{ $expense->incurred_on->format('d M Y') }}</td>
                             <td class="px-4 py-3">{{ $expense->payment_method }}</td>
                             <td class="px-4 py-3 text-right font-semibold text-ivy-navy">GHS {{ $expense->amount }}</td>
-                            <td class="px-4 py-3">{{ ucfirst($expense->status) }}</td>
+                            <td class="px-4 py-3"><span class="badge {{ $expense->status === 'approved' ? 'badge-success' : ($expense->status === 'rejected' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($expense->status) }}</span></td>
                         </tr>
                     @empty
                         <tr><td colspan="6" class="px-4 py-12 text-center text-slate-500">No expenses recorded.</td></tr>
@@ -67,7 +67,8 @@
                         <a href="{{ route('expenses.show', $expense) }}" class="font-semibold text-ivy-navy">{{ $expense->expense_number }}</a>
                         <p class="font-bold text-ivy-navy">GHS {{ $expense->amount }}</p>
                     </div>
-                    <p class="mt-1 text-sm text-slate-600">{{ $expense->category->name }} · {{ $expense->payment_method }} · {{ ucfirst($expense->status) }}</p>
+                    <p class="mt-1 text-sm text-slate-600">{{ $expense->category->name }} · {{ $expense->payment_method }}</p>
+                    <span class="badge {{ $expense->status === 'approved' ? 'badge-success' : ($expense->status === 'rejected' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($expense->status) }}</span>
                     <p class="mt-1 text-xs text-slate-500">{{ $expense->incurred_on->format('d M Y') }}</p>
                     <p class="mt-2 text-sm text-slate-600">{{ $expense->description }}</p>
                 </article>

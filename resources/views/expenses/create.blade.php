@@ -32,13 +32,20 @@
             <label class="form-label" for="description">Description</label>
             <textarea class="form-input" id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
         </div>
-        <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <h2 class="text-base font-bold text-ivy-navy">Receipt reference</h2>
+        <details class="rounded-md border border-slate-200 p-4" {{ old('receipt_original_name') || old('receipt_path') ? 'open' : '' }}>
+            <summary class="cursor-pointer text-sm font-semibold text-ivy-navy">More details (receipt reference)</summary>
+            <p class="panel-help mt-2">If you have a paper or filed receipt, note where to find it.</p>
             <div class="mt-3 grid gap-3 md:grid-cols-2">
-                <input class="form-input mt-0" name="receipt_original_name" value="{{ old('receipt_original_name') }}" placeholder="Receipt filename or reference">
-                <input class="form-input mt-0" name="receipt_path" value="{{ old('receipt_path') }}" placeholder="Stored receipt path or reference">
+                <div>
+                    <label class="form-label" for="receipt_original_name">Receipt name</label>
+                    <input class="form-input" id="receipt_original_name" name="receipt_original_name" value="{{ old('receipt_original_name') }}" placeholder="e.g. Fuel receipt 21 Aug">
+                </div>
+                <div>
+                    <label class="form-label" for="receipt_path">Filing reference</label>
+                    <input class="form-input" id="receipt_path" name="receipt_path" value="{{ old('receipt_path') }}" placeholder="Where it's filed or stored">
+                </div>
             </div>
-        </div>
+        </details>
         <div class="flex justify-end gap-3">
             <a href="{{ route('expenses.index') }}" class="btn-secondary">Cancel</a>
             <button class="btn-primary" type="submit" @disabled($categories->isEmpty())>Save for review</button>

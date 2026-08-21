@@ -9,10 +9,12 @@
                 </div>
                 @can('broadcasts.send')
                     @if (in_array($broadcast->status, ['draft', 'scheduled'], true))
-                        <form method="POST" action="{{ route('broadcasts.send', $broadcast) }}">
-                            @csrf
-                            <button class="btn-primary" type="submit">Log now</button>
-                        </form>
+                        <x-confirm-form
+                            action="{{ route('broadcasts.send', $broadcast) }}"
+                            trigger="Mark as sent"
+                            message="Log this message as sent to all {{ $broadcast->total_recipients }} recipient(s) now? {{ $broadcast->channel === 'local' ? 'This uses the local test channel - no real message is delivered.' : 'This uses the local/test adapter until a real provider is approved.' }}"
+                            confirm-label="Yes, log it"
+                        />
                     @endif
                 @endcan
             </div>
@@ -43,8 +45,23 @@
                 </dl>
             </section>
             <section class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 class="text-base font-bold text-ivy-navy">Filters</h3>
-                <pre class="mt-3 whitespace-pre-wrap rounded-md bg-slate-50 p-3 text-xs text-slate-600">{{ json_encode($broadcast->filters, JSON_PRETTY_PRINT) }}</pre>
+                <h3 class="text-base font-bold text-ivy-navy">Who this was sent to</h3>
+                @php
+                    $filterLabels = [
+                        'customer_type_id' => 'Customer type',
+                        'sale_type_id' => 'Default sale type',
+                        'location' => 'Location contains',
+                        'purchase_history' => 'Purchase history',
+                    ];
+                    $activeFilters = collect($broadcast->filters ?? [])->filter(fn ($value) => filled($value) && $value !== 'any');
+                @endphp
+                <dl class="mt-3 space-y-2 text-sm">
+                    @forelse ($activeFilters as $key => $value)
+                        <div class="flex justify-between gap-3"><dt class="text-slate-500">{{ $filterLabels[$key] ?? $key }}</dt><dd class="font-semibold text-ivy-navy">{{ $value }}</dd></div>
+                    @empty
+                        <p class="text-slate-500">All customers - no filters applied.</p>
+                    @endforelse
+                </dl>
             </section>
         </aside>
     </div>
