@@ -6,7 +6,32 @@
         @endcan
     </div>
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
-        <div class="overflow-x-auto">
+        <div class="divide-y divide-slate-100 md:hidden">
+            @forelse ($materials as $material)
+                <article class="p-4">
+                    <div class="flex items-center gap-2">
+                        <p class="font-semibold text-ivy-navy">{{ $material->name }}</p>
+                        <span class="badge {{ $material->status === 'active' ? 'badge-success' : '' }}">{{ ucfirst($material->status) }}</span>
+                    </div>
+                    <p class="mt-1 text-xs text-slate-500">SKU: {{ $material->sku ?: 'Pending' }} · {{ $material->category->name }}</p>
+                    <div class="mt-3 flex items-center justify-between text-sm">
+                        <div>
+                            @php($low = $material->reorder_level !== null && (float) $material->availableQuantity() <= (float) $material->reorder_level)
+                            <span class="{{ $low ? 'font-semibold text-ivy-red' : '' }}">{{ $material->availableQuantity() }} {{ $material->baseUnit->symbol }} available</span>
+                            @if ($low)
+                                <span class="badge badge-warning ml-1">Low</span>
+                            @endif
+                        </div>
+                        @can('materials.manage')
+                            <a href="{{ route('materials.edit', $material) }}" class="btn-secondary">Edit</a>
+                        @endcan
+                    </div>
+                </article>
+            @empty
+                <div class="px-4 py-10 text-center text-slate-500">No materials configured yet.</div>
+            @endforelse
+        </div>
+        <div class="hidden overflow-x-auto md:block">
             <table class="min-w-full divide-y divide-slate-200 text-sm">
                 <thead class="bg-slate-50 text-left text-xs font-semibold uppercase text-slate-600">
                     <tr>

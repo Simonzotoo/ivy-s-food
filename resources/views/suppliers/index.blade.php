@@ -6,7 +6,26 @@
         @endcan
     </div>
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
-        <div class="overflow-x-auto">
+        <div class="divide-y divide-slate-100 md:hidden">
+            @forelse ($suppliers as $supplier)
+                <article class="p-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="font-semibold text-ivy-navy">{{ $supplier->name }}</p>
+                        <span class="badge {{ $supplier->status === 'active' ? 'badge-success' : '' }}">{{ ucfirst($supplier->status) }}</span>
+                    </div>
+                    <p class="mt-1 text-sm text-slate-600">{{ $supplier->phone ?: 'Phone pending' }}{{ $supplier->email ? ' · '.$supplier->email : '' }}</p>
+                    <div class="mt-3 flex items-center justify-between text-sm">
+                        <p class="text-slate-500">{{ $supplier->purchases_count }} purchase(s)</p>
+                        @can('suppliers.manage')
+                            <a href="{{ route('suppliers.edit', $supplier) }}" class="btn-secondary">Edit</a>
+                        @endcan
+                    </div>
+                </article>
+            @empty
+                <div class="px-4 py-10 text-center text-slate-500">No suppliers configured yet.</div>
+            @endforelse
+        </div>
+        <div class="hidden overflow-x-auto md:block">
             <table class="min-w-full divide-y divide-slate-200 text-sm">
                 <thead class="bg-slate-50 text-left text-xs font-semibold uppercase text-slate-600">
                     <tr>

@@ -15,7 +15,30 @@
     </div>
     <p class="mb-3 text-sm text-slate-500">Purchases stay editable while draft. Receiving creates stock batches and movements.</p>
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
-        <div class="overflow-x-auto">
+        <div class="divide-y divide-slate-100 md:hidden">
+            @forelse ($purchases as $purchase)
+                <article class="p-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="font-semibold text-ivy-navy">{{ $purchase->purchase_number }}</p>
+                        <span class="badge {{ $purchase->status === 'received' ? 'badge-success' : 'badge-warning' }}">{{ ucfirst($purchase->status) }}</span>
+                    </div>
+                    <p class="mt-1 text-sm text-slate-600">{{ $purchase->supplier->name }} · {{ $purchase->purchase_date->format('d M Y') }}</p>
+                    <div class="mt-3 flex items-center justify-between text-sm">
+                        <p class="font-bold text-ivy-navy">GHS {{ number_format((float) $purchase->subtotal, 2) }}</p>
+                        <a href="{{ route('purchases.show', $purchase) }}" class="btn-secondary">Open</a>
+                    </div>
+                </article>
+            @empty
+                <div class="px-4 py-10 text-center text-slate-500">
+                    @if (request()->hasAny(['search', 'status']))
+                        No purchases match these filters.
+                    @else
+                        No purchases recorded yet.
+                    @endif
+                </div>
+            @endforelse
+        </div>
+        <div class="hidden overflow-x-auto md:block">
             <table class="min-w-full divide-y divide-slate-200 text-sm">
                 <thead class="bg-slate-50 text-left text-xs font-semibold uppercase text-slate-600">
                     <tr>
