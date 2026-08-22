@@ -55,7 +55,7 @@
                             <p class="font-semibold text-ivy-navy">{{ $variant->name }}</p>
                             <p class="mt-1 text-xs text-slate-500">{{ $variant->category->name }} · {{ $variant->type->name }} · {{ $variant->size->label }}</p>
                         </div>
-                        <span class="shrink-0 rounded-full px-2 py-1 text-xs font-semibold {{ $variant->status === 'active' ? 'bg-emerald-100 text-emerald-800' : ($variant->status === 'inactive' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800') }}">{{ ucfirst($variant->status) }}</span>
+                        <span class="badge shrink-0 {{ $variant->status === 'active' ? 'badge-success' : ($variant->status === 'inactive' ? '' : 'badge-warning') }}">{{ ucfirst($variant->status) }}</span>
                     </div>
                     <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
                         <div>
@@ -88,12 +88,16 @@
                             <a href="{{ route('catalogue.variants.edit', $variant) }}" class="btn-secondary">Edit</a>
                         @endcan
                         @can('catalogue.activate')
-                            <form method="POST" action="{{ route('catalogue.variants.status', $variant) }}">
-                                @csrf
+                            <x-confirm-form
+                                action="{{ route('catalogue.variants.status', $variant) }}"
+                                button-class="btn-secondary"
+                                trigger="{{ $variant->status === 'active' ? 'Deactivate' : 'Activate' }}"
+                                message="{{ $variant->status === 'active' ? $variant->name.' will no longer be available for sale.' : 'Make '.$variant->name.' available for sale again?' }}"
+                                confirm-label="Yes, {{ strtolower($variant->status === 'active' ? 'deactivate' : 'activate') }}"
+                            >
                                 @method('PATCH')
                                 <input type="hidden" name="status" value="{{ $variant->status === 'active' ? 'inactive' : 'active' }}">
-                                <button class="btn-secondary" type="submit">{{ $variant->status === 'active' ? 'Deactivate' : 'Activate' }}</button>
-                            </form>
+                            </x-confirm-form>
                         @endcan
                     </div>
                 </article>
@@ -119,7 +123,7 @@
                             <td class="px-4 py-3">
                                 <p class="font-semibold text-ivy-navy">{{ $variant->name }}</p>
                                 <p class="text-xs text-slate-500">{{ $variant->category->name }} · {{ $variant->type->name }} · {{ $variant->size->label }}</p>
-                                <span class="mt-2 inline-flex rounded-full px-2 py-1 text-xs font-semibold {{ $variant->status === 'active' ? 'bg-emerald-100 text-emerald-800' : ($variant->status === 'inactive' ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800') }}">{{ ucfirst($variant->status) }}</span>
+                                <span class="badge mt-2 inline-flex {{ $variant->status === 'active' ? 'badge-success' : ($variant->status === 'inactive' ? '' : 'badge-warning') }}">{{ ucfirst($variant->status) }}</span>
                             </td>
                             <td class="px-4 py-3 text-slate-700">
                                 <p>SKU: {{ $variant->sku ?: 'Pending' }}</p>
@@ -140,12 +144,16 @@
                                         <a href="{{ route('catalogue.variants.edit', $variant) }}" class="btn-secondary">Edit</a>
                                     @endcan
                                     @can('catalogue.activate')
-                                        <form method="POST" action="{{ route('catalogue.variants.status', $variant) }}">
-                                            @csrf
+                                        <x-confirm-form
+                                            action="{{ route('catalogue.variants.status', $variant) }}"
+                                            button-class="btn-secondary"
+                                            trigger="{{ $variant->status === 'active' ? 'Deactivate' : 'Activate' }}"
+                                            message="{{ $variant->status === 'active' ? $variant->name.' will no longer be available for sale.' : 'Make '.$variant->name.' available for sale again?' }}"
+                                            confirm-label="Yes, {{ strtolower($variant->status === 'active' ? 'deactivate' : 'activate') }}"
+                                        >
                                             @method('PATCH')
                                             <input type="hidden" name="status" value="{{ $variant->status === 'active' ? 'inactive' : 'active' }}">
-                                            <button class="btn-secondary" type="submit">{{ $variant->status === 'active' ? 'Deactivate' : 'Activate' }}</button>
-                                        </form>
+                                        </x-confirm-form>
                                     @endcan
                                 </div>
                             </td>
