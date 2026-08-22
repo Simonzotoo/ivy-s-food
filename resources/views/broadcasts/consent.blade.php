@@ -8,9 +8,12 @@
                         <p class="text-sm text-slate-600">{{ $customer->type?->name ?? 'Unclassified' }} · {{ $customer->communication_consent ? 'Consent recorded' : 'No consent' }}{{ $customer->communication_opted_out_at ? ' · Opted out' : '' }}</p>
                     </div>
                     @if (! $customer->communication_opted_out_at)
-                        <form method="POST" action="{{ route('broadcasts.customers.opt-out', $customer) }}" class="flex flex-col gap-2 sm:flex-row">
+                        <form method="POST" action="{{ route('broadcasts.customers.opt-out', $customer) }}" class="flex flex-col gap-2 sm:flex-row sm:items-end">
                             @csrf
-                            <input class="form-input mt-0" name="reason" placeholder="Opt-out reason" required>
+                            <div class="flex-1">
+                                <label class="form-label" for="reason-{{ $customer->id }}">Opt-out reason</label>
+                                <input class="form-input" id="reason-{{ $customer->id }}" name="reason" placeholder="e.g. Customer requested no more messages" required>
+                            </div>
                             <button class="btn-secondary" type="submit">Opt out</button>
                         </form>
                     @else
