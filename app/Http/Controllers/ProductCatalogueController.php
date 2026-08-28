@@ -8,6 +8,7 @@ use App\Services\ProductCatalogueService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -21,8 +22,7 @@ class ProductCatalogueController extends Controller
                 $search = $request->string('search')->toString();
                 $query->where(function ($query) use ($search): void {
                     $query->where('name', 'like', "%{$search}%")
-                        ->orWhere('sku', 'like', "%{$search}%")
-                        ->orWhere('barcode', 'like', "%{$search}%");
+                        ->orWhere('sku', 'like', "%{$search}%");
                 });
             })
             ->when($request->filled('category'), fn ($query) => $query->where('product_category_id', $request->integer('category')))
@@ -52,6 +52,16 @@ class ProductCatalogueController extends Controller
         $this->authorize('update', $variant);
 
         $data = $this->validatedVariant($request, $variant);
+
+        if ($request->hasFile('image')) {
+            $oldPath = $variant->image_path;
+            $data['image_path'] = $request->file('image')->store('product-images', 'public');
+
+            if ($oldPath) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+
         $service->updateVariant($variant, $data, $request->user());
 
         return redirect()->route('catalogue.index')->with('status', 'Product variant updated.');
@@ -76,7 +86,7 @@ class ProductCatalogueController extends Controller
         $variants = ProductVariant::query()->with(['category', 'type', 'size'])->orderBy('name')->get();
 
         $csv = fopen('php://temp', 'r+');
-        fputcsv($csv, ['Category', 'Type', 'Size', 'Variant', 'SKU', 'Barcode', 'Retail Price', 'Wholesale Price', 'Distributor Price', 'Status', 'Reorder Level', 'Shelf Life Days']);
+        fputcsv($csv, ['Category', 'Type', 'Size', 'Variant', 'SKU', 'Retail Price', 'Wholesale Price', 'Distributor Price', 'Status', 'Reorder Level', 'Shelf Life Days']);
 
         foreach ($variants as $variant) {
             fputcsv($csv, [
@@ -85,7 +95,6 @@ class ProductCatalogueController extends Controller
                 $variant->size->label,
                 $variant->name,
                 $variant->sku,
-                $variant->barcode,
                 $variant->retail_price,
                 $variant->wholesale_price,
                 $variant->distributor_price,
@@ -112,11 +121,10 @@ class ProductCatalogueController extends Controller
     {
         return $request->validate([
             'sku' => ['nullable', 'string', 'max:80', Rule::unique('product_variants', 'sku')->ignore($variant)],
-            'barcode' => ['nullable', 'string', 'max:120', Rule::unique('product_variants', 'barcode')->ignore($variant)],
             'retail_price' => ['nullable', 'numeric', 'min:0', 'max:999999999.99'],
             'wholesale_price' => ['nullable', 'numeric', 'min:0', 'max:999999999.99'],
             'distributor_price' => ['nullable', 'numeric', 'min:0', 'max:999999999.99'],
-            'image_path' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'status' => ['required', Rule::in(['draft', 'active', 'inactive'])],
             'reorder_level' => ['nullable', 'numeric', 'min:0', 'max:999999999.999'],
             'shelf_life_days' => ['nullable', 'integer', 'min:1', 'max:3650'],

@@ -4,7 +4,6 @@
         'suppliers' => 'imports.commit_suppliers',
         'raw_materials' => 'imports.commit_catalogue',
         'product_variants' => 'imports.commit_catalogue',
-        'barcodes' => 'imports.commit_catalogue',
         'prices' => 'imports.commit_catalogue',
         'opening_stock' => 'imports.commit_opening_stock',
         'open_credit_balances' => 'imports.commit_opening_stock',

@@ -37,7 +37,13 @@ class ProfileController extends Controller
     public function updatePhoto(Request $request, AuditService $audit): RedirectResponse
     {
         $data = $request->validate([
-            'profile_photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'profile_photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ], [
+            'profile_photo.required' => 'Choose a photo to upload.',
+            'profile_photo.uploaded' => 'That photo is too large or the upload was interrupted. Please choose a photo under 5 MB.',
+            'profile_photo.max' => 'That photo is larger than 5 MB. Please choose a smaller photo.',
+            'profile_photo.image' => 'That file is not a supported image.',
+            'profile_photo.mimes' => 'Please upload a JPG, PNG or WebP photo.',
         ]);
 
         $user = $request->user();

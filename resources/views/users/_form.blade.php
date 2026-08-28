@@ -17,11 +17,11 @@
     </div>
     <div>
         <label class="form-label" for="password">{{ ($managedUser ?? false) ? 'New password' : 'Temporary password' }}</label>
-        <input class="form-input" id="password" name="password" type="password" {{ ($managedUser ?? false) ? '' : 'required' }}>
+        <x-password-toggle id="password" name="password" autocomplete="new-password" @if(! ($managedUser ?? false)) required @endif />
     </div>
     <div>
         <label class="form-label" for="password_confirmation">Confirm password</label>
-        <input class="form-input" id="password_confirmation" name="password_confirmation" type="password" {{ ($managedUser ?? false) ? '' : 'required' }}>
+        <x-password-toggle id="password_confirmation" name="password_confirmation" autocomplete="new-password" @if(! ($managedUser ?? false)) required @endif />
     </div>
     <label class="mt-7 flex items-center gap-2 text-sm text-slate-700">
         <input type="checkbox" name="password_change_required" value="1" class="rounded border-slate-300 text-ivy-red focus:ring-ivy-red" @checked(old('password_change_required', $managedUser->password_change_required ?? true))>

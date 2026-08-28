@@ -53,7 +53,7 @@ class ProductCatalogueService
 
     private function normalise(array $data): array
     {
-        foreach (['sku', 'barcode', 'image_path'] as $field) {
+        foreach (['sku', 'image_path'] as $field) {
             if (array_key_exists($field, $data) && blank($data[$field])) {
                 $data[$field] = null;
             }
@@ -76,7 +76,6 @@ class ProductCatalogueService
         return [
             'name',
             'sku',
-            'barcode',
             'retail_price',
             'wholesale_price',
             'distributor_price',

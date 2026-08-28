@@ -72,6 +72,17 @@ class Module1FoundationTest extends TestCase
         $this->assertTrue(RateLimiter::tooManyAttempts(strtolower($user->email).'|127.0.0.1', 5));
     }
 
+    public function test_forgot_password_requests_are_rate_limited(): void
+    {
+        $user = $this->ownerUser();
+
+        for ($i = 0; $i < 6; $i++) {
+            $this->post('/forgot-password', ['email' => $user->email]);
+        }
+
+        $this->post('/forgot-password', ['email' => $user->email])->assertStatus(429);
+    }
+
     public function test_suspended_user_cannot_login(): void
     {
         $user = $this->ownerUser(['status' => 'suspended', 'suspended_at' => now()]);
@@ -130,7 +141,7 @@ class Module1FoundationTest extends TestCase
     public function test_user_creation_validation_and_role_assignment(): void
     {
         $owner = $this->ownerUser();
-        $managerRole = Role::query()->where('name', 'Manager')->firstOrFail();
+        $managerRole = Role::query()->where('name', 'COO')->firstOrFail();
 
         $this->actingAs($owner)->post('/users', [])->assertSessionHasErrors(['name', 'email', 'password']);
 
@@ -165,7 +176,7 @@ class Module1FoundationTest extends TestCase
         $manager = $this->userWithRole('Manager');
         $manager->roles()->first()->permissions()->sync(Permission::query()->whereIn('slug', ['users.create'])->pluck('id'));
         $manager = $manager->fresh('roles.permissions');
-        $cashierRole = Role::query()->where('name', 'Cashier / Sales Officer')->firstOrFail();
+        $cashierRole = Role::query()->where('name', 'Supervisor')->firstOrFail();
 
         $this->actingAs($manager)->post('/users', [
             'name' => 'Kofi Cashier',
@@ -208,6 +219,29 @@ class Module1FoundationTest extends TestCase
         $this->assertStringStartsWith('/storage/profile-photos/', $owner->profilePhotoUrl());
         Storage::disk('public')->assertExists($owner->profile_photo_path);
         $this->assertDatabaseHas('audit_logs', ['event' => 'profile.photo_updated', 'auditable_id' => $owner->id]);
+    }
+
+    public function test_large_but_under_limit_profile_photo_is_accepted(): void
+    {
+        Storage::fake('public');
+        $owner = $this->ownerUser();
+
+        $this->actingAs($owner)->put('/profile/photo', [
+            'profile_photo' => UploadedFile::fake()->image('owner.jpg', 1200, 1200)->size(4096),
+        ])->assertRedirect()->assertSessionHas('status', 'Profile photo updated.');
+
+        $owner->refresh();
+        $this->assertNotNull($owner->profile_photo_path);
+    }
+
+    public function test_oversized_profile_photo_is_rejected_with_a_clear_message(): void
+    {
+        Storage::fake('public');
+        $owner = $this->ownerUser();
+
+        $this->actingAs($owner)->put('/profile/photo', [
+            'profile_photo' => UploadedFile::fake()->image('owner.jpg', 1200, 1200)->size(6144),
+        ])->assertSessionHasErrors('profile_photo');
     }
 
     public function test_sensitive_audit_values_are_redacted(): void
@@ -260,18 +294,6 @@ class Module1FoundationTest extends TestCase
         ], $attributes));
 
         $user->roles()->attach(Role::query()->where('is_owner', true)->firstOrFail());
-
-        return $user->fresh('roles.permissions');
-    }
-
-    private function userWithRole(string $roleName): User
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('Password!234'),
-            'status' => 'active',
-            'password_change_required' => false,
-        ]);
-        $user->roles()->attach(Role::query()->where('name', $roleName)->firstOrFail());
 
         return $user->fresh('roles.permissions');
     }

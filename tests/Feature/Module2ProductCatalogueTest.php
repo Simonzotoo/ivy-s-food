@@ -6,13 +6,10 @@ use App\Models\ProductCategory;
 use App\Models\ProductSize;
 use App\Models\ProductType;
 use App\Models\ProductVariant;
-use App\Models\Role;
-use App\Models\User;
 use Database\Seeders\CompanySettingsSeeder;
 use Database\Seeders\ProductCatalogueSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class Module2ProductCatalogueTest extends TestCase
@@ -40,7 +37,7 @@ class Module2ProductCatalogueTest extends TestCase
         $this->assertDatabaseHas('product_types', ['name' => 'Pineginbeet']);
         $this->assertDatabaseHas('product_types', ['name' => 'Greek Plus Coconut Unsweetened']);
         $this->assertDatabaseHas('product_sizes', ['label' => '1000g']);
-        $this->assertDatabaseHas('product_variants', ['name' => 'Pineapple 250ml', 'sku' => null, 'barcode' => null]);
+        $this->assertDatabaseHas('product_variants', ['name' => 'Pineapple 250ml', 'sku' => null]);
     }
 
     public function test_catalogue_requires_authentication_and_permission(): void
@@ -73,7 +70,6 @@ class Module2ProductCatalogueTest extends TestCase
 
         $this->actingAs($inventory)->put(route('catalogue.variants.update', $variant), [
             'sku' => 'JUI-PINEAPPLE-250',
-            'barcode' => '1234567890123',
             'retail_price' => '10.00',
             'wholesale_price' => '9.00',
             'distributor_price' => '8.00',
@@ -85,7 +81,6 @@ class Module2ProductCatalogueTest extends TestCase
         $this->assertDatabaseHas('product_variants', [
             'id' => $variant->id,
             'sku' => 'JUI-PINEAPPLE-250',
-            'barcode' => '1234567890123',
             'status' => 'active',
         ]);
         $this->assertDatabaseHas('audit_logs', [
@@ -106,19 +101,18 @@ class Module2ProductCatalogueTest extends TestCase
         $this->assertSame('draft', $variant->fresh()->status);
     }
 
-    public function test_duplicate_sku_and_barcode_are_rejected(): void
+    public function test_duplicate_sku_is_rejected(): void
     {
         $inventory = $this->userWithRole('Inventory Officer');
         $first = ProductVariant::query()->firstOrFail();
         $second = ProductVariant::query()->whereKeyNot($first->id)->firstOrFail();
 
-        $first->update(['sku' => 'DUP-SKU', 'barcode' => 'DUP-BARCODE']);
+        $first->update(['sku' => 'DUP-SKU']);
 
         $this->actingAs($inventory)->put(route('catalogue.variants.update', $second), [
             'sku' => 'DUP-SKU',
-            'barcode' => 'DUP-BARCODE',
             'status' => 'draft',
-        ])->assertSessionHasErrors(['sku', 'barcode']);
+        ])->assertSessionHasErrors(['sku']);
     }
 
     public function test_catalogue_search_filter_and_export(): void
@@ -153,17 +147,5 @@ class Module2ProductCatalogueTest extends TestCase
             ProductSize::query()->count(),
             ProductVariant::query()->count(),
         ]);
-    }
-
-    private function userWithRole(string $roleName): User
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('Password!234'),
-            'status' => 'active',
-            'password_change_required' => false,
-        ]);
-        $user->roles()->attach(Role::query()->where('name', $roleName)->firstOrFail());
-
-        return $user->fresh('roles.permissions');
     }
 }

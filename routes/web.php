@@ -30,12 +30,12 @@ Route::middleware('guest')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
     Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email')->middleware('throttle:6,1');
     Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.store')->middleware('throttle:6,1');
 });
 
-Route::middleware(['auth', 'active', 'password.changed'])->group(function (): void {
+Route::middleware(['auth', 'active', 'password.changed', 'throttle:120,1'])->group(function (): void {
     Route::get('/home', HomeController::class)->name('home')->middleware('can:dashboard.view');
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout')->withoutMiddleware('password.changed');
 
@@ -149,16 +149,9 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function (): vo
     Route::post('/expenses/{expense}/approve', [ExpenseController::class, 'approve'])->name('expenses.approve')->middleware('can:expenses.approve');
     Route::post('/expenses/{expense}/reject', [ExpenseController::class, 'reject'])->name('expenses.reject')->middleware('can:expenses.approve');
 
-    Route::get('/broadcasts', [BroadcastController::class, 'index'])->name('broadcasts.index')->middleware('can:broadcasts.view');
-    Route::get('/broadcasts/create', [BroadcastController::class, 'create'])->name('broadcasts.create')->middleware('can:broadcasts.create');
+    Route::get('/broadcasts', [BroadcastController::class, 'create'])->name('broadcasts.create')->middleware('can:broadcasts.create');
     Route::post('/broadcasts/preview', [BroadcastController::class, 'preview'])->name('broadcasts.preview')->middleware('can:broadcasts.create');
     Route::post('/broadcasts', [BroadcastController::class, 'store'])->name('broadcasts.store')->middleware('can:broadcasts.create');
-    Route::get('/broadcasts/templates', [BroadcastController::class, 'templates'])->name('broadcasts.templates')->middleware('can:broadcasts.manage_templates');
-    Route::post('/broadcasts/templates', [BroadcastController::class, 'storeTemplate'])->name('broadcasts.templates.store')->middleware('can:broadcasts.manage_templates');
-    Route::get('/broadcasts/consent', [BroadcastController::class, 'consent'])->name('broadcasts.consent')->middleware('can:broadcasts.manage_consent');
-    Route::post('/broadcasts/customers/{customer}/opt-out', [BroadcastController::class, 'optOut'])->name('broadcasts.customers.opt-out')->middleware('can:broadcasts.manage_consent');
-    Route::get('/broadcasts/{broadcast}', [BroadcastController::class, 'show'])->name('broadcasts.show')->middleware('can:broadcasts.view');
-    Route::post('/broadcasts/{broadcast}/send', [BroadcastController::class, 'send'])->name('broadcasts.send')->middleware('can:broadcasts.send');
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index')->middleware('can:reports.view');
     Route::get('/reports/export.csv', [ReportController::class, 'exportCsv'])->name('reports.export.csv')->middleware('can:reports.export');

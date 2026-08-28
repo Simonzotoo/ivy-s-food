@@ -8,15 +8,12 @@ use App\Models\MaterialCategory;
 use App\Models\MaterialStockMovement;
 use App\Models\MeasurementUnit;
 use App\Models\Purchase;
-use App\Models\Role;
 use App\Models\Supplier;
-use App\Models\User;
 use Database\Seeders\CompanySettingsSeeder;
 use Database\Seeders\MaterialFoundationSeeder;
 use Database\Seeders\ProductCatalogueSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class Module3MaterialsPurchasesTest extends TestCase
@@ -195,17 +192,5 @@ class Module3MaterialsPurchasesTest extends TestCase
         ]);
 
         return [$material, $supplier, MeasurementUnit::query()->where('symbol', 'kg')->firstOrFail()];
-    }
-
-    private function userWithRole(string $roleName): User
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('Password!234'),
-            'status' => 'active',
-            'password_change_required' => false,
-        ]);
-        $user->roles()->attach(Role::query()->where('name', $roleName)->firstOrFail());
-
-        return $user->fresh('roles.permissions');
     }
 }

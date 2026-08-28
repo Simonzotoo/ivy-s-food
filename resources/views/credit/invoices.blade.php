@@ -27,6 +27,7 @@
         @can('credit.reminders')
             <a href="{{ route('credit.reminders') }}" class="btn-secondary">Reminders</a>
         @endcan
+        <x-import-button type="open_credit_balances" label="Import opening balances" />
     </div>
     <div class="rounded-md border border-slate-200 bg-white shadow-sm">
         <div class="divide-y divide-slate-100">

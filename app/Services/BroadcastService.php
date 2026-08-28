@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Contracts\BroadcastDeliveryChannel;
 use App\Models\Broadcast;
-use App\Models\BroadcastTemplate;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,24 +17,6 @@ class BroadcastService
         private readonly AuditService $audit,
         private readonly BroadcastDeliveryChannel $delivery,
     ) {}
-
-    public function createTemplate(array $data, User $actor): BroadcastTemplate
-    {
-        return DB::transaction(function () use ($data, $actor): BroadcastTemplate {
-            $template = BroadcastTemplate::query()->create([
-                'name' => $data['name'],
-                'channel' => $data['channel'],
-                'subject' => $data['subject'] ?? null,
-                'body' => $data['body'],
-                'is_active' => true,
-                'created_by' => $actor->id,
-            ]);
-
-            $this->audit->record('broadcast.template_created', $template, [], $template->toArray(), actor: $actor);
-
-            return $template;
-        });
-    }
 
     public function previewRecipients(array $filters): Collection
     {
@@ -89,8 +70,9 @@ class BroadcastService
                 throw ValidationException::withMessages(['broadcast' => 'Only draft or scheduled broadcasts can be sent.']);
             }
 
-            $logged = 0;
+            $sent = 0;
             $skipped = 0;
+            $failed = 0;
 
             foreach ($broadcast->recipients as $recipient) {
                 $customer = $recipient->customer;
@@ -105,8 +87,10 @@ class BroadcastService
                 }
 
                 $payload = $this->delivery->send($recipient);
+                $succeeded = (bool) ($payload['success'] ?? false);
                 $recipient->update([
-                    'status' => 'logged',
+                    'status' => $succeeded ? 'sent' : 'failed',
+                    'skip_reason' => $succeeded ? null : ($payload['error'] ?? 'Delivery failed.'),
                     'provider_payload' => $payload,
                     'sent_at' => now(),
                 ]);
@@ -115,22 +99,28 @@ class BroadcastService
                     'direction' => 'outbound',
                     'subject' => $broadcast->subject,
                     'message' => $broadcast->body,
-                    'status' => 'logged',
+                    'status' => $succeeded ? 'sent' : 'failed',
                     'created_by' => $actor?->id,
                     'occurred_at' => now(),
                 ]);
-                $logged++;
+
+                if ($succeeded) {
+                    $sent++;
+                } else {
+                    $failed++;
+                }
             }
 
             $old = $broadcast->toArray();
             $broadcast->update([
                 'status' => 'sent',
                 'sent_at' => now(),
-                'total_logged' => $logged,
+                'total_logged' => $sent,
                 'total_skipped' => $skipped,
+                'total_failed' => $failed,
             ]);
 
-            $this->audit->record('broadcast.sent_local', $broadcast, $old, $broadcast->fresh('recipients')->toArray(), actor: $actor);
+            $this->audit->record('broadcast.sent', $broadcast, $old, $broadcast->fresh('recipients')->toArray(), actor: $actor);
 
             return $broadcast->fresh(['recipients.customer', 'creator']);
         });
@@ -150,22 +140,6 @@ class BroadcastService
             });
 
         return $count;
-    }
-
-    public function optOut(Customer $customer, string $reason, User $actor): Customer
-    {
-        return DB::transaction(function () use ($customer, $reason, $actor): Customer {
-            $old = $customer->toArray();
-            $customer->update([
-                'communication_consent' => false,
-                'communication_opted_out_at' => now(),
-                'communication_opt_out_reason' => $reason,
-            ]);
-
-            $this->audit->record('broadcast.customer_opted_out', $customer, $old, $customer->fresh()->toArray(), actor: $actor);
-
-            return $customer->fresh();
-        });
     }
 
     /**

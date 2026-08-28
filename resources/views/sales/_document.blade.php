@@ -1,7 +1,8 @@
 <section>
-    <h1 class="text-xl font-bold text-ivy-navy">Ivy's Food</h1>
-    <p class="mt-1 text-sm text-slate-600">{{ str_replace('-', ' ', ucfirst($document)) }} · {{ $sale->sale_number }}</p>
-    <p class="text-sm text-slate-600">{{ $sale->sale_date->format('d M Y H:i') }}</p>
+    <x-print-header
+        :title="str_replace('-', ' ', ucfirst($document))"
+        :subtitle="$sale->sale_number.' · '.$sale->sale_date->format('d M Y H:i')"
+    />
     <p class="mt-2 text-sm text-slate-600">Customer: {{ $sale->customer?->name ?? 'Walk-in customer' }}</p>
     <table class="mt-4 w-full border-collapse text-sm">
         <thead>
@@ -31,4 +32,5 @@
     @if ($document === 'delivery-note' && $sale->deliveryNote)
         <p class="mt-2 text-sm text-slate-600">Delivery note: {{ $sale->deliveryNote->note_number }}</p>
     @endif
+    <x-print-footer />
 </section>

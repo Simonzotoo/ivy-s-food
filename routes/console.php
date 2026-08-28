@@ -9,3 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('imports:prune')->weekly()->onOneServer();
+Schedule::command('broadcasts:run-scheduled')->everyMinute()->onOneServer();
+Schedule::command('backup:database')->dailyAt('02:00')->onOneServer();

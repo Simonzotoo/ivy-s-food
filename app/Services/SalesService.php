@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\SaleConfirmationMail;
 use App\Models\CompanySetting;
 use App\Models\CreditInvoice;
 use App\Models\Customer;
@@ -17,7 +18,10 @@ use App\Models\User;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class SalesService
 {
@@ -25,7 +29,7 @@ class SalesService
 
     public function createSale(array $data, User $actor): Sale
     {
-        return DB::transaction(function () use ($data, $actor): Sale {
+        $sale = DB::transaction(function () use ($data, $actor): Sale {
             $saleType = SaleType::query()->findOrFail($data['sale_type_id']);
             $customer = filled($data['customer_id'] ?? null) ? Customer::query()->lockForUpdate()->findOrFail($data['customer_id']) : null;
             $payments = collect($data['payments'] ?? [])->filter(fn (array $payment) => BigDecimal::of((string) ($payment['amount'] ?? 0))->isGreaterThanOrEqualTo(BigDecimal::zero()));
@@ -133,6 +137,28 @@ class SalesService
 
             return $sale->fresh(['customer', 'saleType', 'items.productVariant', 'payments', 'creditInvoice', 'deliveryNote']);
         });
+
+        $this->sendSaleConfirmationEmail($sale);
+
+        return $sale;
+    }
+
+    private function sendSaleConfirmationEmail(Sale $sale): void
+    {
+        $recipients = array_filter([
+            $sale->customer?->email,
+            CompanySetting::current()->email,
+        ]);
+
+        if (empty($recipients)) {
+            return;
+        }
+
+        try {
+            Mail::to($recipients)->send(new SaleConfirmationMail($sale));
+        } catch (Throwable $e) {
+            Log::warning('sale.confirmation_email_failed', ['sale_id' => $sale->id, 'error' => $e->getMessage()]);
+        }
     }
 
     public function reverseSale(Sale $sale, array $data, User $actor): Sale

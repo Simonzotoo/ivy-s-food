@@ -27,7 +27,7 @@
     </section>
 
     <form method="GET" class="mb-5 grid gap-3 rounded-md border border-slate-200 bg-white p-4 shadow-sm lg:grid-cols-[1fr_220px_180px_auto_auto]">
-        <input class="form-input mt-0" name="search" value="{{ request('search') }}" placeholder="Search variant, SKU or barcode">
+        <input class="form-input mt-0" name="search" value="{{ request('search') }}" placeholder="Search variant or SKU">
         <select class="form-input mt-0" name="category">
             <option value="">All categories</option>
             @foreach ($categories as $category)
@@ -46,14 +46,27 @@
         @endcan
     </form>
 
+    <div class="mb-5 flex flex-wrap items-center gap-3 text-sm">
+        <span class="font-semibold text-slate-500">Bulk import:</span>
+        <x-import-button type="product_variants" label="Product updates" />
+        <x-import-button type="prices" label="Prices" />
+    </div>
+
     <div class="rounded-md border border-slate-200 bg-white shadow-sm">
         <div class="divide-y divide-slate-100 md:hidden">
             @forelse ($variants as $variant)
                 <article class="p-4">
                     <div class="flex items-start justify-between gap-3">
-                        <div class="min-w-0">
-                            <p class="font-semibold text-ivy-navy">{{ $variant->name }}</p>
-                            <p class="mt-1 text-xs text-slate-500">{{ $variant->category->name }} · {{ $variant->type->name }} · {{ $variant->size->label }}</p>
+                        <div class="flex min-w-0 items-start gap-3">
+                            @if ($variant->imageUrl())
+                                <img src="{{ $variant->imageUrl() }}" alt="{{ $variant->name }}" class="h-12 w-12 shrink-0 rounded-md border border-slate-200 object-cover">
+                            @else
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-dashed border-slate-300 text-[10px] text-slate-400">No photo</div>
+                            @endif
+                            <div class="min-w-0">
+                                <p class="font-semibold text-ivy-navy">{{ $variant->name }}</p>
+                                <p class="mt-1 text-xs text-slate-500">{{ $variant->category->name }} · {{ $variant->type->name }} · {{ $variant->size->label }}</p>
+                            </div>
                         </div>
                         <span class="badge shrink-0 {{ $variant->status === 'active' ? 'badge-success' : ($variant->status === 'inactive' ? '' : 'badge-warning') }}">{{ ucfirst($variant->status) }}</span>
                     </div>
@@ -61,10 +74,6 @@
                         <div>
                             <dt class="text-xs font-semibold uppercase text-slate-500">SKU</dt>
                             <dd class="mt-1 text-ivy-black">{{ $variant->sku ?: 'Pending' }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold uppercase text-slate-500">Barcode</dt>
-                            <dd class="mt-1 text-ivy-black">{{ $variant->barcode ?: 'Pending' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-semibold uppercase text-slate-500">Retail</dt>
@@ -111,7 +120,7 @@
                 <thead class="bg-slate-50 text-left text-xs font-semibold uppercase text-slate-600">
                     <tr>
                         <th class="px-4 py-3">Variant</th>
-                        <th class="px-4 py-3">SKU / Barcode</th>
+                        <th class="px-4 py-3">SKU</th>
                         <th class="px-4 py-3">Prices</th>
                         <th class="px-4 py-3">Controls</th>
                         <th class="px-4 py-3 text-right">Actions</th>
@@ -121,13 +130,21 @@
                     @forelse ($variants as $variant)
                         <tr>
                             <td class="px-4 py-3">
-                                <p class="font-semibold text-ivy-navy">{{ $variant->name }}</p>
-                                <p class="text-xs text-slate-500">{{ $variant->category->name }} · {{ $variant->type->name }} · {{ $variant->size->label }}</p>
-                                <span class="badge mt-2 inline-flex {{ $variant->status === 'active' ? 'badge-success' : ($variant->status === 'inactive' ? '' : 'badge-warning') }}">{{ ucfirst($variant->status) }}</span>
+                                <div class="flex items-start gap-3">
+                                    @if ($variant->imageUrl())
+                                        <img src="{{ $variant->imageUrl() }}" alt="{{ $variant->name }}" class="h-12 w-12 shrink-0 rounded-md border border-slate-200 object-cover">
+                                    @else
+                                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-dashed border-slate-300 text-[10px] text-slate-400">No photo</div>
+                                    @endif
+                                    <div>
+                                        <p class="font-semibold text-ivy-navy">{{ $variant->name }}</p>
+                                        <p class="text-xs text-slate-500">{{ $variant->category->name }} · {{ $variant->type->name }} · {{ $variant->size->label }}</p>
+                                        <span class="badge mt-2 inline-flex {{ $variant->status === 'active' ? 'badge-success' : ($variant->status === 'inactive' ? '' : 'badge-warning') }}">{{ ucfirst($variant->status) }}</span>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-4 py-3 text-slate-700">
                                 <p>SKU: {{ $variant->sku ?: 'Pending' }}</p>
-                                <p>Barcode: {{ $variant->barcode ?: 'Pending' }}</p>
                             </td>
                             <td class="px-4 py-3 text-slate-700">
                                 <p>Retail: {{ $variant->retail_price ? 'GHS '.$variant->retail_price : 'Pending' }}</p>

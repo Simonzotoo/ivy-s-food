@@ -16,6 +16,10 @@
         <input class="form-input" id="phone" name="phone" value="{{ old('phone', $supplier->phone ?? '') }}">
     </div>
     <div>
+        <label class="form-label" for="location">Location</label>
+        <input class="form-input" id="location" name="location" value="{{ old('location', $supplier->location ?? '') }}" placeholder="e.g. Kumasi">
+    </div>
+    <div>
         <label class="form-label" for="email">Email</label>
         <input class="form-input" id="email" name="email" type="email" value="{{ old('email', $supplier->email ?? '') }}">
     </div>

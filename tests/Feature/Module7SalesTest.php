@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Mail\SaleConfirmationMail;
+use App\Models\CompanySetting;
 use App\Models\CreditInvoice;
 use App\Models\Customer;
 use App\Models\CustomerType;
@@ -12,14 +14,14 @@ use App\Models\Role;
 use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Models\SaleType;
-use App\Models\User;
 use Database\Seeders\CompanySettingsSeeder;
 use Database\Seeders\CustomerFoundationSeeder;
 use Database\Seeders\MaterialFoundationSeeder;
 use Database\Seeders\ProductCatalogueSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class Module7SalesTest extends TestCase
@@ -70,6 +72,45 @@ class Module7SalesTest extends TestCase
         $this->actingAs($cashier)->get(route('sales.pdf', [$sale, 'receipt']))
             ->assertOk()
             ->assertHeader('Content-Type', 'application/pdf');
+    }
+
+    public function test_sale_sends_confirmation_email_to_customer_and_business(): void
+    {
+        Mail::fake();
+        CompanySetting::current()->update(['email' => 'shop@ivys-food.test']);
+
+        $cashier = $this->userWithRole('Cashier / Sales Officer');
+        $variant = $this->activeVariant();
+        $this->finishedBatch($variant, 'FIN-MAIL-001', '2026-09-30', '10');
+        $customer = $this->customer();
+        $customer->update(['email' => 'customer@example.com']);
+
+        $this->actingAs($cashier)->post('/sales', $this->salePayload($variant, 'Retail', '2', [['payment_method' => 'Cash', 'amount' => '10']], $customer))
+            ->assertRedirect();
+
+        $sale = Sale::query()->firstOrFail();
+
+        Mail::assertSent(SaleConfirmationMail::class, function (SaleConfirmationMail $mail) use ($sale) {
+            return $mail->sale->id === $sale->id
+                && $mail->hasTo('customer@example.com')
+                && $mail->hasTo('shop@ivys-food.test');
+        });
+    }
+
+    public function test_sale_confirmation_email_failure_does_not_break_the_sale(): void
+    {
+        Mail::shouldReceive('to')->andThrow(new Exception('smtp down'));
+
+        $cashier = $this->userWithRole('Cashier / Sales Officer');
+        $variant = $this->activeVariant();
+        $this->finishedBatch($variant, 'FIN-MAIL-002', '2026-09-30', '10');
+        $customer = $this->customer();
+        $customer->update(['email' => 'customer2@example.com']);
+
+        $this->actingAs($cashier)->post('/sales', $this->salePayload($variant, 'Retail', '1', [['payment_method' => 'Cash', 'amount' => '5']], $customer))
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('sales', ['customer_id' => $customer->id]);
     }
 
     public function test_credit_sale_requires_customer_and_creates_invoice_and_outstanding_balance(): void
@@ -261,17 +302,5 @@ class Module7SalesTest extends TestCase
             'name' => 'Configurable Shop',
             'status' => 'active',
         ]);
-    }
-
-    private function userWithRole(string $roleName): User
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('Password!234'),
-            'status' => 'active',
-            'password_change_required' => false,
-        ]);
-        $user->roles()->attach(Role::query()->where('name', $roleName)->firstOrFail());
-
-        return $user->fresh('roles.permissions');
     }
 }

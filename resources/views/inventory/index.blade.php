@@ -8,6 +8,7 @@
             <a href="{{ route('inventory.adjustments') }}" class="btn-secondary">Adjust Stock</a>
         @endcan
         <a href="{{ route('inventory.stocktakes') }}" class="btn-secondary">Stocktakes</a>
+        <x-import-button type="opening_stock" label="Import opening stock" />
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

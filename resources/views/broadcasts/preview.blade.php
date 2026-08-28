@@ -18,7 +18,7 @@
         </section>
         <div class="flex flex-wrap justify-end gap-3">
             <a href="{{ route('broadcasts.create') }}" class="btn-secondary">Edit</a>
-            <button class="btn-primary" type="submit" @disabled($recipients->isEmpty())>Save broadcast</button>
+            <button class="btn-primary" type="submit" @disabled($recipients->isEmpty())>Send broadcast</button>
         </div>
     </form>
 </x-layouts.app>

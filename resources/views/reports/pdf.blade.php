@@ -4,15 +4,13 @@
     <meta charset="utf-8">
     <style>
         body { color: #101317; font-family: DejaVu Sans, sans-serif; font-size: 11px; }
-        h1 { color: #2d4054; font-size: 18px; margin-bottom: 4px; }
         table { border-collapse: collapse; margin-top: 16px; width: 100%; }
         th, td { border: 1px solid #d8dee8; padding: 6px; text-align: left; }
         th { background: #f6f8fb; color: #2d4054; }
     </style>
 </head>
 <body>
-    <h1>{{ $title }}</h1>
-    <p>{{ $from->format('d M Y') }} to {{ $to->format('d M Y') }}</p>
+    <x-print-header :title="$title" :subtitle="$from->format('d M Y').' to '.$to->format('d M Y')" />
     <table>
         <thead>
             <tr>

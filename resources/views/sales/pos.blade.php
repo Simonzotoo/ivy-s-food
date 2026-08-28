@@ -49,7 +49,7 @@
                                         x-model="line.query"
                                         @focus="line.open = true"
                                         @click.outside="line.open = false"
-                                        placeholder="Search product or scan barcode"
+                                        placeholder="Search product"
                                         autocomplete="off"
                                         x-bind:required="index === 0 && !line.productId"
                                     >

@@ -19,7 +19,7 @@
                         <div>
                             <label class="form-label" for="profile_photo">Profile photo</label>
                             <input class="form-input" id="profile_photo" name="profile_photo" type="file" accept="image/jpeg,image/png,image/webp" required>
-                            <p class="mt-1 text-xs text-slate-500">JPG, PNG or WebP. Maximum size 2 MB.</p>
+                            <p class="mt-1 text-xs text-slate-500">JPG, PNG or WebP. Maximum size 5 MB.</p>
                         </div>
                         <button class="btn-primary" type="submit">Upload photo</button>
                     </form>
@@ -39,15 +39,15 @@
             <div class="mt-5 space-y-4">
                 <div>
                     <label class="form-label" for="current_password">Current password</label>
-                    <input class="form-input" id="current_password" name="current_password" type="password" required>
+                    <x-password-toggle id="current_password" name="current_password" autocomplete="current-password" required />
                 </div>
                 <div>
                     <label class="form-label" for="password">New password</label>
-                    <input class="form-input" id="password" name="password" type="password" required>
+                    <x-password-toggle id="password" name="password" autocomplete="new-password" required />
                 </div>
                 <div>
                     <label class="form-label" for="password_confirmation">Confirm password</label>
-                    <input class="form-input" id="password_confirmation" name="password_confirmation" type="password" required>
+                    <x-password-toggle id="password_confirmation" name="password_confirmation" autocomplete="new-password" required />
                 </div>
                 <button class="btn-primary" type="submit">Update password</button>
             </div>

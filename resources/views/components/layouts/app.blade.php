@@ -111,32 +111,8 @@
                     @can('reports.view')
                         <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'nav-link-active' : '' }}">Reports</a>
                     @endcan
-                    @canany(['broadcasts.view', 'broadcasts.create', 'broadcasts.manage_templates', 'broadcasts.manage_consent'])
-                        <details class="nav-group" {{ request()->routeIs('broadcasts.*') ? 'open' : '' }}>
-                            <summary>Communication</summary>
-                            <div class="mt-1 space-y-1">
-                                @can('broadcasts.view')
-                                    <a href="{{ route('broadcasts.index') }}" class="nav-sublink {{ request()->routeIs('broadcasts.index') || request()->routeIs('broadcasts.show') ? 'nav-link-active' : '' }}">Customer Messages</a>
-                                @endcan
-                                @can('broadcasts.create')
-                                    <a href="{{ route('broadcasts.create') }}" class="nav-sublink {{ request()->routeIs('broadcasts.create') ? 'nav-link-active' : '' }}">Send Message</a>
-                                @endcan
-                                @can('broadcasts.manage_templates')
-                                    <a href="{{ route('broadcasts.templates') }}" class="nav-sublink {{ request()->routeIs('broadcasts.templates') ? 'nav-link-active' : '' }}">Message Templates</a>
-                                @endcan
-                                @can('broadcasts.manage_consent')
-                                    <a href="{{ route('broadcasts.consent') }}" class="nav-sublink {{ request()->routeIs('broadcasts.consent') ? 'nav-link-active' : '' }}">Customer Consent</a>
-                                @endcan
-                            </div>
-                        </details>
-                    @endcanany
-                    @can('imports.view')
-                        <details class="nav-group" {{ request()->routeIs('imports.*') ? 'open' : '' }}>
-                            <summary>Data Imports</summary>
-                            <div class="mt-1 space-y-1">
-                                <a href="{{ route('imports.index') }}" class="nav-sublink {{ request()->routeIs('imports.*') ? 'nav-link-active' : '' }}">Import Data</a>
-                            </div>
-                        </details>
+                    @can('broadcasts.create')
+                        <a href="{{ route('broadcasts.create') }}" class="nav-link {{ request()->routeIs('broadcasts.*') ? 'nav-link-active' : '' }}">Communication</a>
                     @endcan
                     @canany(['users.view', 'roles.view', 'audit.view'])
                         <details class="nav-group" {{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('audit.*') ? 'open' : '' }}>
@@ -212,14 +188,7 @@
                 </div>
             </header>
             <main class="px-4 py-6 sm:px-6 lg:px-8">
-                @if (session('status'))
-                    <div class="mb-5 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{{ session('status') }}</div>
-                @endif
-                @if ($errors->any())
-                    <div class="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-                        {{ $errors->first() }}
-                    </div>
-                @endif
+                <x-flash-alerts />
                 {{ $slot }}
             </main>
         </section>

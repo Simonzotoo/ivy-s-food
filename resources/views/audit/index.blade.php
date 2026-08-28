@@ -17,13 +17,17 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($logs as $log)
-                        <tr>
+                        <tr x-data="{ open: false }">
                             <td class="whitespace-nowrap px-4 py-3">{{ $log->created_at->format('d M Y H:i') }}</td>
                             <td class="px-4 py-3 font-semibold text-ivy-navy">{{ $log->event }}</td>
                             <td class="px-4 py-3">{{ $log->actor?->name ?? 'System / unknown' }}</td>
                             <td class="px-4 py-3">{{ class_basename((string) $log->auditable_type) }} #{{ $log->auditable_id }}</td>
                             <td class="max-w-md px-4 py-3 text-xs text-slate-600">
-                                <pre class="whitespace-pre-wrap">{{ json_encode(['old' => $log->old_values, 'new' => $log->new_values, 'metadata' => $log->metadata], JSON_PRETTY_PRINT) }}</pre>
+                                <p>{{ $log->summaryLine() }}</p>
+                                @if (! empty($log->old_values) || ! empty($log->new_values) || ! empty($log->metadata))
+                                    <button type="button" class="mt-1 font-semibold text-ivy-navy hover:text-ivy-red" @click="open = ! open" x-text="open ? 'Hide raw data' : 'View raw data'"></button>
+                                    <pre x-show="open" x-cloak class="mt-2 whitespace-pre-wrap rounded-md bg-slate-50 p-2">{{ json_encode(['old' => $log->old_values, 'new' => $log->new_values, 'metadata' => $log->metadata], JSON_PRETTY_PRINT) }}</pre>
+                                @endif
                             </td>
                         </tr>
                     @empty

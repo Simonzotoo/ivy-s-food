@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Contracts\BroadcastDeliveryChannel;
 use App\Contracts\NotificationChannel;
 use App\Models\Permission;
-use App\Services\LocalBroadcastDeliveryChannel;
+use App\Services\Broadcast\ChannelRouter;
 use App\Services\LocalNotificationChannel;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(NotificationChannel::class, LocalNotificationChannel::class);
-        $this->app->bind(BroadcastDeliveryChannel::class, LocalBroadcastDeliveryChannel::class);
+        $this->app->bind(BroadcastDeliveryChannel::class, ChannelRouter::class);
     }
 
     /**

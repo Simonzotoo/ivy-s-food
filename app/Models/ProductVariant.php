@@ -14,7 +14,6 @@ class ProductVariant extends Model
         'product_size_id',
         'name',
         'sku',
-        'barcode',
         'retail_price',
         'wholesale_price',
         'distributor_price',
@@ -48,6 +47,13 @@ class ProductVariant extends Model
     public function size(): BelongsTo
     {
         return $this->belongsTo(ProductSize::class, 'product_size_id');
+    }
+
+    public function imageUrl(): ?string
+    {
+        return $this->image_path
+            ? '/storage/'.ltrim($this->image_path, '/')
+            : null;
     }
 
     public function isCompleteForActivation(): bool

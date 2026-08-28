@@ -16,9 +16,12 @@
             </select>
             <button class="btn-secondary" type="submit">Filter</button>
         </form>
-        @can('customers.manage')
-            <a href="{{ route('customers.create') }}" class="btn-primary">Create customer</a>
-        @endcan
+        <div class="flex flex-wrap gap-2">
+            <x-import-button type="customers" label="Import customers" />
+            @can('customers.manage')
+                <a href="{{ route('customers.create') }}" class="btn-primary">Create customer</a>
+            @endcan
+        </div>
     </div>
 
     <div class="rounded-md border border-slate-200 bg-white shadow-sm">

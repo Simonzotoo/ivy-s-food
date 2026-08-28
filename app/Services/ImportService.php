@@ -35,7 +35,6 @@ class ImportService
         'suppliers' => 'Suppliers',
         'raw_materials' => 'Raw materials',
         'product_variants' => 'Product update (status)',
-        'barcodes' => 'Barcodes',
         'prices' => 'Prices',
         'opening_stock' => 'Opening stock',
         'open_credit_balances' => 'Open credit balances',
@@ -472,7 +471,7 @@ class ImportService
     {
         $errors = [];
         $required = match ($type) {
-            'product_variants', 'barcodes', 'prices' => ['sku'],
+            'product_variants', 'prices' => ['sku'],
             'raw_materials' => ['name', 'category', 'base_unit_symbol'],
             'suppliers' => ['name'],
             'opening_stock' => ['stock_type', 'sku_or_name', 'batch_number', 'quantity'],
@@ -490,11 +489,7 @@ class ImportService
             return ['classification' => 'invalid', 'errors' => $errors];
         }
 
-        if ($type === 'barcodes' && filled($row['barcode'] ?? null) && ProductVariant::query()->where('barcode', $row['barcode'])->where('sku', '!=', $row['sku'])->exists()) {
-            return ['classification' => 'invalid', 'errors' => ['Barcode is already assigned to another product.']];
-        }
-
-        if (in_array($type, ['product_variants', 'barcodes', 'prices'], true) && ! ProductVariant::query()->where('sku', $row['sku'])->exists()) {
+        if (in_array($type, ['product_variants', 'prices'], true) && ! ProductVariant::query()->where('sku', $row['sku'])->exists()) {
             return ['classification' => 'invalid', 'errors' => ['SKU does not exist.']];
         }
 
@@ -521,7 +516,6 @@ class ImportService
             'suppliers' => [$this->applySupplier($row)],
             'raw_materials' => [$this->applyMaterial($row)],
             'product_variants' => [$this->applyVariant($row)],
-            'barcodes' => [$this->applyVariant(['sku' => $row['sku'], 'barcode' => $row['barcode']])],
             'prices' => [$this->applyVariant($row)],
             'opening_stock' => $this->applyOpeningStock($row, $actor),
             'open_credit_balances' => [$this->applyOpeningCredit($row, $actor)],
@@ -601,7 +595,7 @@ class ImportService
     private function applySupplier(array $row): array
     {
         $existing = Supplier::query()->where('name', $row['name'])->first();
-        $supplier = Supplier::query()->updateOrCreate(['name' => $row['name']], ['phone' => $row['phone'] ?: null, 'email' => $row['email'] ?: null, 'address' => $row['address'] ?: null, 'status' => $row['status'] ?: 'active']);
+        $supplier = Supplier::query()->updateOrCreate(['name' => $row['name']], ['phone' => $row['phone'] ?: null, 'location' => $row['location'] ?: null, 'email' => $row['email'] ?: null, 'address' => $row['address'] ?: null, 'status' => $row['status'] ?: 'active']);
 
         return ['model' => Supplier::class, 'id' => $supplier->id, 'action' => $existing ? 'updated' : 'created'];
     }

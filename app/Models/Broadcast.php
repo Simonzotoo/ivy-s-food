@@ -22,6 +22,7 @@ class Broadcast extends Model
         'total_recipients',
         'total_logged',
         'total_skipped',
+        'total_failed',
         'created_by',
     ];
 

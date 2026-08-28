@@ -1,31 +1,8 @@
-<x-layouts.app title="Data Imports">
-    <p class="mb-6 max-w-3xl text-sm text-slate-600">Import business records from a CSV or Excel (.xlsx) file. Each import is previewed before anything is saved, so you can check for problems first.</p>
-
-    <section class="mb-6 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 class="text-base font-bold text-ivy-navy">Start an import</h2>
-        <p class="mt-1 text-sm text-slate-500">Download a template, fill it in, then upload it.</p>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach ($types as $key => $spec)
-                <div class="rounded-md border border-slate-200 p-4">
-                    <p class="font-semibold text-ivy-navy">{{ $spec['label'] }}</p>
-                    <div class="mt-3 flex flex-wrap gap-2">
-                        @can('imports.templates')
-                            <a class="btn-secondary" href="{{ route('imports.template', $key) }}">Download template</a>
-                        @endcan
-                        @can('imports.upload')
-                            <a class="btn-primary" href="{{ route('imports.create', $key) }}">Upload file</a>
-                        @endcan
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </section>
+<x-layouts.app title="Import History">
+    <p class="mb-6 max-w-3xl text-sm text-slate-600">Every import that has been uploaded, from any page. Look up a past import to review what happened, download its errors, or roll it back.</p>
 
     @can('imports.history')
         <section class="rounded-md border border-slate-200 bg-white shadow-sm">
-            <div class="border-b border-slate-200 p-5">
-                <h2 class="text-base font-bold text-ivy-navy">Import history</h2>
-            </div>
             <div class="divide-y divide-slate-100">
                 @forelse ($batches as $batch)
                     <article class="flex flex-col gap-2 p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -36,7 +13,7 @@
                         <span class="badge">{{ str_replace('_', ' ', $batch->status) }}</span>
                     </article>
                 @empty
-                    <div class="px-5 py-12 text-center text-slate-500">No imports have been run yet.</div>
+                    <div class="px-5 py-12 text-center text-slate-500">No imports have been run yet. Look for an "Import" button on the Customers, Suppliers, Materials, Products, Inventory or Credit pages.</div>
                 @endforelse
             </div>
             <div class="p-5">{{ $batches->links() }}</div>

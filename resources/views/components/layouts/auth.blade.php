@@ -11,11 +11,12 @@
 <body class="min-h-screen bg-white">
     <main class="grid min-h-screen lg:grid-cols-[1fr_520px]">
         <section class="hidden bg-ivy-navy p-10 text-white lg:flex lg:flex-col lg:justify-between">
-            <img src="{{ asset('images/ivys-logo.png') }}" alt="Ivy's Food" class="h-28 w-28 object-contain">
+            <div class="flex h-28 w-28 items-center justify-center rounded-md bg-white p-3 shadow-sm ring-1 ring-white/20">
+                <img src="{{ asset('images/ivys-logo.png') }}" alt="Ivy's Food" class="max-h-full max-w-full object-contain">
+            </div>
             <div class="max-w-xl">
                 <p class="text-sm font-semibold uppercase tracking-wide text-red-200">Ivy's Food</p>
                 <h1 class="mt-4 text-4xl font-bold leading-tight">Production and business controls start with secure access.</h1>
-                <p class="mt-5 text-base leading-7 text-slate-200">Module 1 establishes staff access, roles, company settings and traceable audit history.</p>
             </div>
             <p class="text-sm text-slate-300">Currency: GHS · Time zone: Africa/Accra</p>
         </section>
@@ -28,6 +29,7 @@
                         <p class="text-sm text-slate-600">Management System</p>
                     </div>
                 </div>
+                <x-flash-alerts />
                 {{ $slot }}
             </div>
         </section>

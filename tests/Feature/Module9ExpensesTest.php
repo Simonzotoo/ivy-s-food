@@ -6,7 +6,6 @@ use App\Models\AuditLog;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Role;
-use App\Models\User;
 use App\Services\AuditService;
 use Database\Seeders\CompanySettingsSeeder;
 use Database\Seeders\CustomerFoundationSeeder;
@@ -14,7 +13,6 @@ use Database\Seeders\MaterialFoundationSeeder;
 use Database\Seeders\ProductCatalogueSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class Module9ExpensesTest extends TestCase
@@ -196,17 +194,5 @@ class Module9ExpensesTest extends TestCase
             'description' => $number.' description.',
             'status' => 'pending',
         ]);
-    }
-
-    private function userWithRole(string $roleName): User
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('Password!234'),
-            'status' => 'active',
-            'password_change_required' => false,
-        ]);
-        $user->roles()->attach(Role::query()->where('name', $roleName)->firstOrFail());
-
-        return $user->fresh('roles.permissions');
     }
 }

@@ -62,6 +62,7 @@ class ImportTemplates
                 'fields' => [
                     'name' => ['label' => 'Supplier name', 'required' => true],
                     'phone' => ['label' => 'Phone number', 'required' => false],
+                    'location' => ['label' => 'Location', 'required' => false],
                     'email' => ['label' => 'Email', 'required' => false],
                     'address' => ['label' => 'Address', 'required' => false],
                     'status' => ['label' => 'Status', 'required' => false],
@@ -69,6 +70,7 @@ class ImportTemplates
                 'sample' => [
                     'name' => 'EXAMPLE Kumasi Fruit Suppliers',
                     'phone' => '0244000222',
+                    'location' => 'Kumasi',
                     'email' => 'sales@example.com',
                     'address' => 'Kejetia, Kumasi',
                     'status' => 'active',
@@ -114,19 +116,6 @@ class ImportTemplates
                     'The first data row below the headings is an EXAMPLE only - replace or delete it before importing.',
                     'SKU must already exist in the product catalogue - this updates existing products, it does not create new ones.',
                     'Status accepts draft, active or inactive.',
-                ],
-            ],
-            'barcodes' => [
-                'label' => 'Barcodes',
-                'fields' => [
-                    'sku' => ['label' => 'SKU', 'required' => true],
-                    'barcode' => ['label' => 'Barcode', 'required' => true],
-                ],
-                'sample' => ['sku' => 'PV-001', 'barcode' => '6001234567890'],
-                'notes' => [
-                    'The first data row below the headings is an EXAMPLE only - replace or delete it before importing.',
-                    'SKU must already exist in the product catalogue.',
-                    'A barcode already assigned to another product will be rejected.',
                 ],
             ],
             'prices' => [

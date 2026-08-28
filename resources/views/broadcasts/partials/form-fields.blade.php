@@ -1,5 +1,6 @@
 @php
     $source = $previewMode ? $preview : old();
+    $selectedChannels = $source['channels'] ?? ['sms'];
 @endphp
 <div class="grid gap-5 lg:grid-cols-2">
     <div>
@@ -7,38 +8,33 @@
         <input class="form-input" id="name" name="name" value="{{ $source['name'] ?? '' }}" required>
     </div>
     <div>
-        <label class="form-label" for="channel">Channel <span class="text-ivy-red">*</span></label>
-        <select class="form-input" id="channel" name="channel" required>
-            @foreach (['local' => 'Local test', 'sms' => 'SMS', 'whatsapp' => 'WhatsApp'] as $value => $label)
-                <option value="{{ $value }}" @selected(($source['channel'] ?? 'local') === $value)>{{ $label }}</option>
+        <span class="form-label">Send via <span class="text-ivy-red">*</span></span>
+        <div class="mt-1 flex gap-5">
+            @foreach (['sms' => 'SMS', 'email' => 'Email'] as $value => $label)
+                <label class="flex items-center gap-2 text-sm text-slate-700">
+                    <input type="checkbox" name="channels[]" value="{{ $value }}" class="rounded border-slate-300 text-ivy-red focus:ring-ivy-red" @checked(in_array($value, $selectedChannels, true))>
+                    {{ $label }}
+                </label>
             @endforeach
-        </select>
+        </div>
+        <p class="mt-1 text-xs text-slate-500">Tick both to send the same message by SMS and email at once.</p>
     </div>
 </div>
 <div>
     <label class="form-label" for="body">Message <span class="text-ivy-red">*</span></label>
     <textarea class="form-input" id="body" name="body" rows="5" required>{{ $source['body'] ?? '' }}</textarea>
 </div>
-<div class="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-    SMS and WhatsApp broadcasts are logged through the local/test adapter until a real provider is approved.
+<div class="rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+    SMS messages are sent via mNotify. Email messages are sent to each customer's email address on file. Customers without a phone number or email for the chosen channel are skipped automatically.
 </div>
 
 @php
     $hasAudienceFilters = ($source['customer_type_id'] ?? null) || ($source['sale_type_id'] ?? null) || ($source['location'] ?? null)
-        || (($source['purchase_history'] ?? 'any') !== 'any') || ($source['broadcast_template_id'] ?? null) || ($source['scheduled_for'] ?? null);
+        || (($source['purchase_history'] ?? 'any') !== 'any') || ($source['scheduled_for'] ?? null);
 @endphp
 <details class="rounded-md border border-slate-200 p-4" {{ $hasAudienceFilters ? 'open' : '' }}>
-    <summary class="cursor-pointer text-sm font-semibold text-ivy-navy">More details (template, schedule, audience filters)</summary>
+    <summary class="cursor-pointer text-sm font-semibold text-ivy-navy">More details (schedule, audience filters)</summary>
     <div class="mt-4 grid gap-5 lg:grid-cols-2">
-        <div>
-            <label class="form-label" for="broadcast_template_id">Template</label>
-            <select class="form-input" id="broadcast_template_id" name="broadcast_template_id">
-                <option value="">No template</option>
-                @foreach ($templates as $template)
-                    <option value="{{ $template->id }}" @selected((string) ($source['broadcast_template_id'] ?? '') === (string) $template->id)>{{ $template->name }}</option>
-                @endforeach
-            </select>
-        </div>
         <div>
             <label class="form-label" for="scheduled_for">Schedule for</label>
             <input class="form-input" id="scheduled_for" name="scheduled_for" type="datetime-local" value="{{ $source['scheduled_for'] ?? '' }}">
@@ -77,6 +73,7 @@
         <div class="lg:col-span-2">
             <label class="form-label" for="subject">Subject</label>
             <input class="form-input" id="subject" name="subject" value="{{ $source['subject'] ?? '' }}">
+            <p class="mt-1 text-xs text-slate-500">Used as the email subject line. Ignored for SMS.</p>
         </div>
     </div>
 </details>

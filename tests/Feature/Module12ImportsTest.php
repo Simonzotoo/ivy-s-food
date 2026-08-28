@@ -16,7 +16,6 @@ use App\Models\Role;
 use App\Models\Sale;
 use App\Models\SaleType;
 use App\Models\Supplier;
-use App\Models\User;
 use Database\Seeders\CompanySettingsSeeder;
 use Database\Seeders\CustomerFoundationSeeder;
 use Database\Seeders\MaterialFoundationSeeder;
@@ -24,7 +23,6 @@ use Database\Seeders\ProductCatalogueSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class Module12ImportsTest extends TestCase
@@ -316,15 +314,15 @@ class Module12ImportsTest extends TestCase
     {
         $purchasing = $this->userWithRole('Purchasing Officer');
 
-        $file = $this->csvFile("name,phone,email,address,status\nKumasi Fruit Suppliers,0244000222,sales@example.com,Kejetia,active\n");
+        $file = $this->csvFile("name,phone,location,email,address,status\nKumasi Fruit Suppliers,0244000222,Kumasi,sales@example.com,Kejetia,active\n");
         $this->actingAs($purchasing)->post('/imports', ['import_type' => 'suppliers', 'file' => $file]);
         $batch = ImportBatch::query()->firstOrFail();
         $this->actingAs($purchasing)->post(route('imports.map.store', $batch), [
-            'mapping' => ['name' => 'name', 'phone' => 'phone', 'email' => 'email', 'address' => 'address', 'status' => 'status'],
+            'mapping' => ['name' => 'name', 'phone' => 'phone', 'location' => 'location', 'email' => 'email', 'address' => 'address', 'status' => 'status'],
         ]);
         $this->actingAs($purchasing)->post(route('imports.commit', $batch), ['confirm' => '1'])->assertRedirect();
 
-        $this->assertDatabaseHas('suppliers', ['name' => 'Kumasi Fruit Suppliers']);
+        $this->assertDatabaseHas('suppliers', ['name' => 'Kumasi Fruit Suppliers', 'location' => 'Kumasi']);
         $this->assertSame(1, Supplier::query()->count());
     }
 
@@ -434,17 +432,5 @@ class Module12ImportsTest extends TestCase
         $zip->close();
 
         return new UploadedFile($path, 'import.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
-    }
-
-    private function userWithRole(string $roleName): User
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('Password!234'),
-            'status' => 'active',
-            'password_change_required' => false,
-        ]);
-        $user->roles()->attach(Role::query()->where('name', $roleName)->firstOrFail());
-
-        return $user->fresh('roles.permissions');
     }
 }

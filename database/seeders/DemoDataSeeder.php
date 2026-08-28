@@ -23,7 +23,6 @@ use App\Services\RecipeProductionService;
 use App\Services\SalesService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DemoDataSeeder extends Seeder
 {
@@ -190,7 +189,6 @@ class DemoDataSeeder extends Seeder
                 $variant = ProductVariant::query()->where('name', $name)->firstOrFail();
                 $variant->update([
                     'sku' => $sku,
-                    'barcode' => 'DEMO'.Str::upper(Str::substr($key, 0, 3)).'500',
                     'retail_price' => $retail,
                     'wholesale_price' => $wholesale,
                     'distributor_price' => $distributor,

@@ -45,7 +45,7 @@ class SalesController extends Controller
             'variantOptions' => $variants->map(fn (ProductVariant $variant): array => [
                 'value' => $variant->id,
                 'label' => $variant->name,
-                'sublabel' => $variant->barcode ? 'Barcode '.$variant->barcode : ($variant->sku ? 'SKU '.$variant->sku : null),
+                'sublabel' => $variant->sku ? 'SKU '.$variant->sku : null,
                 'retail' => $variant->retail_price,
                 'wholesale' => $variant->wholesale_price,
                 'distributor' => $variant->distributor_price,

@@ -1,9 +1,12 @@
 <x-layouts.app title="Materials">
     <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p class="text-sm text-slate-600">Configure raw materials and packaging materials. Stock is derived from batches and movements.</p>
-        @can('materials.manage')
-            <a href="{{ route('materials.create') }}" class="btn-primary">Create material</a>
-        @endcan
+        <div class="flex flex-wrap gap-2">
+            <x-import-button type="raw_materials" label="Import materials" />
+            @can('materials.manage')
+                <a href="{{ route('materials.create') }}" class="btn-primary">Create material</a>
+            @endcan
+        </div>
     </div>
     <div class="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
         <div class="divide-y divide-slate-100 md:hidden">
